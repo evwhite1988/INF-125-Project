@@ -1,0 +1,7 @@
+c:\users\evan\documents\visual studio 2010\Projects\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\part1_tileset.xnb
+c:\users\evan\documents\visual studio 2010\Projects\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Tile Engine.exe
+c:\users\evan\documents\visual studio 2010\Projects\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Tile Engine.pdb
+c:\users\evan\documents\visual studio 2010\Projects\Tile Engine\Tile Engine\Tile Engine\obj\x86\Debug\ResolveAssemblyReference.cache
+c:\users\evan\documents\visual studio 2010\Projects\Tile Engine\Tile Engine\Tile Engine\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+c:\users\evan\documents\visual studio 2010\Projects\Tile Engine\Tile Engine\Tile Engine\obj\x86\Debug\Tile Engine.exe
+c:\users\evan\documents\visual studio 2010\Projects\Tile Engine\Tile Engine\Tile Engine\obj\x86\Debug\Tile Engine.pdb
