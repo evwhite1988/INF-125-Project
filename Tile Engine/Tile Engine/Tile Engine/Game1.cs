@@ -16,9 +16,11 @@ namespace Tile_Engine
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         TileMap myMap = new TileMap();
+        bool clicked = false;
         int squaresAcross = 30;
         int squaresDown = 30;
 
@@ -37,11 +39,10 @@ namespace Tile_Engine
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
-          
-
-
-
+            this.IsMouseVisible = true;
+            this.graphics.PreferredBackBufferWidth = graphics.GraphicsDevice.DisplayMode.Width;
+            this.graphics.PreferredBackBufferHeight = graphics.GraphicsDevice.DisplayMode.Height;
+    
 
             base.Initialize();
         }
@@ -55,6 +56,7 @@ namespace Tile_Engine
             // Create a new SpriteBatch, which can be used to draw textures.
 
             Tile.textureSet = Content.Load<Texture2D>("part1_tileset");
+            Tile.cellBorder = Content.Load<Texture2D>("tile");
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -79,28 +81,15 @@ namespace Tile_Engine
         {
             MouseState ms = Mouse.GetState();
 
-
-
-
-            KeyboardState ks = Keyboard.GetState();
-            if (ks.IsKeyDown(Keys.Left))
+            if (ms.LeftButton == ButtonState.Pressed)
             {
-                Camera.Location.X = MathHelper.Clamp(Camera.Location.X - 2, 0, (myMap.MapWidth - squaresAcross) * 32);
-            }
 
-            if (ks.IsKeyDown(Keys.Right))
-            {
-                Camera.Location.X = MathHelper.Clamp(Camera.Location.X + 2, 0, (myMap.MapWidth - squaresAcross) * 32);
-            }
+                if (ms.LeftButton != ButtonState.Released)
+                {
+                    Vector2 mousePosition = new Vector2(ms.X, ms.Y);
+                    myMap.updateTile(mousePosition);
+                }
 
-            if (ks.IsKeyDown(Keys.Up))
-            {
-                Camera.Location.Y = MathHelper.Clamp(Camera.Location.Y - 2, 0, (myMap.MapHeight - squaresDown) * 32);
-            }
-
-            if (ks.IsKeyDown(Keys.Down))
-            {
-                Camera.Location.Y = MathHelper.Clamp(Camera.Location.Y + 2, 0, (myMap.MapHeight - squaresDown) * 32);
             }
             // TODO: Add your update logic here
 
@@ -114,27 +103,33 @@ namespace Tile_Engine
         protected override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
-            Vector2 firstSquare = new Vector2(Camera.Location.X / 32, Camera.Location.Y / 32);
-            int firstX = (int)firstSquare.X;
-            int firstY = (int)firstSquare.Y;
-
-            Vector2 squareOffset = new Vector2(Camera.Location.X % 32, Camera.Location.Y % 32);
-            int offsetX = (int)squareOffset.X;
-            int offsetY = (int)squareOffset.Y;
+           // graphics.GraphicsDevice.Clear(Color.White);
 
             for (int y = 0; y < squaresDown; y++)
             {
                 for (int x = 0; x < squaresAcross; x++)
                 {
-                    spriteBatch.Draw(
-                        Tile.textureSet,
-                        new Rectangle((x * 32) - offsetX, (y * 32) - offsetY, 32, 32),
-                        Tile.getTexture(myMap.Rows[y + firstY].Columns[x + firstX].TileID),
+                    if (myMap.getTileID(x, y) == 1)
+                    {
+                        spriteBatch.Draw(
+                        Tile.cellBorder,
+                        new Rectangle((x * 64), (y * 64), Tile.cellBorder.Width, Tile.cellBorder.Height),
+                        Tile.getTexture(),
                         Color.White);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(
+                        Tile.textureSet,
+                        new Rectangle((x * 64), (y * 64), Tile.cellBorder.Width, Tile.cellBorder.Height),
+                        Tile.getTexture(),
+                        Color.White);
+                    }
                 }
             }
 
             spriteBatch.End();
+            graphics.ApplyChanges();
 
             // TODO: Add your drawing code here
 
