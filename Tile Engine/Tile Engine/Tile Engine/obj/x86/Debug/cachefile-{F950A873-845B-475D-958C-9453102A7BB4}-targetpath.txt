@@ -1,2 +1,3 @@
 Content\part1_tileset.xnb
 Content\tile.xnb
+Content\gnomes.xnb

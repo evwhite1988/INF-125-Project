@@ -34,8 +34,8 @@ namespace Tile_Engine
 
         public void updateTile(Vector2 position)
         {
-            int row = (int) position.X / Tile.cellBorder.Width;
-            int column = (int)position.Y / Tile.cellBorder.Height;
+            int row = (int) position.X / 64;
+            int column = (int)position.Y / 64;
 
             Rows[row].Columns[column].TileID = 2;
             Console.WriteLine("Cell (" + row + "," + column + ") updated");

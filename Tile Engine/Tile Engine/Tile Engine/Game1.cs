@@ -23,6 +23,10 @@ namespace Tile_Engine
         bool clicked = false;
         int squaresAcross = 30;
         int squaresDown = 30;
+        int speed = 5;
+        GameSprite gnome;
+        Texture2D gnomeTex;
+        
 
         public Game1()
         {
@@ -57,8 +61,13 @@ namespace Tile_Engine
 
             Tile.textureSet = Content.Load<Texture2D>("part1_tileset");
             Tile.cellBorder = Content.Load<Texture2D>("tile");
+            gnomeTex = Content.Load<Texture2D>("gnomes");
+
+            gnome = new GameSprite(gnomeTex, 1);
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+
 
             // TODO: use this.Content to load your game content here
         }
@@ -80,6 +89,7 @@ namespace Tile_Engine
         protected override void Update(GameTime gameTime)
         {
             MouseState ms = Mouse.GetState();
+            KeyboardState ks = Keyboard.GetState();
 
             if (ms.LeftButton == ButtonState.Pressed)
             {
@@ -91,6 +101,30 @@ namespace Tile_Engine
                 }
 
             }
+
+            if(ks.IsKeyDown(Keys.Down))
+            {
+                gnome.position = new Vector2(gnome.position.X, gnome.position.Y + speed);
+
+            }
+            if (ks.IsKeyDown(Keys.Up))
+            {
+                gnome.position = new Vector2(gnome.position.X, gnome.position.Y - speed);
+
+            }
+            if (ks.IsKeyDown(Keys.Left))
+            {
+                gnome.position = new Vector2(gnome.position.X - speed, gnome.position.Y);
+
+            }
+            if (ks.IsKeyDown(Keys.Right))
+            {
+                gnome.position = new Vector2(gnome.position.X + speed, gnome.position.Y);
+
+            }
+
+
+
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -102,8 +136,11 @@ namespace Tile_Engine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            
             spriteBatch.Begin();
            // graphics.GraphicsDevice.Clear(Color.White);
+
+            
 
             for (int y = 0; y < squaresDown; y++)
             {
@@ -127,6 +164,7 @@ namespace Tile_Engine
                     }
                 }
             }
+            gnome.draw(spriteBatch);
 
             spriteBatch.End();
             graphics.ApplyChanges();

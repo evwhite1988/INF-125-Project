@@ -19,6 +19,15 @@
       <Output>C:\Documents and Settings\cmlang\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\tile.xnb</Output>
       <Time>2011-10-08T11:29:23.1453238-07:00</Time>
     </Item>
+    <Item>
+      <Source>gnomes.png</Source>
+      <Name>gnomes</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Documents and Settings\cmlang\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes.xnb</Output>
+      <Time>2011-10-09T11:30:34.5914065-07:00</Time>
+    </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
       <ContentProjectGUID>{F950A873-845B-475D-958C-9453102A7BB4}</ContentProjectGUID>
