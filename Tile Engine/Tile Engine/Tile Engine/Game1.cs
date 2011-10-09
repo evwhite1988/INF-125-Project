@@ -19,7 +19,7 @@ namespace Tile_Engine
         
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        TileMap myMap = new TileMap();
+        Gameboard gameboard = new Gameboard();
         bool clicked = false;
         int squaresAcross = 30;
         int squaresDown = 30;
@@ -87,7 +87,7 @@ namespace Tile_Engine
                 if (ms.LeftButton != ButtonState.Released)
                 {
                     Vector2 mousePosition = new Vector2(ms.X, ms.Y);
-                    myMap.updateTile(mousePosition);
+                    gameboard.updateTile(mousePosition);
                 }
 
             }
@@ -109,7 +109,7 @@ namespace Tile_Engine
             {
                 for (int x = 0; x < squaresAcross; x++)
                 {
-                    if (myMap.getTileID(x, y) == 1)
+                    if (gameboard.getTileID(x, y) == 1)
                     {
                         spriteBatch.Draw(
                         Tile.cellBorder,

@@ -6,21 +6,21 @@ using Microsoft.Xna.Framework;
 
 namespace Tile_Engine
 {
-    class TileMap
+    class Gameboard
     {
         public List<MapRow> Rows = new List<MapRow>();
-        public int MapWidth = 30;
-        public int MapHeight = 30;
+        public int numberOfColumns = 30;
+        public int numberOfRows = 30;
 
 
-        public TileMap()
+        public Gameboard()
         {
-            for (int y = 0; y < MapHeight; y++)
+            for (int y = 0; y < numberOfRows; y++)
             {
                 MapRow thisRow = new MapRow();
-                for (int x = 0; x < MapWidth; x++)
+                for (int x = 0; x < numberOfColumns; x++)
                 {
-                    thisRow.Columns.Add(new MapCell(1));
+                    thisRow.Columns.Add(new Cell(1));
                 }
                 Rows.Add(thisRow);
             }
@@ -51,7 +51,7 @@ namespace Tile_Engine
 
     class MapRow
     {
-        public List<MapCell> Columns = new List<MapCell>();
+        public List<Cell> Columns = new List<Cell>();
     }
 
 }
