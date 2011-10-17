@@ -20,7 +20,6 @@ namespace Tile_Engine
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Gameboard gameboard = new Gameboard();
-        bool clicked = false;
         int squaresAcross = 30;
         int squaresDown = 30;
         int speed = 5;
@@ -102,30 +101,33 @@ namespace Tile_Engine
 
             }
 
+
             if(ks.IsKeyDown(Keys.Down))
             {
-                gnome.position = new Vector2(gnome.position.X, gnome.position.Y + speed);
-
+                gnome.updateState(GameSprite.Direction.Down, gameboard);
             }
             if (ks.IsKeyDown(Keys.Up))
             {
-                gnome.position = new Vector2(gnome.position.X, gnome.position.Y - speed);
-
+                gnome.updateState(GameSprite.Direction.Up, gameboard);
             }
             if (ks.IsKeyDown(Keys.Left))
             {
-                gnome.position = new Vector2(gnome.position.X - speed, gnome.position.Y);
-
+                gnome.updateState(GameSprite.Direction.Left, gameboard);
             }
             if (ks.IsKeyDown(Keys.Right))
             {
-                gnome.position = new Vector2(gnome.position.X + speed, gnome.position.Y);
+                gnome.updateState(GameSprite.Direction.Right, gameboard);
+            }
 
+            if (ks.IsKeyDown(Keys.Space))
+            {
+                Console.WriteLine(gnome.position.X + " , " + gnome.position.Y);
+                Console.WriteLine(gnome.getCurrentColumn(gameboard) + " , " + gnome.getCurrentRow(gameboard));
             }
 
 
 
-            // TODO: Add your update logic here
+            gnome.updateMovement(gameboard);
 
             base.Update(gameTime);
         }
