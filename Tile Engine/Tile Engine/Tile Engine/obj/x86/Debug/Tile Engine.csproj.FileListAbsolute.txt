@@ -23,3 +23,12 @@ C:\Users\Joshua\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\obj\x8
 C:\Users\Joshua\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
 C:\Users\Joshua\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\obj\x86\Debug\Tile Engine.exe
 C:\Users\Joshua\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\obj\x86\Debug\Tile Engine.pdb
+C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\part1_tileset.xnb
+C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\tile.xnb
+C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes.xnb
+C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Tile Engine.exe
+C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Tile Engine.pdb
+C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\obj\x86\Debug\Tile Engine.exe
+C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\obj\x86\Debug\Tile Engine.pdb

@@ -15,17 +15,17 @@ namespace Tile_Engine
 {
     class GameSprite
     {
-        Texture2D spritesheet;
-        public enum Direction { Up, Down, Left, Right };
-        public Direction direction;
-        public Vector2 position{get; set;}
+        Texture2D spritesheet;  //Sprite sheet containing all of the timelines related to this sprite
+        public enum Direction { Up, Down, Left, Right }; //Directions for movement
+        public Direction direction;  //Current direction the Sprite is moving
+        public Vector2 position{get; set;}  //Current position of sprite
         public bool changeState = false;
         public int lastColumn = 0;
         public int lastRow = 0;
         
         
 
-
+        //CONSTRUCTOR
         public GameSprite(Texture2D spritesheet, int framecount)
         {
             this.spritesheet = spritesheet;
@@ -33,21 +33,21 @@ namespace Tile_Engine
             direction = Direction.Right;
         }
 
-
+        //
         public Rectangle framePosition(){
 
             return new Rectangle(0, 0, 32, 64);
 
         }
 
-        public void updateMovement(Gameboard b)
+        public void updatePosition(Gameboard gameboard)
         {
             if (changeState)
             {
-                if (this.position.X != ((lastColumn + 1) * 64) + 16)
-                    this.position = new Vector2(this.position.X + 4, this.position.Y);
-                else if (this.position.Y != (lastRow + 1) * 64)
-                    this.position = new Vector2(this.position.X, this.position.Y + 4);
+                if (this.position.X != ((lastColumn + 1) * Variables.cellWidth) + 16)
+                    this.position = new Vector2(this.position.X + Variables.speed, this.position.Y);
+                else if (this.position.Y != (lastRow + 1) * Variables.cellHeigth)
+                    this.position = new Vector2(this.position.X, this.position.Y + Variables.speed);
                 else
                     changeState = false;
             }
@@ -56,65 +56,65 @@ namespace Tile_Engine
             {
                 if (this.direction == GameSprite.Direction.Right)
                 {
-                    for (int i = 16; i <= b.numberOfColumns * 64; )
+                    for (int i = 16; i <= gameboard.numberOfColumns * Variables.cellWidth; )
                     {
                         if (this.position.X < i)
                         {
-                            this.position = new Vector2(this.position.X + 4, this.position.Y);
+                            this.position = new Vector2(this.position.X + Variables.speed, this.position.Y);
                             break;
                         }
                         else
-                            i = i + 64;
+                            i = i + Variables.cellWidth;
                     }
                 }
                 if (this.direction == GameSprite.Direction.Left)
                 {
-                    for (int i = (b.numberOfColumns * 64) + 16; i >= 16; )
+                    for (int i = (gameboard.numberOfColumns * Variables.cellWidth) + 16; i >= 16; )
                     {
                         if (this.position.X > i)
                         {
-                            this.position = new Vector2(this.position.X - 4, this.position.Y);
+                            this.position = new Vector2(this.position.X - Variables.speed, this.position.Y);
                             break;
                         }
                         else
-                            i = i - 64;
+                            i = i - Variables.cellWidth;
                     }
                 }
                 if (this.direction == GameSprite.Direction.Down)
                 {
-                    for (int i = 0; i <= (17 * 64) - 64; )
+                    for (int i = 0; i <= (17 * Variables.cellHeigth) - Variables.cellHeigth; )
                     {
                         if (this.position.Y < i)
                         {
-                            this.position = new Vector2(this.position.X, this.position.Y + 4);
+                            this.position = new Vector2(this.position.X, this.position.Y + Variables.speed);
                             break;
                         }
                         else
-                            i = i + 64;
+                            i = i + Variables.cellHeigth;
                     }
                 }
                 if (this.direction == GameSprite.Direction.Up)
                 {
-                    for (int i = (17 * 64) - 64; i >= 0; )
+                    for (int i = (17 * Variables.cellHeigth) - Variables.cellHeigth; i >= 0; )
                     {
                         if (this.position.Y > i)
                         {
-                            this.position = new Vector2(this.position.X, this.position.Y - 4);
+                            this.position = new Vector2(this.position.X, this.position.Y - Variables.speed);
                             break;
                         }
                         else
-                            i = i - 64;
+                            i = i - Variables.cellHeigth;
                     }
                 }
             }
         }
 
 
-        public int getCurrentColumn(Gameboard b)
+        public int getCurrentColumn(Gameboard gameboard)
         {
-            for (int i = 0; i < b.numberOfColumns; i++)
+            for (int i = 0; i < gameboard.numberOfColumns; i++)
             {
-                if (this.position.X > (i * 64) + 16 && this.position.X <= ((i + 1) * 64) + 16)
+                if (this.position.X > (i * Variables.cellWidth) + 16 && this.position.X <= ((i + 1) * Variables.cellWidth) + 16)
                 {
                     return i; 
                 };
@@ -124,11 +124,11 @@ namespace Tile_Engine
 
         }
 
-        public int getCurrentRow(Gameboard b)
+        public int getCurrentRow(Gameboard gameboard)
         {
-            for (int i = 0; i < b.numberOfColumns; i++)
+            for (int i = 0; i < gameboard.numberOfRows; i++)
             {
-                if (this.position.Y >= i * 64 && this.position.Y <= (i + 1) * 64)
+                if (this.position.Y >= i * Variables.cellHeigth && this.position.Y <= (i + 1) * Variables.cellHeigth)
                 {
                     return i;
                 }
@@ -137,12 +137,12 @@ namespace Tile_Engine
             return -1;
         }
 
-        public void updateState(Direction d, Gameboard b)
+        public void updateState(Direction newDirection, Gameboard gameboard)
         {
-            direction = d;
+            direction = newDirection;
             changeState = true;
-            lastColumn = getCurrentColumn(b);
-            lastRow = getCurrentRow(b);
+            lastColumn = getCurrentColumn(gameboard);
+            lastRow = getCurrentRow(gameboard);
         }
 
         public void draw(SpriteBatch spriteBatch)

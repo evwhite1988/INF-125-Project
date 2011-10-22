@@ -7,8 +7,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Joshua\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\part1_tileset.xnb</Output>
-      <Time>2011-10-09T20:24:16.0467676-07:00</Time>
+      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\part1_tileset.xnb</Output>
+      <Time>2011-10-08T18:17:24.7042034-07:00</Time>
     </Item>
     <Item>
       <Source>tile.png</Source>
@@ -16,8 +16,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Joshua\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\tile.xnb</Output>
-      <Time>2011-10-09T20:24:16.0397676-07:00</Time>
+      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\tile.xnb</Output>
+      <Time>2011-10-08T18:17:24.7012032-07:00</Time>
     </Item>
     <Item>
       <Source>gnomes.png</Source>
@@ -25,8 +25,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Joshua\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes.xnb</Output>
-      <Time>2011-10-09T20:24:16.0567676-07:00</Time>
+      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes.xnb</Output>
+      <Time>2011-10-09T22:21:39.9508119-07:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
@@ -34,10 +34,10 @@
       <TargetProfile>Reach</TargetProfile>
       <BuildConfiguration>Debug</BuildConfiguration>
       <CompressContent>false</CompressContent>
-      <RootDirectory>C:\Users\Joshua\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile EngineContent\</RootDirectory>
-      <LoggerRootDirectory>C:\Users\Joshua\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\</LoggerRootDirectory>
-      <IntermediateDirectory>C:\Users\Joshua\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile EngineContent\obj\x86\Debug\</IntermediateDirectory>
-      <OutputDirectory>C:\Users\Joshua\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\</OutputDirectory>
+      <RootDirectory>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile EngineContent\</RootDirectory>
+      <LoggerRootDirectory>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile EngineContent\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>
@@ -66,7 +66,7 @@
       </Assembly>
       <Assembly>
         <Key>C:\Windows\Microsoft.Net\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
-        <Value>2011-04-07T23:39:54.0455913-07:00</Value>
+        <Value>2011-10-01T11:39:49.2684459-07:00</Value>
       </Assembly>
     </Assemblies>
   </Asset>

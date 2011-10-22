@@ -20,9 +20,6 @@ namespace Tile_Engine
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Gameboard gameboard = new Gameboard();
-        int squaresAcross = 30;
-        int squaresDown = 30;
-        int speed = 5;
         GameSprite gnome;
         Texture2D gnomeTex;
         
@@ -87,39 +84,39 @@ namespace Tile_Engine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            MouseState ms = Mouse.GetState();
-            KeyboardState ks = Keyboard.GetState();
+            MouseState mouse = Mouse.GetState();
+            KeyboardState key = Keyboard.GetState();
 
-            if (ms.LeftButton == ButtonState.Pressed)
+            if (mouse.LeftButton == ButtonState.Pressed)
             {
 
-                if (ms.LeftButton != ButtonState.Released)
+                if (mouse.LeftButton != ButtonState.Released)
                 {
-                    Vector2 mousePosition = new Vector2(ms.X, ms.Y);
+                    Vector2 mousePosition = new Vector2(mouse.X, mouse.Y);
                     gameboard.updateTile(mousePosition);
                 }
 
             }
 
 
-            if(ks.IsKeyDown(Keys.Down))
+            if (key.IsKeyDown(Keys.Down))
             {
                 gnome.updateState(GameSprite.Direction.Down, gameboard);
             }
-            if (ks.IsKeyDown(Keys.Up))
+            if (key.IsKeyDown(Keys.Up))
             {
                 gnome.updateState(GameSprite.Direction.Up, gameboard);
             }
-            if (ks.IsKeyDown(Keys.Left))
+            if (key.IsKeyDown(Keys.Left))
             {
                 gnome.updateState(GameSprite.Direction.Left, gameboard);
             }
-            if (ks.IsKeyDown(Keys.Right))
+            if (key.IsKeyDown(Keys.Right))
             {
                 gnome.updateState(GameSprite.Direction.Right, gameboard);
             }
 
-            if (ks.IsKeyDown(Keys.Space))
+            if (key.IsKeyDown(Keys.Space))
             {
                 Console.WriteLine(gnome.position.X + " , " + gnome.position.Y);
                 Console.WriteLine(gnome.getCurrentColumn(gameboard) + " , " + gnome.getCurrentRow(gameboard));
@@ -127,7 +124,7 @@ namespace Tile_Engine
 
 
 
-            gnome.updateMovement(gameboard);
+            gnome.updatePosition(gameboard);
 
             base.Update(gameTime);
         }
@@ -144,15 +141,15 @@ namespace Tile_Engine
 
             
 
-            for (int y = 0; y < squaresDown; y++)
+            for (int y = 0; y < Variables.rows; y++)
             {
-                for (int x = 0; x < squaresAcross; x++)
+                for (int x = 0; x < Variables.columns; x++)
                 {
                     if (gameboard.getTileID(x, y) == 1)
                     {
                         spriteBatch.Draw(
                         Tile.cellBorder,
-                        new Rectangle((x * 64), (y * 64), Tile.cellBorder.Width, Tile.cellBorder.Height),
+                        new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
                         Tile.getTexture(),
                         Color.White);
                     }
@@ -160,7 +157,7 @@ namespace Tile_Engine
                     {
                         spriteBatch.Draw(
                         Tile.textureSet,
-                        new Rectangle((x * 64), (y * 64), Tile.cellBorder.Width, Tile.cellBorder.Height),
+                        new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
                         Tile.getTexture(),
                         Color.White);
                     }
