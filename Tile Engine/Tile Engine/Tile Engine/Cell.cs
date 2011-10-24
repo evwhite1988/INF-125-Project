@@ -7,24 +7,27 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Tile_Engine
 {
+    
     class Cell
     {
-        public int TileID { get; set; }
-
-        public Cell(int tileID)
-        {
-            TileID = tileID;
-
-        }
 
         static private int cellHeight = 64;
         static private int cellWidth = 64;
+
+        public int TileID { get; set; } // 5 = null; 1 = up; 2 = right; 3 = down; 4 = left
 
         private Vector2 size { get; set; } //(height, width);
 
         private Vector2 coordinates { get; set; } //(x-coordinate, y-coordinate)
 
         private Vector2 position { get; set; }// (row, column)
+
+       
+        public Cell(int tileID)
+        {
+            TileID = tileID;
+
+        }
 
         public Cell()
         {

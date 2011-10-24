@@ -57,6 +57,10 @@ namespace Tile_Engine
 
             Tile.textureSet = Content.Load<Texture2D>("part1_tileset");
             Tile.cellBorder = Content.Load<Texture2D>("tile");
+            Tile.arrowUp = Content.Load<Texture2D>("arrow_up");
+            Tile.arrowDown = Content.Load<Texture2D>("arrow_down");
+            Tile.arrowLeft = Content.Load<Texture2D>("arrow_left");
+            Tile.arrowRight = Content.Load<Texture2D>("arrow_right");
             gnomeTex = Content.Load<Texture2D>("gnomes");
 
             gnome = new GameSprite(gnomeTex, 1);
@@ -84,45 +88,42 @@ namespace Tile_Engine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            MouseState mouse = Mouse.GetState();
-            KeyboardState key = Keyboard.GetState();
 
-            if (mouse.LeftButton == ButtonState.Pressed)
+            MouseState mouseStateCurrent = Mouse.GetState();  //current state of the mouse
+            KeyboardState keyboardStateCurrent = Keyboard.GetState(); //current state of the keyboard
+
+            if (mouseStateCurrent.LeftButton == ButtonState.Pressed)
             {
-
-                if (mouse.LeftButton != ButtonState.Released)
+                if (mouseStateCurrent.LeftButton != ButtonState.Released)
                 {
-                    Vector2 mousePosition = new Vector2(mouse.X, mouse.Y);
+                    Vector2 mousePosition = new Vector2(mouseStateCurrent.X, mouseStateCurrent.Y);
                     gameboard.updateTile(mousePosition);
+                    Console.WriteLine("Updated: " + gnome.position.X + " , " + gnome.position.Y);
                 }
-
             }
 
+            if (keyboardStateCurrent.IsKeyDown(Keys.Down))
+            {
+                gnome.updateState(Variables.Direction.Down, gameboard);
+            }
+            if (keyboardStateCurrent.IsKeyDown(Keys.Up))
+            {
+                gnome.updateState(Variables.Direction.Up, gameboard);
+            }
+            if (keyboardStateCurrent.IsKeyDown(Keys.Left))
+            {
+                gnome.updateState(Variables.Direction.Left, gameboard);
+            }
+            if (keyboardStateCurrent.IsKeyDown(Keys.Right))
+            {
+                gnome.updateState(Variables.Direction.Right, gameboard);
+            }
 
-            if (key.IsKeyDown(Keys.Down))
-            {
-                gnome.updateState(GameSprite.Direction.Down, gameboard);
-            }
-            if (key.IsKeyDown(Keys.Up))
-            {
-                gnome.updateState(GameSprite.Direction.Up, gameboard);
-            }
-            if (key.IsKeyDown(Keys.Left))
-            {
-                gnome.updateState(GameSprite.Direction.Left, gameboard);
-            }
-            if (key.IsKeyDown(Keys.Right))
-            {
-                gnome.updateState(GameSprite.Direction.Right, gameboard);
-            }
-
-            if (key.IsKeyDown(Keys.Space))
+            if (keyboardStateCurrent.IsKeyDown(Keys.Space))
             {
                 Console.WriteLine(gnome.position.X + " , " + gnome.position.Y);
                 Console.WriteLine(gnome.getCurrentColumn(gameboard) + " , " + gnome.getCurrentRow(gameboard));
             }
-
-
 
             gnome.updatePosition(gameboard);
 
@@ -145,10 +146,37 @@ namespace Tile_Engine
             {
                 for (int x = 0; x < Variables.columns; x++)
                 {
-                    if (gameboard.getTileID(x, y) == 1)
+                    Cell cell = gameboard.getCell(y, x);
+                    int tileID = cell.TileID;
+
+                    if (tileID == 1)
                     {
                         spriteBatch.Draw(
-                        Tile.cellBorder,
+                        Tile.arrowUp,
+                        new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
+                        Tile.getTexture(),
+                        Color.White);
+                    }
+                    else if (tileID == 2)
+                    {
+                        spriteBatch.Draw(
+                        Tile.arrowRight,
+                        new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
+                        Tile.getTexture(),
+                        Color.White);
+                    }
+                    else if (tileID == 3)
+                    {
+                        spriteBatch.Draw(
+                        Tile.arrowDown,
+                        new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
+                        Tile.getTexture(),
+                        Color.White);
+                    }
+                    else if (tileID == 4)
+                    {
+                        spriteBatch.Draw(
+                        Tile.arrowLeft,
                         new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
                         Tile.getTexture(),
                         Color.White);
@@ -156,7 +184,7 @@ namespace Tile_Engine
                     else
                     {
                         spriteBatch.Draw(
-                        Tile.textureSet,
+                        Tile.cellBorder,
                         new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
                         Tile.getTexture(),
                         Color.White);

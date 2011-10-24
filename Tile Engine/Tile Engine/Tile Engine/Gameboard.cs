@@ -9,18 +9,21 @@ namespace Tile_Engine
     class Gameboard
     {
         public List<MapRow> Rows = new List<MapRow>();
-        public int numberOfColumns = 30;
-        public int numberOfRows = 30;
+        public int numberOfColumns;
+        public int numberOfRows;
 
 
         public Gameboard()
         {
+            numberOfColumns = Variables.columns;
+            numberOfRows = Variables.rows;
+
             for (int y = 0; y < numberOfRows; y++)
             {
                 MapRow thisRow = new MapRow();
                 for (int x = 0; x < numberOfColumns; x++)
                 {
-                    thisRow.Columns.Add(new Cell(1));
+                    thisRow.Columns.Add(new Cell(0));
                 }
                 Rows.Add(thisRow);
             }
@@ -34,16 +37,24 @@ namespace Tile_Engine
 
         public void updateTile(Vector2 position)
         {
-            int row = (int) position.X / 64;
-            int column = (int)position.Y / 64;
+            int column = (int) position.X / Variables.cellWidth;
+            int row = (int) position.Y / Variables.cellHeigth;
 
-            Rows[row].Columns[column].TileID = 2;
+            Console.WriteLine("Position == " + position.X + ", " + position.Y);
+
+            int tileID = Rows[row].Columns[column].TileID;
+            if (tileID == 4)
+            {
+                Rows[row].Columns[column].TileID = 1;
+            }
+            else Rows[row].Columns[column].TileID = tileID + 1;
+
             Console.WriteLine("Cell (" + row + "," + column + ") updated");
         }
 
-        public int getTileID(int row, int column)
+        public Cell getCell(int row, int column)
         {
-            return Rows[row].Columns[column].TileID;
+            return Rows[row].Columns[column];
         }
     }
 
