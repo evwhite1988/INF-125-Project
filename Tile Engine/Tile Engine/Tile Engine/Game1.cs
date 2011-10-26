@@ -19,9 +19,11 @@ namespace Tile_Engine
         
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Gameboard gameboard = new Gameboard();
-        GameSprite gnome;
+        Gameboard gameboard = new Gameboard();  //Gameboard object
+        List<Gnome> gnomeList;                  //List of Gnome Sprite Objects                       
+        Cursor cursor;                          //Cursor Sprite Object
         Texture2D gnomeTex;
+        GameTime timer;
         
 
         public Game1()
@@ -42,7 +44,9 @@ namespace Tile_Engine
             this.IsMouseVisible = true;
             this.graphics.PreferredBackBufferWidth = graphics.GraphicsDevice.DisplayMode.Width;
             this.graphics.PreferredBackBufferHeight = graphics.GraphicsDevice.DisplayMode.Height;
-    
+            gnomeList = new List<Gnome>();
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            timer = new GameTime();
 
             base.Initialize();
         }
@@ -62,12 +66,7 @@ namespace Tile_Engine
             Tile.arrowLeft = Content.Load<Texture2D>("arrow_left");
             Tile.arrowRight = Content.Load<Texture2D>("arrow_right");
             gnomeTex = Content.Load<Texture2D>("gnomes");
-
-            gnome = new GameSprite(gnomeTex, 1);
-
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-
-
+            cursor = new Cursor(Content.Load<Texture2D>("cursor"), 1); //game cursor
 
             // TODO: use this.Content to load your game content here
         }
@@ -88,46 +87,98 @@ namespace Tile_Engine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            //Spawns gnomes (5/sec)
+            if (gameTime.TotalGameTime.Milliseconds % 200 == 0)
+            {
+                gnomeList.Add(new Gnome(gnomeTex, 1));
+                timer = new GameTime();
+            }
 
             MouseState mouseStateCurrent = Mouse.GetState();  //current state of the mouse
             KeyboardState keyboardStateCurrent = Keyboard.GetState(); //current state of the keyboard
 
             if (mouseStateCurrent.LeftButton == ButtonState.Pressed)
             {
-                if (mouseStateCurrent.LeftButton != ButtonState.Released)
-                {
                     Vector2 mousePosition = new Vector2(mouseStateCurrent.X, mouseStateCurrent.Y);
                     gameboard.updateTile(mousePosition);
-                    Console.WriteLine("Updated: " + gnome.position.X + " , " + gnome.position.Y);
-                }
             }
 
-            if (keyboardStateCurrent.IsKeyDown(Keys.Down))
-            {
-                gnome.updateState(Variables.Direction.Down, gameboard);
-            }
-            if (keyboardStateCurrent.IsKeyDown(Keys.Up))
-            {
-                gnome.updateState(Variables.Direction.Up, gameboard);
-            }
-            if (keyboardStateCurrent.IsKeyDown(Keys.Left))
-            {
-                gnome.updateState(Variables.Direction.Left, gameboard);
-            }
-            if (keyboardStateCurrent.IsKeyDown(Keys.Right))
-            {
-                gnome.updateState(Variables.Direction.Right, gameboard);
-            }
+            UpdateInput();
 
-            if (keyboardStateCurrent.IsKeyDown(Keys.Space))
+            foreach(Gnome gnome in gnomeList)
             {
-                Console.WriteLine(gnome.position.X + " , " + gnome.position.Y);
-                Console.WriteLine(gnome.getCurrentColumn(gameboard) + " , " + gnome.getCurrentRow(gameboard));
+                gnome.updatePosition(gameboard);
             }
-
-            gnome.updatePosition(gameboard);
 
             base.Update(gameTime);
+        }
+
+        void UpdateInput()
+        {
+            // Get the current gamepad state.
+            GamePadState currentState = GamePad.GetState(PlayerIndex.One);
+
+            if (currentState.IsConnected)
+            {
+                //If Player presses UP on left thumbstick
+                if (currentState.ThumbSticks.Left.Y > 0.0f)
+                {
+                    cursor.updatePosition(Variables.Direction.Up);
+                }
+
+                //If Player presses DOWN on left thumbstick
+                if (currentState.ThumbSticks.Left.Y < 0.0f)
+                {
+                    cursor.updatePosition(Variables.Direction.Down);
+                }
+
+                //If Player presses RIGHT on left thumbstick
+                if (currentState.ThumbSticks.Left.X > 0.0f)
+                {
+                    cursor.updatePosition(Variables.Direction.Right);
+                }
+
+                //If Player presses LEFT on left thumbstick
+                if (currentState.ThumbSticks.Left.X < 0.0f)
+                {
+                    cursor.updatePosition(Variables.Direction.Left);
+                }
+
+                // Process input only if connected and button A is pressed.
+                if (currentState.Buttons.A == ButtonState.Pressed)
+                {
+                    Vector2 cursorPosition = cursor.position;
+                    gameboard.updateTile(cursorPosition, Variables.Direction.Down);
+                }
+                
+                // Process input only if connected and button X is pressed.
+                else if (currentState.Buttons.X == ButtonState.Pressed)
+                {
+                    Vector2 cursorPosition = cursor.position;
+                    gameboard.updateTile(cursorPosition, Variables.Direction.Left);
+                }
+
+                // Process input only if connected and button Y is pressed.
+                else if (currentState.Buttons.Y == ButtonState.Pressed)
+                {
+                    Vector2 cursorPosition = cursor.position;
+                    gameboard.updateTile(cursorPosition, Variables.Direction.Up);
+                }
+
+                // Process input only if connected and button B is pressed.
+                else if (currentState.Buttons.B == ButtonState.Pressed)
+                {
+                    Vector2 cursorPosition = cursor.position;
+                    gameboard.updateTile(cursorPosition, Variables.Direction.Right);
+                }
+
+                // Process input only if connected and Right Trigger is pulled.
+                else if (currentState.Triggers.Right > 0.5f)
+                {
+                    Vector2 cursorPosition = cursor.position;
+                    gameboard.updateTile(cursorPosition, Variables.Direction.None);
+                }
+            }
         }
 
         /// <summary>
@@ -191,7 +242,13 @@ namespace Tile_Engine
                     }
                 }
             }
-            gnome.draw(spriteBatch);
+
+            foreach (Gnome gnome in gnomeList)
+            {
+                gnome.draw(spriteBatch);
+            }
+
+            cursor.draw(spriteBatch);
 
             spriteBatch.End();
             graphics.ApplyChanges();

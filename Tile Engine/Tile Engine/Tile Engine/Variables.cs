@@ -7,11 +7,11 @@ namespace Tile_Engine
 {
     static class Variables
     {
-        public static int rows = 30;
-        public static int columns = 30;
+        public static int rows = 15;
+        public static int columns = 15;
         public static int speed = 4;
         public static int cellWidth = 64;
         public static int cellHeigth = 64;
-        public enum Direction { Up, Down, Left, Right }; //Directions for movement
+        public enum Direction { Up, Down, Left, Right, None }; //Directions for movement
     }
 }

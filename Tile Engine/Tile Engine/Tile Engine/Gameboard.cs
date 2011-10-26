@@ -35,6 +35,37 @@ namespace Tile_Engine
         }
 
 
+        public void updateTile(Vector2 position, Variables.Direction direction)
+        {
+            int column = (int) position.X / Variables.cellWidth;
+            int row = (int) position.Y / Variables.cellHeigth;
+
+            Console.WriteLine("Position == " + position.X + ", " + position.Y);
+
+            
+            
+            switch (direction)
+            {
+                case Variables.Direction.None:
+                    Rows[row].Columns[column].TileID = 0;
+                    break;
+                case Variables.Direction.Up:
+                    Rows[row].Columns[column].TileID = 1;
+                    break;
+                case Variables.Direction.Right:
+                    Rows[row].Columns[column].TileID = 2;
+                    break;
+                case Variables.Direction.Down:
+                    Rows[row].Columns[column].TileID = 3;
+                    break;
+                case Variables.Direction.Left:
+                    Rows[row].Columns[column].TileID = 4;
+                    break;
+            }
+
+            Console.WriteLine("Cell (" + row + "," + column + ") updated");
+        }
+
         public void updateTile(Vector2 position)
         {
             int column = (int) position.X / Variables.cellWidth;

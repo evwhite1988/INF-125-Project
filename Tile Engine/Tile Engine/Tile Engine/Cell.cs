@@ -14,7 +14,7 @@ namespace Tile_Engine
         static private int cellHeight = 64;
         static private int cellWidth = 64;
 
-        public int TileID { get; set; } // 5 = null; 1 = up; 2 = right; 3 = down; 4 = left
+        public int TileID { get; set; } // 0 = null; 1 = up; 2 = right; 3 = down; 4 = left
 
         private Vector2 size { get; set; } //(height, width);
 
