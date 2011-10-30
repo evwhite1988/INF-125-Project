@@ -15,10 +15,17 @@ namespace Tile_Engine
         static public Texture2D arrowDown;
         static public Texture2D arrowLeft;
         static public Texture2D arrowRight;
+        static public Texture2D home;
+        static public Texture2D hole;
 
         static public Rectangle getTexture()
         {
             return new Rectangle(0, 0, 64, 64);
+        }
+
+        static public Rectangle getHomeTexture()
+        {
+            return new Rectangle(0, 0, 200, 200);
         }
 
     }

@@ -20,10 +20,14 @@ namespace Tile_Engine
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Gameboard gameboard = new Gameboard();  //Gameboard object
-        List<Gnome> gnomeList;                  //List of Gnome Sprite Objects                       
+        List<Gnome> gnomeList { get; set; }     //List of Gnome Sprite Objects                       
         Cursor cursor;                          //Cursor Sprite Object
-        Texture2D gnomeTex;
-        GameTime timer;
+        Texture2D gnomeTex;                     //Gnome texture
+        Texture2D evilGnomeTex;                 //Evil gnome texture
+        int evilGnomeSpawnTime;                 //Time between evil-gnome spawns
+        int evilGnomeSpawnTimeRemaining; 
+        int gnomeSpawnTime;                     //Time between gnome spawns
+        int gnomeSpawnTimeRemaining;
         
 
         public Game1()
@@ -46,7 +50,10 @@ namespace Tile_Engine
             this.graphics.PreferredBackBufferHeight = graphics.GraphicsDevice.DisplayMode.Height;
             gnomeList = new List<Gnome>();
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            timer = new GameTime();
+            evilGnomeSpawnTime = 5000;
+            gnomeSpawnTime = 500;
+            evilGnomeSpawnTimeRemaining = evilGnomeSpawnTime;
+            gnomeSpawnTimeRemaining = gnomeSpawnTime;
 
             base.Initialize();
         }
@@ -60,12 +67,16 @@ namespace Tile_Engine
             // Create a new SpriteBatch, which can be used to draw textures.
 
             Tile.textureSet = Content.Load<Texture2D>("part1_tileset");
-            Tile.cellBorder = Content.Load<Texture2D>("tile");
+            //Tile.cellBorder = Content.Load<Texture2D>("tile");
+            Tile.cellBorder = Content.Load<Texture2D>("grass");
             Tile.arrowUp = Content.Load<Texture2D>("arrow_up");
             Tile.arrowDown = Content.Load<Texture2D>("arrow_down");
             Tile.arrowLeft = Content.Load<Texture2D>("arrow_left");
             Tile.arrowRight = Content.Load<Texture2D>("arrow_right");
+            Tile.home = Content.Load<Texture2D>("dog-house");
+            Tile.hole = Content.Load<Texture2D>("hole");
             gnomeTex = Content.Load<Texture2D>("gnomes");
+            evilGnomeTex = Content.Load<Texture2D>("gnomes-evil");
             cursor = new Cursor(Content.Load<Texture2D>("cursor"), 1); //game cursor
 
             // TODO: use this.Content to load your game content here
@@ -87,24 +98,11 @@ namespace Tile_Engine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            //Spawns gnomes (5/sec)
-            if (gameTime.TotalGameTime.Milliseconds % 200 == 0)
-            {
-                gnomeList.Add(new Gnome(gnomeTex, 1));
-                timer = new GameTime();
-            }
+            removeGnomes();             //Removes gnomes
+            spawnGnomes(gameTime);      //Spawns new gnomes
+            UpdateInput();              //handles new user inputs
 
-            MouseState mouseStateCurrent = Mouse.GetState();  //current state of the mouse
-            KeyboardState keyboardStateCurrent = Keyboard.GetState(); //current state of the keyboard
-
-            if (mouseStateCurrent.LeftButton == ButtonState.Pressed)
-            {
-                    Vector2 mousePosition = new Vector2(mouseStateCurrent.X, mouseStateCurrent.Y);
-                    gameboard.updateTile(mousePosition);
-            }
-
-            UpdateInput();
-
+            // For each gnome on the gameboard, update its position
             foreach(Gnome gnome in gnomeList)
             {
                 gnome.updatePosition(gameboard);
@@ -147,37 +145,74 @@ namespace Tile_Engine
                 // Process input only if connected and button A is pressed.
                 if (currentState.Buttons.A == ButtonState.Pressed)
                 {
-                    Vector2 cursorPosition = cursor.position;
-                    gameboard.updateTile(cursorPosition, Variables.Direction.Down);
+                    int column = cursor.getCurrentColumn();
+                    int row = cursor.getCurrentRow();
+                    gameboard.updateTile(column, row, Variables.Direction.Down);
                 }
                 
                 // Process input only if connected and button X is pressed.
                 else if (currentState.Buttons.X == ButtonState.Pressed)
                 {
-                    Vector2 cursorPosition = cursor.position;
-                    gameboard.updateTile(cursorPosition, Variables.Direction.Left);
+                    int column = cursor.getCurrentColumn();
+                    int row = cursor.getCurrentRow();
+                    gameboard.updateTile(column, row, Variables.Direction.Left);
                 }
 
                 // Process input only if connected and button Y is pressed.
                 else if (currentState.Buttons.Y == ButtonState.Pressed)
                 {
-                    Vector2 cursorPosition = cursor.position;
-                    gameboard.updateTile(cursorPosition, Variables.Direction.Up);
+                    int column = cursor.getCurrentColumn();
+                    int row = cursor.getCurrentRow();
+                    gameboard.updateTile(column, row, Variables.Direction.Up);
                 }
 
                 // Process input only if connected and button B is pressed.
                 else if (currentState.Buttons.B == ButtonState.Pressed)
                 {
-                    Vector2 cursorPosition = cursor.position;
-                    gameboard.updateTile(cursorPosition, Variables.Direction.Right);
+                    int column = cursor.getCurrentColumn();
+                    int row = cursor.getCurrentRow();
+                    gameboard.updateTile(column, row, Variables.Direction.Right);
                 }
 
                 // Process input only if connected and Right Trigger is pulled.
                 else if (currentState.Triggers.Right > 0.5f)
                 {
-                    Vector2 cursorPosition = cursor.position;
-                    gameboard.updateTile(cursorPosition, Variables.Direction.None);
+                    int column = cursor.getCurrentColumn();
+                    int row = cursor.getCurrentRow();
+                    gameboard.updateTile(column, row, Variables.Direction.None);
                 }
+            }
+
+
+            KeyboardState keyboardStateCurrent = Keyboard.GetState(); //current state of the keyboard
+            MouseState mouseStateCurrent = Mouse.GetState();  //current state of the mouse
+
+            //If player presses LEFT key
+            if (keyboardStateCurrent.IsKeyDown(Keys.Left))
+            {
+                Vector2 mousePosition = new Vector2(mouseStateCurrent.X, mouseStateCurrent.Y);
+                gameboard.updateTile(mousePosition, Variables.Direction.Left);
+            }
+
+            //If player Presses UP key
+            else if (keyboardStateCurrent.IsKeyDown(Keys.Up))
+            {
+                Vector2 mousePosition = new Vector2(mouseStateCurrent.X, mouseStateCurrent.Y);
+                gameboard.updateTile(mousePosition, Variables.Direction.Up);
+            }
+
+            //If player Presses RIGHT key
+            else if (keyboardStateCurrent.IsKeyDown(Keys.Right))
+            {
+                Vector2 mousePosition = new Vector2(mouseStateCurrent.X, mouseStateCurrent.Y);
+                gameboard.updateTile(mousePosition, Variables.Direction.Right);
+            }
+
+            //If player presses DOWN key
+            else if (keyboardStateCurrent.IsKeyDown(Keys.Down))
+            {
+                Vector2 mousePosition = new Vector2(mouseStateCurrent.X, mouseStateCurrent.Y);
+                gameboard.updateTile(mousePosition, Variables.Direction.Down);
             }
         }
 
@@ -192,15 +227,36 @@ namespace Tile_Engine
            // graphics.GraphicsDevice.Clear(Color.White);
 
             
-
+            //Draws the tiles on the gameboard
             for (int y = 0; y < Variables.rows; y++)
             {
                 for (int x = 0; x < Variables.columns; x++)
                 {
                     Cell cell = gameboard.getCell(y, x);
-                    int tileID = cell.TileID;
+                    int tileID = cell.getTileID();
+                    
+                    //If tileID = -2, use hole tile
+                    if (tileID == -2)
+                    {
+                       spriteBatch.Draw(
+                       Tile.hole,
+                       new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
+                       Tile.getTexture(),
+                       Color.White);
+                    }
 
-                    if (tileID == 1)
+                    //If tileID = -1, use home tile
+                    else if (tileID == -1)
+                    {
+                        spriteBatch.Draw(
+                        Tile.home,
+                        new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
+                        Tile.getHomeTexture(),
+                        Color.White);
+                    }
+
+                    //If tileID = -2, use hole tile
+                    else if (tileID == 1)
                     {
                         spriteBatch.Draw(
                         Tile.arrowUp,
@@ -256,6 +312,48 @@ namespace Tile_Engine
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
+        }
+
+        private void spawnGnomes(GameTime gameTime)
+        {
+
+            gnomeSpawnTimeRemaining -= gameTime.ElapsedGameTime.Milliseconds;
+            evilGnomeSpawnTimeRemaining -= gameTime.ElapsedGameTime.Milliseconds;
+            List<Vector2> spawnPoints = gameboard.getSpawnPoints();
+
+            if (evilGnomeSpawnTimeRemaining < 0)
+            {
+                foreach (Vector2 spawnPoint in spawnPoints)
+                {
+                    gnomeList.Add(new Gnome(evilGnomeTex, 1, (int) spawnPoint.Y, (int) spawnPoint.X));
+                }
+
+                evilGnomeSpawnTimeRemaining = evilGnomeSpawnTime;
+            }
+            else if (gnomeSpawnTimeRemaining < 0)
+            {
+                foreach (Vector2 spawnPoint in spawnPoints)
+                {
+                    gnomeList.Add(new Gnome(gnomeTex, 1, (int) spawnPoint.Y, (int) spawnPoint.X));
+                }
+                gnomeSpawnTimeRemaining = gnomeSpawnTime;
+            }
+        }
+
+        private void removeGnomes()
+        {
+            List<Vector2> bases = gameboard.getBases();
+            foreach (Vector2 homebase in bases)
+            {
+                foreach (Gnome gnome in gnomeList)
+                {
+                    if (gnome.getCurrentRow(gameboard) == homebase.Y && gnome.getCurrentColumn(gameboard) == homebase.X)
+                    {
+                        gnomeList.Remove(gnome);
+                        break;
+                    }
+                }
+            }
         }
     }
 }

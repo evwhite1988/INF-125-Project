@@ -18,7 +18,7 @@ namespace Tile_Engine
         //CONSTRUCTOR
         public Cursor(Texture2D spritesheet, int framecount) : base(spritesheet, framecount)
         {
-            this.position = new Vector2(0, 0);
+            this.coord = new Vector2(0, 0);
             this.spriteWidth = 64;
             this.spriteHeight = 64;
         }
@@ -28,23 +28,51 @@ namespace Tile_Engine
         {
             if (direction == Variables.Direction.Right)
             {
-                this.position = new Vector2(this.position.X + Variables.speed, this.position.Y);
+                this.coord = new Vector2(this.coord.X + Variables.speed, this.coord.Y);
             }
 
             if (direction == Variables.Direction.Left)
             {
-                this.position = new Vector2(this.position.X - Variables.speed, this.position.Y);
+                this.coord = new Vector2(this.coord.X - Variables.speed, this.coord.Y);
             }
 
             if (direction == Variables.Direction.Down)
             {
-                this.position = new Vector2(this.position.X, this.position.Y + Variables.speed);
+                this.coord = new Vector2(this.coord.X, this.coord.Y + Variables.speed);
             }
 
             if (direction == Variables.Direction.Up)
             {
-                this.position = new Vector2(this.position.X, this.position.Y - Variables.speed);
+                this.coord = new Vector2(this.coord.X, this.coord.Y - Variables.speed);
             }
+        }
+
+
+        public int getCurrentColumn()
+        {
+            for (int i = 0; i < Variables.columns; i++)
+            {
+                if (getSpriteCenter().X >= (i * Variables.cellWidth) && getSpriteCenter().X <= ((i + 1) * Variables.cellWidth))
+                {
+                    return i;
+                };
+            }
+
+            return 0;
+
+        }
+
+        public int getCurrentRow()
+        {
+            for (int i = 0; i < Variables.rows; i++)
+            {
+                if (getSpriteCenter().Y >= (i * Variables.cellHeigth) && getSpriteCenter().Y <= (i + 1) * Variables.cellHeigth)
+                {
+                    return i;
+                }
+            }
+
+            return 0;
         }
     }
 }

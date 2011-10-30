@@ -11,3 +11,4 @@ Content\grass.xnb
 Content\spawn.xnb
 Content\wall.xnb
 Content\hole.xnb
+Content\gnomes-evil.xnb

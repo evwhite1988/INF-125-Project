@@ -23,7 +23,17 @@ namespace Tile_Engine
         //CONSTRUCTOR
         public Gnome(Texture2D spritesheet, int framecount) : base(spritesheet, framecount)
         {
-            this.position = new Vector2(0, 0);
+            this.coord = new Vector2(0, 0);
+            direction = Variables.Direction.Right;
+            this.spriteWidth = 32;
+            this.spriteHeight = 64;
+        }
+
+        //CONSTRUCTOR
+        public Gnome(Texture2D spritesheet, int framecount, int row, int column)
+            : base(spritesheet, framecount)
+        {
+            this.coord = new Vector2(column * Variables.cellWidth, row * Variables.cellHeigth);
             direction = Variables.Direction.Right;
             this.spriteWidth = 32;
             this.spriteHeight = 64;
@@ -32,95 +42,109 @@ namespace Tile_Engine
         //Updates the position of the Sprite on the gameboard
         public void updatePosition(Gameboard gameboard)
         {
-            if (changeState)
-            {
-                if (this.position.X != ((lastColumn + 1) * Variables.cellWidth) + 16)
-                    this.position = new Vector2(this.position.X + Variables.speed, this.position.Y);
-                else if (this.position.Y != (lastRow + 1) * Variables.cellHeigth)
-                    this.position = new Vector2(this.position.X, this.position.Y + Variables.speed);
-                else
-                    changeState = false;
-            }
-
-            else
-            {
-                collisionCheck(gameboard); //checks if the Sprite has colided with the gameboard edge or a wall
-                newDirectionCheck();
-            }
-        }
-
-        private void newDirectionCheck()
-        {
+            collisionCheck(gameboard); //checks if the Sprite has colided with the gameboard edge or a wall
+            directionTileCheck(gameboard);
+            
             if (this.direction == Variables.Direction.Right)
             {
-                this.position = new Vector2(this.position.X + Variables.speed, this.position.Y);
+                this.coord = new Vector2(this.coord.X + Variables.speed, this.coord.Y);
             }
 
             if (this.direction == Variables.Direction.Left)
             {
-                this.position = new Vector2(this.position.X - Variables.speed, this.position.Y);
+                this.coord = new Vector2(this.coord.X - Variables.speed, this.coord.Y);
             }
 
             if (this.direction == Variables.Direction.Down)
             {
-                this.position = new Vector2(this.position.X, this.position.Y + Variables.speed);
+                this.coord = new Vector2(this.coord.X, this.coord.Y + Variables.speed);
             }
 
             if (this.direction == Variables.Direction.Up)
             {
-                this.position = new Vector2(this.position.X, this.position.Y - Variables.speed);
+                this.coord = new Vector2(this.coord.X, this.coord.Y - Variables.speed);
             }
         }
 
-        public void updateState(Variables.Direction newDirection, Gameboard gameboard)
+        public void directionTileCheck(Gameboard gameboard)
         {
-            direction = newDirection;
-            //changeState = true;
-            lastColumn = getCurrentColumn(gameboard);
-            lastRow = getCurrentRow(gameboard);
+            if (getSpriteCenter().X >= getCurrentColumn(gameboard) * Variables.cellWidth + Variables.cellWidth / 2.5
+                && getSpriteCenter().X <= (getCurrentColumn(gameboard) + 1) * Variables.cellWidth - Variables.cellWidth / 2.5
+                && getSpriteCenter().Y >= getCurrentRow(gameboard) * Variables.cellHeigth + Variables.cellHeigth / 2.5
+                && getSpriteCenter().Y <= (getCurrentRow(gameboard) + 1) * Variables.cellHeigth - Variables.cellHeigth / 2.5)
+            {
+
+                int tileID = gameboard.getCell(this.getCurrentRow(gameboard), this.getCurrentColumn(gameboard)).getTileID();
+
+                switch (tileID)
+                {
+                    case 1:
+                        direction = Variables.Direction.Up;
+                        break;
+                    case 2:
+                        direction = Variables.Direction.Right;
+                        break;
+                    case 3:
+                        direction = Variables.Direction.Down;
+                        break;
+                    case 4:
+                        direction = Variables.Direction.Left;
+                        break;
+                    default: break;
+                }
+            }
         }
 
         //Checks if Sprite has reached edge of gameboard and if so, changes direction clockwise
         public void collisionCheck(Gameboard gameboard)
         {
-            int tileID = gameboard.getCell(this.getCurrentRow(gameboard), this.getCurrentColumn(gameboard)).TileID;
-
-            switch (tileID)
-            {
-                case 1:
-                    direction = Variables.Direction.Up;
-                    break;
-                case 2:
-                    direction = Variables.Direction.Right;
-                    break;
-                case 3:
-                    direction = Variables.Direction.Down;
-                    break;
-                case 4:
-                    direction = Variables.Direction.Left;
-                    break;
-                default: break;
-            }
-
-            if (this.direction == Variables.Direction.Right && this.position.X > (gameboard.numberOfColumns - 1) * Variables.cellWidth + 16)
+            if (this.direction == Variables.Direction.Right && getSpriteCenter().X > (gameboard.numberOfColumns - 1) * Variables.cellWidth + Variables.cellWidth/2)
             {
                 direction = Variables.Direction.Down;
             }
 
-            if (this.direction == Variables.Direction.Left && this.position.X < 0 + 16)
+            if (this.direction == Variables.Direction.Left && getSpriteCenter().X < Variables.cellWidth / 2)
             {
                 direction = Variables.Direction.Up;
             }
 
-            if (this.direction == Variables.Direction.Up && this.position.Y < 0)
+            if (this.direction == Variables.Direction.Up && getSpriteCenter().Y < Variables.cellHeigth / 2)
             {
                 direction = Variables.Direction.Right;
             }
 
-            if (this.direction == Variables.Direction.Down && this.position.Y > (gameboard.numberOfRows - 1) * Variables.cellHeigth)
+            if (this.direction == Variables.Direction.Down && getSpriteCenter().Y > (gameboard.numberOfRows - 1) * Variables.cellHeigth + Variables.cellHeigth/2)
             {
                 direction = Variables.Direction.Left;
             }
+        }
+
+
+        public int getCurrentColumn(Gameboard gameboard)
+        {
+            for (int i = 0; i < gameboard.numberOfColumns; i++)
+            {
+                if (getSpriteCenter().X >= (i * Variables.cellWidth) && getSpriteCenter().X <= ((i + 1) * Variables.cellWidth))
+                {
+                    return i;
+                };
+            }
+
+            return 0;
+
+        }
+
+        public int getCurrentRow(Gameboard gameboard)
+        {
+            for (int i = 0; i < gameboard.numberOfRows; i++)
+            {
+                if (getSpriteCenter().Y >= (i * Variables.cellHeigth) && getSpriteCenter().Y <= (i + 1) * Variables.cellHeigth)
+                {
+                    return i;
+                }
+            }
+
+            return 0;
         }
     }
 }

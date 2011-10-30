@@ -13,8 +13,11 @@ namespace Tile_Engine
 
         static private int cellHeight = 64;
         static private int cellWidth = 64;
+        public bool isSpawn;
+        public bool isBase;
 
-        public int TileID { get; set; } // 0 = null; 1 = up; 2 = right; 3 = down; 4 = left
+
+        private int TileID; // -2 = hole; -1 = home; 0 = null; 1 = up; 2 = right; 3 = down; 4 = left
 
         private Vector2 size { get; set; } //(height, width);
 
@@ -25,13 +28,14 @@ namespace Tile_Engine
        
         public Cell(int tileID)
         {
-            TileID = tileID;
-
+            setTileID(tileID);
         }
 
         public Cell()
         {
             size = new Vector2(cellHeight, cellWidth);
+            isBase = false;
+            isSpawn = false;
         }
 
         public Cell(int row, int col)
@@ -88,7 +92,24 @@ namespace Tile_Engine
             return (int)position.Y;
         }
 
+        public int getTileID()
+        {
+            return TileID;
+        }
 
-
+        public void setTileID(int id)
+        {
+            TileID = id;
+            if (id == -2)
+            {
+                isSpawn = true;
+                isBase = false;
+            }
+            else if (id == -1)
+            {
+                isSpawn = false;
+                isBase = true;
+            }
+        }
     }
 }
