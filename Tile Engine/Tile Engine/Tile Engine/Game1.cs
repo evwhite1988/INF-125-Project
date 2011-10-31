@@ -28,8 +28,18 @@ namespace Tile_Engine
         int evilGnomeSpawnTimeRemaining; 
         int gnomeSpawnTime;                     //Time between gnome spawns
         int gnomeSpawnTimeRemaining;
+        int numOfGnomes;                        //Number of gnomes on the field;
+
+        //Intervals for random time selection: To Be Adjusted
+        int evilGnomeSpawnMin = 5000;
+        int evilGnomeSpawnMax = 10000;
+        int gnomeSpawnMin = 500;
+        int gnomeSpawnMax = 2000;
+
+
         Texture2D wallTexVerticle;
         Texture2D wallTexHorizontal;
+        Random random;                          
 
 
         public Game1()
@@ -50,10 +60,16 @@ namespace Tile_Engine
             this.IsMouseVisible = true;
             this.graphics.PreferredBackBufferWidth = graphics.GraphicsDevice.DisplayMode.Width;
             this.graphics.PreferredBackBufferHeight = graphics.GraphicsDevice.DisplayMode.Height;
+            random = new Random();
             gnomeList = new List<Gnome>();
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            evilGnomeSpawnTime = 5000;
-            gnomeSpawnTime = 500;
+
+            // Gnomes will spawn at random intervals based on the given inputs.
+            evilGnomeSpawnTime = random.Next(evilGnomeSpawnMin, evilGnomeSpawnMax);
+            gnomeSpawnTime = random.Next(gnomeSpawnMin, gnomeSpawnMax);
+            numOfGnomes = 0;
+
+
             evilGnomeSpawnTimeRemaining = evilGnomeSpawnTime;
             gnomeSpawnTimeRemaining = gnomeSpawnTime;
 
@@ -343,28 +359,42 @@ namespace Tile_Engine
 
         private void spawnGnomes(GameTime gameTime)
         {
-
-            gnomeSpawnTimeRemaining -= gameTime.ElapsedGameTime.Milliseconds;
-            evilGnomeSpawnTimeRemaining -= gameTime.ElapsedGameTime.Milliseconds;
-            List<Vector2> spawnPoints = gameboard.getSpawnPoints();
-
-            if (evilGnomeSpawnTimeRemaining < 0)
+            if (numOfGnomes < 50)
             {
-                foreach (Vector2 spawnPoint in spawnPoints)
-                {
-                    gnomeList.Add(new Gnome(evilGnomeTex, 1, (int) spawnPoint.Y, (int) spawnPoint.X));
-                }
+                gnomeSpawnTimeRemaining -= gameTime.ElapsedGameTime.Milliseconds;
+                evilGnomeSpawnTimeRemaining -= gameTime.ElapsedGameTime.Milliseconds;
+                List<Vector2> spawnPoints = gameboard.getSpawnPoints();
 
-                evilGnomeSpawnTimeRemaining = evilGnomeSpawnTime;
-            }
-            else if (gnomeSpawnTimeRemaining < 0)
-            {
-                foreach (Vector2 spawnPoint in spawnPoints)
+                if (evilGnomeSpawnTimeRemaining < 0)
                 {
-                    gnomeList.Add(new Gnome(gnomeTex, 1, (int) spawnPoint.Y, (int) spawnPoint.X));
+                    //foreach (Vector2 spawnPoint in spawnPoints)
+                    //{
+                    //    gnomeList.Add(new Gnome(evilGnomeTex, 1, (int)spawnPoint.Y, (int)spawnPoint.X));
+                    //    numOfGnomes++;
+                    //}
+
+                    //Gnome spawn from a random spawn point, intead of all four at once.
+                    int spawnPoint = random.Next(4);
+                    gnomeList.Add(new Gnome(evilGnomeTex, 1, (int)spawnPoints[spawnPoint].Y, (int)spawnPoints[spawnPoint].X));
+
+                    evilGnomeSpawnTimeRemaining = random.Next(evilGnomeSpawnMin, evilGnomeSpawnMax);
                 }
-                gnomeSpawnTimeRemaining = gnomeSpawnTime;
+                else if (gnomeSpawnTimeRemaining < 0)
+                {
+                    //foreach (Vector2 spawnPoint in spawnPoints)
+                    //{
+                    //    gnomeList.Add(new Gnome(gnomeTex, 1, (int)spawnPoint.Y, (int)spawnPoint.X));
+                    //    numOfGnomes++;
+                    //}
+
+                    //Gnome spawn from a random spawn point, intead of all four at once.
+                    int spawnPoint = random.Next(4);
+                    gnomeList.Add(new Gnome(gnomeTex, 1, (int)spawnPoints[spawnPoint].Y, (int)spawnPoints[spawnPoint].X));
+
+                    gnomeSpawnTimeRemaining = random.Next(gnomeSpawnMin, gnomeSpawnMax);
+                }
             }
+
         }
 
         private void removeGnomes()
@@ -377,6 +407,7 @@ namespace Tile_Engine
                     if (gnome.getCurrentRow(gameboard) == homebase.Y && gnome.getCurrentColumn(gameboard) == homebase.X)
                     {
                         gnomeList.Remove(gnome);
+                        --numOfGnomes;
                         break;
                     }
                 }
