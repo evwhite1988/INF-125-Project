@@ -28,7 +28,9 @@ namespace Tile_Engine
         int evilGnomeSpawnTimeRemaining; 
         int gnomeSpawnTime;                     //Time between gnome spawns
         int gnomeSpawnTimeRemaining;
-        
+        Texture2D wallTexVerticle;
+        Texture2D wallTexHorizontal;
+
 
         public Game1()
         {
@@ -67,7 +69,6 @@ namespace Tile_Engine
             // Create a new SpriteBatch, which can be used to draw textures.
 
             Tile.textureSet = Content.Load<Texture2D>("part1_tileset");
-            //Tile.cellBorder = Content.Load<Texture2D>("tile");
             Tile.cellBorder = Content.Load<Texture2D>("grass");
             Tile.arrowUp = Content.Load<Texture2D>("arrow_up");
             Tile.arrowDown = Content.Load<Texture2D>("arrow_down");
@@ -75,6 +76,8 @@ namespace Tile_Engine
             Tile.arrowRight = Content.Load<Texture2D>("arrow_right");
             Tile.home = Content.Load<Texture2D>("dog-house");
             Tile.hole = Content.Load<Texture2D>("hole");
+            wallTexHorizontal = Content.Load<Texture2D>("wall_horizontal");
+            wallTexVerticle = Content.Load<Texture2D>("wall_verticle");
             gnomeTex = Content.Load<Texture2D>("gnomes");
             evilGnomeTex = Content.Load<Texture2D>("gnomes-evil");
             cursor = new Cursor(Content.Load<Texture2D>("cursor"), 1); //game cursor
@@ -296,6 +299,30 @@ namespace Tile_Engine
                         Tile.getTexture(),
                         Color.White);
                     }
+                }
+            }
+
+            List<Vector4> wallList = gameboard.wallList;
+            foreach (Vector4 wall in wallList)
+            {
+                //If column is the same, draw horizontal wall
+                if (wall.X == wall.Z)
+                {
+                    spriteBatch.Draw(
+                    wallTexVerticle,
+                    new Rectangle(((int)wall.Z * Variables.cellWidth), ((int)wall.W * Variables.cellHeigth), wallTexHorizontal.Width, wallTexHorizontal.Height),
+                    new Rectangle(0, 0, wallTexHorizontal.Width, wallTexHorizontal.Height),
+                    Color.White);
+                    
+                }
+                //If row is the same, draw verticle wall
+                else if (wall.Y == wall.W)
+                {
+                    spriteBatch.Draw(
+                    wallTexHorizontal,
+                    new Rectangle(((int)wall.Z * Variables.cellWidth - wallTexVerticle.Width / 2), ((int)wall.W * Variables.cellHeigth), wallTexVerticle.Width, wallTexVerticle.Height),
+                    new Rectangle(0, 0, wallTexVerticle.Width, wallTexVerticle.Height),
+                    Color.White);
                 }
             }
 

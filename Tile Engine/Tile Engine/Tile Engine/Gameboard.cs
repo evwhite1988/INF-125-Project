@@ -11,26 +11,38 @@ namespace Tile_Engine
         public List<MapRow> Rows = new List<MapRow>();
         public int numberOfColumns;
         public int numberOfRows;
+        public List<Vector4> wallList;
 
 
         public Gameboard()
         {
             numberOfColumns = Variables.columns;
             numberOfRows = Variables.rows;
+            wallList = new List<Vector4>();
+            buildBoard();
+           
 
+            // Create Sample Map Data
+            
+
+            // End Create Sample Map Data
+        }
+
+        public void buildBoard()
+        {
             for (int y = 0; y < numberOfRows; y++)
             {
                 MapRow thisRow = new MapRow();
                 for (int x = 0; x < numberOfColumns; x++)
                 {
-                    if ((y == 2 && x == 2) || 
-                        (y == 2 && x == 13) || 
-                        (y == 13 && x == 2) || 
-                        (y == 13 && x == 13))
+                    if ((y == 3 && x == 4) ||
+                        (y == 3 && x == 7) ||
+                        (y == 5 && x == 4) ||
+                        (y == 5 && x == 7))
                     {
                         thisRow.Columns.Add(new Cell(-2));
                     }
-                    else if ((y == 5 && (x == 5 || x == 10)) || (y == 10 && (x == 5 || x == 10)))
+                    else if ((y == 1 && (x == 1 || x == 10)) || (y == 7 && (x == 1 || x == 10)))
                     {
                         thisRow.Columns.Add(new Cell(-1));
                     }
@@ -39,10 +51,19 @@ namespace Tile_Engine
                 Rows.Add(thisRow);
             }
 
-            // Create Sample Map Data
-            
+            // x,y,z,w column1, row1, column2, row2
+            wallList.Add(new Vector4(0, 4, 0, 5));
+            wallList.Add(new Vector4(1, 4, 1, 5));
+            wallList.Add(new Vector4(2, 4, 2, 5));
+            wallList.Add(new Vector4(9, 3, 9, 4));
+            wallList.Add(new Vector4(10, 3, 10, 4));
+            wallList.Add(new Vector4(11, 3, 11, 4));
 
-            // End Create Sample Map Data
+            wallList.Add(new Vector4(4, 0, 5, 0));
+            wallList.Add(new Vector4(4, 1, 5, 1));
+            wallList.Add(new Vector4(6, 7, 7, 7));
+            wallList.Add(new Vector4(6, 8, 7, 8));
+
         }
 
 

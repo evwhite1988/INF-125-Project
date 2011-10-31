@@ -7,8 +7,8 @@ namespace Tile_Engine
 {
     static class Variables
     {
-        public static int rows = 16;
-        public static int columns = 16;
+        public static int rows = 9;
+        public static int columns = 12;
         public static int speed = 4;
         public static int cellWidth = 64;
         public static int cellHeigth = 64;

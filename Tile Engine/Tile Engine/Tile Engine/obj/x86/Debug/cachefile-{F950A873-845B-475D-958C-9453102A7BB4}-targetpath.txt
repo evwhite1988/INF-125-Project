@@ -12,3 +12,5 @@ Content\spawn.xnb
 Content\wall.xnb
 Content\hole.xnb
 Content\gnomes-evil.xnb
+Content\wall_horizontal.xnb
+Content\wall_verticle.xnb

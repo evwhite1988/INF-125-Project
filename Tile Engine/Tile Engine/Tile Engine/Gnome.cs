@@ -98,6 +98,52 @@ namespace Tile_Engine
         //Checks if Sprite has reached edge of gameboard and if so, changes direction clockwise
         public void collisionCheck(Gameboard gameboard)
         {
+            foreach (Vector4 wall in gameboard.wallList)
+            {
+                //Check Horizontal Wall
+                if (wall.X == wall.Z)
+                {
+                    if (this.direction == Variables.Direction.Up &&
+                        getSpriteCenter().Y <= (wall.W * Variables.cellHeigth) + Variables.cellHeigth / 2 &&
+                        getSpriteCenter().Y >= (wall.W * Variables.cellHeigth) &&
+                        getSpriteCenter().X >= (wall.Z * Variables.cellWidth) &&
+                        getSpriteCenter().X <= ((wall.Z + 1) * Variables.cellWidth))
+                    {
+                        direction = Variables.Direction.Right;
+                    }
+
+                    if (this.direction == Variables.Direction.Down &&
+                        getSpriteCenter().Y >= (wall.W * Variables.cellHeigth) - Variables.cellHeigth / 2 &&
+                        getSpriteCenter().Y <= (wall.W * Variables.cellHeigth) &&
+                        getSpriteCenter().X >= (wall.X * Variables.cellWidth) &&
+                        getSpriteCenter().X <= ((wall.Z + 1) * Variables.cellWidth))
+                    {
+                        direction = Variables.Direction.Left;
+                    }
+                }
+                //Check Verticle Wall
+                else if (wall.Y == wall.W)
+                {
+                    if (this.direction == Variables.Direction.Right &&
+                        getSpriteCenter().X >= (wall.Z * Variables.cellWidth) - Variables.cellWidth / 2 &&
+                        getSpriteCenter().X <= (wall.Z * Variables.cellWidth) &&
+                        getSpriteCenter().Y >= (wall.Y * Variables.cellHeigth) &&
+                        getSpriteCenter().Y <= ((wall.W + 1) * Variables.cellHeigth))
+                    {
+                        direction = Variables.Direction.Down;
+                    }
+
+                    if (this.direction == Variables.Direction.Left &&
+                        getSpriteCenter().X <= (wall.Z * Variables.cellWidth) + Variables.cellWidth / 2 &&
+                        getSpriteCenter().X >= (wall.Z * Variables.cellWidth) &&
+                        getSpriteCenter().Y >= (wall.Y * Variables.cellHeigth) &&
+                        getSpriteCenter().Y <= ((wall.W + 1) * Variables.cellHeigth))
+                    {
+                        direction = Variables.Direction.Up;
+                    }
+                }
+            }
+
             if (this.direction == Variables.Direction.Right && getSpriteCenter().X > (gameboard.numberOfColumns - 1) * Variables.cellWidth + Variables.cellWidth/2)
             {
                 direction = Variables.Direction.Down;
@@ -117,6 +163,7 @@ namespace Tile_Engine
             {
                 direction = Variables.Direction.Left;
             }
+               
         }
 
 
