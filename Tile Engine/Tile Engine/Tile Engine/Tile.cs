@@ -17,6 +17,7 @@ namespace Tile_Engine
         static public Texture2D arrowRight;
         static public Texture2D home;
         static public Texture2D hole;
+        static public Texture2D spawn;
 
         static public Rectangle getTexture()
         {

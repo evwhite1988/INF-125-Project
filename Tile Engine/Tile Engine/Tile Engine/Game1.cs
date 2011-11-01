@@ -58,8 +58,12 @@ namespace Tile_Engine
         {
             // TODO: Add your initialization logic here
             this.IsMouseVisible = true;
-            this.graphics.PreferredBackBufferWidth = graphics.GraphicsDevice.DisplayMode.Width;
-            this.graphics.PreferredBackBufferHeight = graphics.GraphicsDevice.DisplayMode.Height;
+
+            //Window fits to the gameboard.
+            this.graphics.PreferredBackBufferWidth = gameboard.numberOfColumns * Variables.cellWidth;
+            this.graphics.PreferredBackBufferHeight = gameboard.numberOfRows * Variables.cellHeigth;
+
+
             random = new Random();
             gnomeList = new List<Gnome>();
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -92,6 +96,7 @@ namespace Tile_Engine
             Tile.arrowRight = Content.Load<Texture2D>("arrow_right");
             Tile.home = Content.Load<Texture2D>("dog-house");
             Tile.hole = Content.Load<Texture2D>("hole");
+            Tile.spawn = Content.Load<Texture2D>("spawn");
             wallTexHorizontal = Content.Load<Texture2D>("wall_horizontal");
             wallTexVerticle = Content.Load<Texture2D>("wall_verticle");
             gnomeTex = Content.Load<Texture2D>("gnomes");
@@ -132,7 +137,6 @@ namespace Tile_Engine
 
         void UpdateInput()
         {
-            // Get the current gamepad state.
             GamePadState currentState = GamePad.GetState(PlayerIndex.One);
 
             if (currentState.IsConnected)
@@ -253,12 +257,16 @@ namespace Tile_Engine
                 {
                     Cell cell = gameboard.getCell(y, x);
                     int tileID = cell.getTileID();
+
+                    spriteBatch.Draw( Tile.cellBorder, 
+                        new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
+                        Tile.getTexture(),Color.White);
                     
                     //If tileID = -2, use hole tile
                     if (tileID == -2)
                     {
                        spriteBatch.Draw(
-                       Tile.hole,
+                       Tile.spawn,
                        new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
                        Tile.getTexture(),
                        Color.White);
@@ -274,7 +282,6 @@ namespace Tile_Engine
                         Color.White);
                     }
 
-                    //If tileID = -2, use hole tile
                     else if (tileID == 1)
                     {
                         spriteBatch.Draw(
@@ -303,14 +310,6 @@ namespace Tile_Engine
                     {
                         spriteBatch.Draw(
                         Tile.arrowLeft,
-                        new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
-                        Tile.getTexture(),
-                        Color.White);
-                    }
-                    else
-                    {
-                        spriteBatch.Draw(
-                        Tile.cellBorder,
                         new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
                         Tile.getTexture(),
                         Color.White);
