@@ -82,3 +82,9 @@ C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile E
 C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\obj\x86\Debug\Tile Engine.pdb
 C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\Player1.xnb
 C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\pointFont.xnb
+C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-dim-left.xnb
+C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-dim-middle.xnb
+C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-dim-right.xnb
+C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-lit-left.xnb
+C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-lit-middle.xnb
+C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-lit-right.xnb

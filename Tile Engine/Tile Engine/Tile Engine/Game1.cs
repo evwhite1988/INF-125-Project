@@ -18,11 +18,12 @@ namespace Tile_Engine
     {
 
         Player player1;                         //Player one
+        MouseState mPreviousMouseState;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Gameboard gameboard = new Gameboard();  //Gameboard object
         List<Gnome> gnomeList { get; set; }     //List of Gnome Sprite Objects    
-        List<Player> playerList;           
+        List<Player> playerList;
         Cursor cursor;                          //Cursor Sprite Object
         Texture2D gnomeTex;                     //Gnome texture
         Texture2D evilGnomeTex;                 //Evil gnome texture
@@ -32,6 +33,7 @@ namespace Tile_Engine
         int gnomeSpawnTime;                     //Time between gnome spawns
         int gnomeSpawnTimeRemaining;
         int numOfGnomes;                        //Number of gnomes on the field;
+        int currentMainMenuIndex;               
 
         //Intervals for random time selection: To Be Adjusted
         int evilGnomeSpawnMin = 5000;
@@ -39,12 +41,23 @@ namespace Tile_Engine
         int gnomeSpawnMin = 500;
         int gnomeSpawnMax = 2000;
 
+        enum GameState { MainMenu, InGame };
+        GameState currentGameState = GameState.MainMenu;
 
         Texture2D wallTexVerticle;
         Texture2D wallTexHorizontal;
         Random random;
 
-        public SpriteFont scoreFont;    
+        public SpriteFont scoreFont;
+
+        //Main menu art files, courtesy of Sage's Scrolls
+        MenuSelection[] mainMenuItems;  //MenuSelection class defined below. Tweaked and Reused from past games. 
+        Texture2D mainMenuIconDimL;
+        Texture2D mainMenuIconDimR;
+        Texture2D mainMenuIconDimC;
+        Texture2D mainMenuIconLitL;
+        Texture2D mainMenuIconLitR;
+        Texture2D mainMenuIconLitC;
 
 
         public Game1()
@@ -63,6 +76,7 @@ namespace Tile_Engine
         {
             // TODO: Add your initialization logic here
             this.IsMouseVisible = true;
+            mPreviousMouseState = Mouse.GetState();
 
             //Window fits to the gameboard.
             this.graphics.PreferredBackBufferWidth = gameboard.numberOfColumns * Variables.cellWidth;
@@ -83,6 +97,8 @@ namespace Tile_Engine
             evilGnomeSpawnTimeRemaining = evilGnomeSpawnTime;
             gnomeSpawnTimeRemaining = gnomeSpawnTime;
 
+            mainMenuItems = new MenuSelection[4];
+
             base.Initialize();
         }
 
@@ -93,6 +109,30 @@ namespace Tile_Engine
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
+            scoreFont = Content.Load<SpriteFont>("pointFont");
+
+            #region MenuContentLoad
+
+            mainMenuIconDimL = Content.Load<Texture2D>("button-dim-left");
+            mainMenuIconDimR = Content.Load<Texture2D>("button-dim-right");
+            mainMenuIconDimC = Content.Load<Texture2D>("button-dim-middle");
+            mainMenuIconLitL = Content.Load<Texture2D>("button-lit-left");
+            mainMenuIconLitR = Content.Load<Texture2D>("button-lit-right");
+            mainMenuIconLitC = Content.Load<Texture2D>("button-lit-middle");
+
+            int initialX = (Window.ClientBounds.Width / 2) - ((mainMenuIconDimL.Width + mainMenuIconDimR.Width + 350) / 2);
+            int initialY = (Window.ClientBounds.Height / 4) + 75;
+
+            mainMenuItems[0] = new MenuSelection("Play", mainMenuIconDimL, mainMenuIconDimR, mainMenuIconDimC,
+                mainMenuIconLitL, mainMenuIconLitR, mainMenuIconLitC, initialX, initialY, 350, scoreFont);
+            mainMenuItems[1] = new MenuSelection("Instructions", mainMenuIconDimL, mainMenuIconDimR, mainMenuIconDimC,
+                mainMenuIconLitL, mainMenuIconLitR, mainMenuIconLitC, initialX, initialY + 90, 350, scoreFont);
+            mainMenuItems[2] = new MenuSelection("Credits", mainMenuIconDimL, mainMenuIconDimR, mainMenuIconDimC,
+                mainMenuIconLitL, mainMenuIconLitR, mainMenuIconLitC, initialX, initialY + 180, 350, scoreFont);
+            mainMenuItems[3] = new MenuSelection("Exit", mainMenuIconDimL, mainMenuIconDimR, mainMenuIconDimC,
+                mainMenuIconLitL, mainMenuIconLitR, mainMenuIconLitC, initialX, initialY + 270, 350, scoreFont);
+
+            #endregion
 
             Tile.textureSet = Content.Load<Texture2D>("part1_tileset");
             Tile.cellBorder = Content.Load<Texture2D>("grass");
@@ -109,7 +149,7 @@ namespace Tile_Engine
             evilGnomeTex = Content.Load<Texture2D>("gnomes-evil");
             cursor = new Cursor(Content.Load<Texture2D>("cursor"), 1); //game cursor
             player1_sb = Content.Load<Texture2D>("Player1");
-            scoreFont = Content.Load<SpriteFont>("pointFont");
+
 
             //Initialize first player now that the texture is loaded. The position is manually set to the Tile with Tile ID -1, Although
             //this needs to be revised to place it at a specified home base. 
@@ -142,17 +182,38 @@ namespace Tile_Engine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            removeGnomes();             //Removes gnomes
-            spawnGnomes(gameTime);      //Spawns new gnomes
-            UpdateInput();              //handles new user inputs
-
-            // For each gnome on the gameboard, update its position
-            foreach(Gnome gnome in gnomeList)
+            switch (currentGameState)
             {
-                gnome.updatePosition(gameboard);
-            }
+                case GameState.MainMenu:
+                    manageMenu();
 
-            base.Update(gameTime);
+                    //currently only the mouse works correctly in navigating the main menu screen. The following allows us to skip to
+                    //the actual game by just pressing 'A' on the controller.
+
+                    GamePadState currentState = GamePad.GetState(PlayerIndex.One);
+                    if (currentState.IsConnected)
+                    {
+                        if (currentState.IsButtonDown(Buttons.A))
+                            currentGameState = GameState.InGame;
+                    }
+                    break;
+                    
+                case GameState.InGame:
+
+                    removeGnomes();             //Removes gnomes
+                    spawnGnomes(gameTime);      //Spawns new gnomes
+                    UpdateInput();              //handles new user inputs
+
+                    // For each gnome on the gameboard, update its position
+                    foreach(Gnome gnome in gnomeList)
+                    {
+                     gnome.updatePosition(gameboard);
+                    }
+    
+                    base.Update(gameTime);
+                    break;
+                  
+            }
         }
 
         void UpdateInput()
@@ -267,107 +328,122 @@ namespace Tile_Engine
         {
             this.GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin();
-           // graphics.GraphicsDevice.Clear(Color.White);
-            
-            //Draws the tiles on the gameboard
-            for (int y = 0; y < Variables.rows; y++)
+
+            switch (currentGameState)
             {
-                for (int x = 0; x < Variables.columns; x++)
-                {
-                    Cell cell = gameboard.getCell(y, x);
-                    int tileID = cell.getTileID();
+                case GameState.MainMenu:
+                    for (int i = 0; i < mainMenuItems.Length; i++)
+                    {
+                        if (i == currentMainMenuIndex)
+                            mainMenuItems[i].Draw(gameTime, spriteBatch, true);
+                        else
+                            mainMenuItems[i].Draw(gameTime, spriteBatch, false);
+                    }
+                    break;
 
-                    spriteBatch.Draw( Tile.cellBorder, 
-                        new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
-                        Tile.getTexture(),Color.White);
-                    
-                    //If tileID = -2, use hole tile
-                    if (tileID == -2)
+                case GameState.InGame:
+                    //Draws the tiles on the gameboard
+                    for (int y = 0; y < Variables.rows; y++)
                     {
-                       spriteBatch.Draw(
-                       Tile.spawn,
-                       new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
-                       Tile.getTexture(),
-                       Color.White);
+                        for (int x = 0; x < Variables.columns; x++)
+                        {
+                            Cell cell = gameboard.getCell(y, x);
+                            int tileID = cell.getTileID();
+
+                            spriteBatch.Draw(Tile.cellBorder,
+                                new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
+                                Tile.getTexture(), Color.White);
+
+                            //If tileID = -2, use hole tile
+                            if (tileID == -2)
+                            {
+                                spriteBatch.Draw(
+                                Tile.spawn,
+                                new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
+                                Tile.getTexture(),
+                                Color.White);
+                            }
+
+                            //Commented Out to work on implemented the player home base in the Player class
+                            /*If tileID = -1, use home tile
+                            else if (tileID == -1)
+                            {
+                                spriteBatch.Draw(
+                                Tile.home,
+                                new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
+                                Tile.getHomeTexture(),
+                                Color.White);
+                            }*/
+
+                            else if (tileID == 1)
+                            {
+                                spriteBatch.Draw(
+                                Tile.arrowUp,
+                                new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
+                                Tile.getTexture(),
+                                Color.White);
+                            }
+                            else if (tileID == 2)
+                            {
+                                spriteBatch.Draw(
+                                Tile.arrowRight,
+                                new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
+                                Tile.getTexture(),
+                                Color.White);
+                            }
+                            else if (tileID == 3)
+                            {
+                                spriteBatch.Draw(
+                                Tile.arrowDown,
+                                new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
+                                Tile.getTexture(),
+                                Color.White);
+                            }
+                            else if (tileID == 4)
+                            {
+                                spriteBatch.Draw(
+                                Tile.arrowLeft,
+                                new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
+                                Tile.getTexture(),
+                                Color.White);
+                            }
+                        }
                     }
 
-                    //Commented Out to work on implemented the player home base in the Player class
-                    /*If tileID = -1, use home tile
-                    else if (tileID == -1)
+                    List<Vector4> wallList = gameboard.wallList;
+                    foreach (Vector4 wall in wallList)
                     {
-                        spriteBatch.Draw(
-                        Tile.home,
-                        new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
-                        Tile.getHomeTexture(),
-                        Color.White);
-                    }*/
+                        //If column is the same, draw horizontal wall
+                        if (wall.X == wall.Z)
+                        {
+                            spriteBatch.Draw(
+                            wallTexHorizontal,
+                            new Rectangle(((int)wall.Z * Variables.cellWidth), ((int)wall.W * Variables.cellHeigth), wallTexHorizontal.Width, wallTexHorizontal.Height),
+                            new Rectangle(0, 0, wallTexHorizontal.Width, wallTexHorizontal.Height),
+                            Color.White);
 
-                    else if (tileID == 1)
-                    {
-                        spriteBatch.Draw(
-                        Tile.arrowUp,
-                        new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
-                        Tile.getTexture(),
-                        Color.White);
+                        }
+                        //If row is the same, draw verticle wall
+                        else if (wall.Y == wall.W)
+                        {
+                            spriteBatch.Draw(
+                            wallTexVerticle,
+                            new Rectangle(((int)wall.Z * Variables.cellWidth - wallTexVerticle.Width / 2), ((int)wall.W * Variables.cellHeigth), wallTexVerticle.Width, wallTexVerticle.Height),
+                            new Rectangle(0, 0, wallTexVerticle.Width, wallTexVerticle.Height),
+                            Color.White);
+                        }
                     }
-                    else if (tileID == 2)
+
+                    foreach (Gnome gnome in gnomeList)
                     {
-                        spriteBatch.Draw(
-                        Tile.arrowRight,
-                        new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
-                        Tile.getTexture(),
-                        Color.White);
+                        gnome.draw(spriteBatch);
                     }
-                    else if (tileID == 3)
-                    {
-                        spriteBatch.Draw(
-                        Tile.arrowDown,
-                        new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
-                        Tile.getTexture(),
-                        Color.White);
-                    }
-                    else if (tileID == 4)
-                    {
-                        spriteBatch.Draw(
-                        Tile.arrowLeft,
-                        new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
-                        Tile.getTexture(),
-                        Color.White);
-                    }
-                }
+
+                    cursor.draw(spriteBatch);
+                    player1.draw(spriteBatch, scoreFont);
+                    break;
             }
 
-            List<Vector4> wallList = gameboard.wallList;
-            foreach (Vector4 wall in wallList)
-            {
-                //If column is the same, draw horizontal wall
-                if (wall.X == wall.Z)
-                {
-                    spriteBatch.Draw(
-                    wallTexHorizontal,
-                    new Rectangle(((int)wall.Z * Variables.cellWidth), ((int)wall.W * Variables.cellHeigth), wallTexHorizontal.Width, wallTexHorizontal.Height),
-                    new Rectangle(0, 0, wallTexHorizontal.Width, wallTexHorizontal.Height),
-                    Color.White);
-                    
-                }
-                //If row is the same, draw verticle wall
-                else if (wall.Y == wall.W)
-                {
-                    spriteBatch.Draw(
-                    wallTexVerticle,
-                    new Rectangle(((int)wall.Z * Variables.cellWidth - wallTexVerticle.Width / 2), ((int)wall.W * Variables.cellHeigth), wallTexVerticle.Width, wallTexVerticle.Height),
-                    new Rectangle(0, 0, wallTexVerticle.Width, wallTexVerticle.Height),
-                    Color.White);
-                }
-            }
-
-            foreach (Gnome gnome in gnomeList)
-            {
-                gnome.draw(spriteBatch);
-            }
-
-            cursor.draw(spriteBatch);
-            player1.draw(spriteBatch, scoreFont);
 
             spriteBatch.End();
             graphics.ApplyChanges();
@@ -437,6 +513,131 @@ namespace Tile_Engine
                     }
                 }
             }
+        }
+
+        private void manageMenu()
+        {
+            //Find out where the mouse currently is at, change selection accordingly
+            currentMainMenuIndex = -1;
+            for (int i = 0; i < mainMenuItems.Length; i++)
+            {
+                MenuSelection z = mainMenuItems[i];
+                MouseState currentMouseState = Mouse.GetState();
+
+                if (currentMouseState.Y < z.GetMouseSelectionArea().Bottom
+                    && currentMouseState.Y > z.GetMouseSelectionArea().Top
+                    && currentMouseState.X < z.GetMouseSelectionArea().Right
+                    && currentMouseState.X > z.GetMouseSelectionArea().Left)
+                {
+                    currentMainMenuIndex = i;
+                }
+            }
+
+            //When the mouse clicks, pick the selection.
+            MouseState mouse = Mouse.GetState();
+            if ((mouse.LeftButton == ButtonState.Pressed && mPreviousMouseState.LeftButton == ButtonState.Released)  && currentMainMenuIndex != -1)
+            {
+                string selection = mainMenuItems[currentMainMenuIndex].GetTitle();
+                if (selection == "Play")
+                {
+                    currentGameState = GameState.InGame;
+                }
+                else if (selection == "Instructions")
+                {
+                    //currentState = GameState.Instructions;
+                }
+                else if (selection == "Exit")
+                {
+                    this.Exit();
+                }
+                else
+                {
+                    //currentState = GameState.Credits;
+                }
+            }
+            mPreviousMouseState = mouse;
+        }
+    }
+
+
+    class MenuSelection
+    {
+        private string title;
+        private Rectangle mouseSelectionBox;
+        private Vector2 position;
+        private int centerTextureWidth;
+        private SpriteFont textFont;
+
+        Texture2D iconTextureDimL;
+        Texture2D iconTextureDimR;
+        Texture2D iconTextureDimC;
+        Texture2D iconTextureLitL;
+        Texture2D iconTextureLitR;
+        Texture2D iconTextureLitC;
+
+        public MenuSelection(string title,
+            Texture2D iconTextureDimL, Texture2D iconTextureDimR, Texture2D iconTextureDimC,
+            Texture2D iconTextureLitL, Texture2D iconTextureLitR, Texture2D iconTextureLitC,
+            int x, int y, int centerTextureWidth, SpriteFont textFont)
+        {
+            this.title = title;
+            this.iconTextureDimL = iconTextureDimL;
+            this.iconTextureDimR = iconTextureDimR;
+            this.iconTextureDimC = iconTextureDimC;
+            this.iconTextureLitL = iconTextureLitL;
+            this.iconTextureLitR = iconTextureLitR;
+            this.iconTextureLitC = iconTextureLitC;
+            this.mouseSelectionBox = new Rectangle(x, y,
+                iconTextureDimL.Width + iconTextureDimR.Width + centerTextureWidth,
+                iconTextureDimC.Height);
+            this.position = new Vector2(x, y);
+            this.centerTextureWidth = centerTextureWidth;
+            this.textFont = textFont;
+        }
+
+        public string GetTitle()
+        {
+            return title;
+        }
+
+        public Rectangle GetMouseSelectionArea()
+        {
+            return mouseSelectionBox;
+        }
+
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, bool isSelected)
+        {
+            if (isSelected)
+            {
+                spriteBatch.Draw(iconTextureLitL, new Rectangle((int)position.X, (int)position.Y, iconTextureLitL.Width, iconTextureLitL.Height), Color.White);
+                spriteBatch.Draw(iconTextureLitC, new Rectangle((int)position.X + iconTextureLitL.Width, (int)position.Y, centerTextureWidth, iconTextureLitC.Height), Color.White);
+                spriteBatch.Draw(iconTextureLitR, new Rectangle((int)position.X + iconTextureLitL.Width + centerTextureWidth, (int)position.Y, iconTextureLitR.Width, iconTextureLitR.Height), Color.White);
+                spriteBatch.DrawString(textFont, title,
+                    new Vector2((int)position.X + +iconTextureLitL.Width + (centerTextureWidth / 2) - textFont.MeasureString(title).X / 2,
+                        (int)position.Y + (iconTextureLitC.Height / 10)),
+                        Color.Black);
+            }
+            else
+            {
+                spriteBatch.Draw(iconTextureDimL, new Rectangle((int)position.X, (int)position.Y, iconTextureDimL.Width, iconTextureDimL.Height), Color.White);
+                spriteBatch.Draw(iconTextureDimC, new Rectangle((int)position.X + iconTextureDimL.Width, (int)position.Y, centerTextureWidth, iconTextureDimC.Height), Color.White);
+                spriteBatch.Draw(iconTextureDimR, new Rectangle((int)position.X + iconTextureDimL.Width + centerTextureWidth, (int)position.Y, iconTextureLitR.Width, iconTextureDimR.Height), Color.White);
+                spriteBatch.DrawString(textFont, title,
+                    new Vector2((int)position.X + iconTextureDimL.Width + (centerTextureWidth / 2) - textFont.MeasureString(title).X / 2,
+                        (int)position.Y + (iconTextureLitC.Height / 10)),
+                    Color.Black);
+            }
+        }
+
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, int alphaValue)
+        {
+            spriteBatch.Draw(iconTextureDimL, new Rectangle((int)position.X, (int)position.Y, iconTextureLitL.Width, iconTextureLitL.Height), new Color(255, 255, 255, (byte)MathHelper.Clamp(alphaValue, 0, 255)));
+            spriteBatch.Draw(iconTextureDimC, new Rectangle((int)position.X + iconTextureLitL.Width, (int)position.Y, centerTextureWidth, iconTextureLitC.Height), new Color(255, 255, 255, (byte)MathHelper.Clamp(alphaValue, 0, 255)));
+            spriteBatch.Draw(iconTextureDimR, new Rectangle((int)position.X + iconTextureLitL.Width + centerTextureWidth, (int)position.Y, iconTextureLitR.Width, iconTextureLitR.Height), new Color(255, 255, 255, (byte)MathHelper.Clamp(alphaValue, 0, 255)));
+            spriteBatch.DrawString(textFont, title,
+                new Vector2((int)position.X + +iconTextureLitL.Width + (centerTextureWidth / 2) - textFont.MeasureString(title).X / 2,
+                    (int)position.Y + (iconTextureLitC.Height / 10)),
+                    new Color(0, 0, 0, (byte)MathHelper.Clamp(alphaValue, 0, 255)));
         }
     }
 }

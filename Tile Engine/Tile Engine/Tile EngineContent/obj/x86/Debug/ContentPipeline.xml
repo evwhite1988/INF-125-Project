@@ -163,6 +163,60 @@
       <Output>C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\pointFont.xnb</Output>
       <Time>2011-11-01T12:41:55.7974159-07:00</Time>
     </Item>
+    <Item>
+      <Source>button-dim-left.png</Source>
+      <Name>button-dim-left</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-dim-left.xnb</Output>
+      <Time>2011-11-01T15:13:27.3598911-07:00</Time>
+    </Item>
+    <Item>
+      <Source>button-dim-middle.png</Source>
+      <Name>button-dim-middle</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-dim-middle.xnb</Output>
+      <Time>2011-11-01T15:13:27.3598911-07:00</Time>
+    </Item>
+    <Item>
+      <Source>button-dim-right.png</Source>
+      <Name>button-dim-right</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-dim-right.xnb</Output>
+      <Time>2011-11-01T15:13:27.3598911-07:00</Time>
+    </Item>
+    <Item>
+      <Source>button-lit-left.png</Source>
+      <Name>button-lit-left</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-lit-left.xnb</Output>
+      <Time>2011-11-01T15:13:27.3598911-07:00</Time>
+    </Item>
+    <Item>
+      <Source>button-lit-middle.png</Source>
+      <Name>button-lit-middle</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-lit-middle.xnb</Output>
+      <Time>2011-11-01T15:13:27.3598911-07:00</Time>
+    </Item>
+    <Item>
+      <Source>button-lit-right.png</Source>
+      <Name>button-lit-right</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-lit-right.xnb</Output>
+      <Time>2011-11-01T15:13:27.3598911-07:00</Time>
+    </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
       <TargetPlatform>Windows</TargetPlatform>
