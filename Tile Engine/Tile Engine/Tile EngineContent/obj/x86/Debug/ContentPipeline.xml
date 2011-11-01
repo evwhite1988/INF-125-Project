@@ -134,7 +134,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\wall_horizontal.xnb</Output>
-      <Time>2011-11-01T10:08:38.5448707-07:00</Time>
+      <Time>2011-11-01T13:28:39.0116921-07:00</Time>
     </Item>
     <Item>
       <Source>wall_verticle.jpg</Source>
@@ -143,7 +143,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\wall_verticle.xnb</Output>
-      <Time>2011-11-01T10:08:38.7010877-07:00</Time>
+      <Time>2011-11-01T13:32:50.0735624-07:00</Time>
     </Item>
     <Item>
       <Source>Player1.png</Source>

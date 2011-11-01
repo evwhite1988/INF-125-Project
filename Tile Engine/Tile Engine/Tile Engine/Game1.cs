@@ -265,7 +265,7 @@ namespace Tile_Engine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            
+            this.GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin();
            // graphics.GraphicsDevice.Clear(Color.White);
             
@@ -344,7 +344,7 @@ namespace Tile_Engine
                 if (wall.X == wall.Z)
                 {
                     spriteBatch.Draw(
-                    wallTexVerticle,
+                    wallTexHorizontal,
                     new Rectangle(((int)wall.Z * Variables.cellWidth), ((int)wall.W * Variables.cellHeigth), wallTexHorizontal.Width, wallTexHorizontal.Height),
                     new Rectangle(0, 0, wallTexHorizontal.Width, wallTexHorizontal.Height),
                     Color.White);
@@ -354,7 +354,7 @@ namespace Tile_Engine
                 else if (wall.Y == wall.W)
                 {
                     spriteBatch.Draw(
-                    wallTexHorizontal,
+                    wallTexVerticle,
                     new Rectangle(((int)wall.Z * Variables.cellWidth - wallTexVerticle.Width / 2), ((int)wall.W * Variables.cellHeigth), wallTexVerticle.Width, wallTexVerticle.Height),
                     new Rectangle(0, 0, wallTexVerticle.Width, wallTexVerticle.Height),
                     Color.White);
