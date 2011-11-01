@@ -12,6 +12,7 @@ namespace Tile_Engine
         public int numberOfColumns;
         public int numberOfRows;
         public List<Vector4> wallList;
+        List<Vector2> baseList;
 
 
         public Gameboard()
@@ -19,6 +20,7 @@ namespace Tile_Engine
             numberOfColumns = Variables.columns;
             numberOfRows = Variables.rows;
             wallList = new List<Vector4>();
+            baseList = new List<Vector2>();
             buildBoard();
            
 
@@ -45,6 +47,7 @@ namespace Tile_Engine
                     else if ((y == 1 && (x == 1 || x == 10)) || (y == 7 && (x == 1 || x == 10)))
                     {
                         thisRow.Columns.Add(new Cell(-1));
+                        baseList.Add(new Vector2(x, y));
                     }
                     else thisRow.Columns.Add(new Cell(0));
                 }
@@ -187,6 +190,12 @@ namespace Tile_Engine
 
             return baseList;
         }
+
+        public Vector2 getBase(int player)
+        {
+            return baseList[player - 1];
+        }
+
     }
 
 

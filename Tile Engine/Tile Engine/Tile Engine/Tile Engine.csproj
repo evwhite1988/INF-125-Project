@@ -111,6 +111,7 @@
     <Compile Include="Cell.cs" />
     <Compile Include="Cursor.cs" />
     <Compile Include="Gnome.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Variables.cs" />
     <Compile Include="GameSprite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

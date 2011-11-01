@@ -14,3 +14,5 @@ Content\hole.xnb
 Content\gnomes-evil.xnb
 Content\wall_horizontal.xnb
 Content\wall_verticle.xnb
+Content\Player1.xnb
+Content\pointFont.xnb

@@ -16,14 +16,17 @@ namespace Tile_Engine
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        
+
+        Player player1;                         //Player one
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Gameboard gameboard = new Gameboard();  //Gameboard object
-        List<Gnome> gnomeList { get; set; }     //List of Gnome Sprite Objects                       
+        List<Gnome> gnomeList { get; set; }     //List of Gnome Sprite Objects    
+        List<Player> playerList;           
         Cursor cursor;                          //Cursor Sprite Object
         Texture2D gnomeTex;                     //Gnome texture
         Texture2D evilGnomeTex;                 //Evil gnome texture
+        Texture2D player1_sb;                    //Player1's score board
         int evilGnomeSpawnTime;                 //Time between evil-gnome spawns
         int evilGnomeSpawnTimeRemaining; 
         int gnomeSpawnTime;                     //Time between gnome spawns
@@ -39,7 +42,9 @@ namespace Tile_Engine
 
         Texture2D wallTexVerticle;
         Texture2D wallTexHorizontal;
-        Random random;                          
+        Random random;
+
+        public SpriteFont scoreFont;    
 
 
         public Game1()
@@ -61,11 +66,12 @@ namespace Tile_Engine
 
             //Window fits to the gameboard.
             this.graphics.PreferredBackBufferWidth = gameboard.numberOfColumns * Variables.cellWidth;
-            this.graphics.PreferredBackBufferHeight = gameboard.numberOfRows * Variables.cellHeigth;
+            this.graphics.PreferredBackBufferHeight = (gameboard.numberOfRows * Variables.cellHeigth);
 
 
             random = new Random();
             gnomeList = new List<Gnome>();
+            playerList = new List<Player>();
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // Gnomes will spawn at random intervals based on the given inputs.
@@ -102,8 +108,22 @@ namespace Tile_Engine
             gnomeTex = Content.Load<Texture2D>("gnomes");
             evilGnomeTex = Content.Load<Texture2D>("gnomes-evil");
             cursor = new Cursor(Content.Load<Texture2D>("cursor"), 1); //game cursor
+            player1_sb = Content.Load<Texture2D>("Player1");
+            scoreFont = Content.Load<SpriteFont>("pointFont");
 
-            // TODO: use this.Content to load your game content here
+            //Initialize first player now that the texture is loaded. The position is manually set to the Tile with Tile ID -1, Although
+            //this needs to be revised to place it at a specified home base. 
+
+            player1 = new Player(player1_sb, 
+                Tile.home,
+                new Vector2(0, this.graphics.PreferredBackBufferHeight),
+                new Vector2(Tile.cellBorder.Width, Tile.cellBorder.Height));
+            playerList.Add(player1);
+            
+            //increase screen size to fit scoreBoard
+
+            this.graphics.PreferredBackBufferHeight = this.graphics.PreferredBackBufferHeight + player1_sb.Height;
+
         }
 
         /// <summary>
@@ -248,7 +268,6 @@ namespace Tile_Engine
             
             spriteBatch.Begin();
            // graphics.GraphicsDevice.Clear(Color.White);
-
             
             //Draws the tiles on the gameboard
             for (int y = 0; y < Variables.rows; y++)
@@ -272,7 +291,8 @@ namespace Tile_Engine
                        Color.White);
                     }
 
-                    //If tileID = -1, use home tile
+                    //Commented Out to work on implemented the player home base in the Player class
+                    /*If tileID = -1, use home tile
                     else if (tileID == -1)
                     {
                         spriteBatch.Draw(
@@ -280,7 +300,7 @@ namespace Tile_Engine
                         new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
                         Tile.getHomeTexture(),
                         Color.White);
-                    }
+                    }*/
 
                     else if (tileID == 1)
                     {
@@ -347,11 +367,14 @@ namespace Tile_Engine
             }
 
             cursor.draw(spriteBatch);
+            player1.draw(spriteBatch, scoreFont);
 
             spriteBatch.End();
             graphics.ApplyChanges();
 
             // TODO: Add your drawing code here
+
+
 
             base.Draw(gameTime);
         }
@@ -405,6 +428,9 @@ namespace Tile_Engine
                 {
                     if (gnome.getCurrentRow(gameboard) == homebase.Y && gnome.getCurrentColumn(gameboard) == homebase.X)
                     {
+                        int player = bases.IndexOf(homebase);
+                        playerList[player].addPoints(100);
+
                         gnomeList.Remove(gnome);
                         --numOfGnomes;
                         break;
