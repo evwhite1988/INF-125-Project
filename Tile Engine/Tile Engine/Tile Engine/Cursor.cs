@@ -16,7 +16,7 @@ namespace Tile_Engine
     {
         
         //CONSTRUCTOR
-        public Cursor(Texture2D spritesheet, int framecount) : base(spritesheet, framecount)
+        public Cursor(Texture2D spritesheet, int framecount) : base(spritesheet, framecount, 1)
         {
             this.coord = new Vector2(0, 0);
             this.spriteWidth = 64;

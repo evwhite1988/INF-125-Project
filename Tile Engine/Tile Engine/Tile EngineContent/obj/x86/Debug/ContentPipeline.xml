@@ -26,7 +26,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes.xnb</Output>
-      <Time>2011-11-01T10:08:38.7010877-07:00</Time>
+      <Time>2011-11-03T15:35:46.154007-07:00</Time>
     </Item>
     <Item>
       <Source>arrow_down.jpg</Source>
@@ -125,7 +125,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-evil.xnb</Output>
-      <Time>2011-11-01T10:08:38.5448707-07:00</Time>
+      <Time>2011-11-03T15:41:12.8733949-07:00</Time>
     </Item>
     <Item>
       <Source>wall_horizontal.jpg</Source>
@@ -216,6 +216,78 @@
       <Options>None</Options>
       <Output>C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-lit-right.xnb</Output>
       <Time>2011-11-01T15:13:27.3598911-07:00</Time>
+    </Item>
+    <Item>
+      <Source>gnomesBack.png</Source>
+      <Name>gnomesBack</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomesBack.xnb</Output>
+      <Time>2011-11-03T15:55:36.8130055-07:00</Time>
+    </Item>
+    <Item>
+      <Source>gnomesLeft.png</Source>
+      <Name>gnomesLeft</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomesLeft.xnb</Output>
+      <Time>2011-11-03T15:52:54.0227809-07:00</Time>
+    </Item>
+    <Item>
+      <Source>gnomesRight.png</Source>
+      <Name>gnomesRight</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomesRight.xnb</Output>
+      <Time>2011-11-03T15:54:40.6929712-07:00</Time>
+    </Item>
+    <Item>
+      <Source>gnomesFront.png</Source>
+      <Name>gnomesFront</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomesFront.xnb</Output>
+      <Time>2011-11-03T15:52:24.6288013-07:00</Time>
+    </Item>
+    <Item>
+      <Source>gnomes-evilLeft.png</Source>
+      <Name>gnomes-evilLeft</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-evilLeft.xnb</Output>
+      <Time>2011-11-03T16:18:25.4740811-07:00</Time>
+    </Item>
+    <Item>
+      <Source>gnomes-evilFront.png</Source>
+      <Name>gnomes-evilFront</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-evilFront.xnb</Output>
+      <Time>2011-11-03T16:16:22.5623129-07:00</Time>
+    </Item>
+    <Item>
+      <Source>gnomes-evilBack.png</Source>
+      <Name>gnomes-evilBack</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-evilBack.xnb</Output>
+      <Time>2011-11-03T16:15:11.1992223-07:00</Time>
+    </Item>
+    <Item>
+      <Source>gnomes-evilRight.png</Source>
+      <Name>gnomes-evilRight</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-evilRight.xnb</Output>
+      <Time>2011-11-03T16:19:31.7665542-07:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>

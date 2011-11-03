@@ -18,29 +18,31 @@ namespace Tile_Engine
         public bool changeState = false;
         public int lastColumn = 0;
         public int lastRow = 0;
+        private static int FRAMES_PER_SEC = 15;
+
         
 
         //CONSTRUCTOR
-        public Gnome(Texture2D spritesheet, int framecount) : base(spritesheet, framecount)
+        public Gnome(Texture2D[] spritesheets, int framecount) : base(spritesheets, framecount, FRAMES_PER_SEC)
         {
             this.coord = new Vector2(0, 0);
             direction = Variables.Direction.Right;
-            this.spriteWidth = 32;
+            this.spriteWidth = 36;
             this.spriteHeight = 64;
         }
 
         //CONSTRUCTOR
-        public Gnome(Texture2D spritesheet, int framecount, int row, int column)
-            : base(spritesheet, framecount)
+        public Gnome(Texture2D[] spritesheets, int framecount, int row, int column)
+            : base(spritesheets, framecount, FRAMES_PER_SEC)
         {
             this.coord = new Vector2(column * Variables.cellWidth, row * Variables.cellHeigth);
             direction = Variables.Direction.Right;
-            this.spriteWidth = 32;
+            this.spriteWidth = 36;
             this.spriteHeight = 64;
         }
 
         //Updates the position of the Sprite on the gameboard
-        public void updatePosition(Gameboard gameboard)
+        public void updatePosition(Gameboard gameboard, GameTime gameTime)
         {
             collisionCheck(gameboard); //checks if the Sprite has colided with the gameboard edge or a wall
             directionTileCheck(gameboard);
@@ -64,6 +66,8 @@ namespace Tile_Engine
             {
                 this.coord = new Vector2(this.coord.X, this.coord.Y - Variables.speed);
             }
+
+            UpdateFrame((float)gameTime.ElapsedGameTime.TotalSeconds);
         }
 
         public void directionTileCheck(Gameboard gameboard)

@@ -12,6 +12,6 @@ namespace Tile_Engine
         public static int speed = 4;
         public static int cellWidth = 64;
         public static int cellHeigth = 64;
-        public enum Direction { Up, Down, Left, Right, None }; //Directions for movement
+        public enum Direction { Up = 0, Down = 1, Left = 2, Right = 3, None = -1 }; //Directions for movement
     }
 }

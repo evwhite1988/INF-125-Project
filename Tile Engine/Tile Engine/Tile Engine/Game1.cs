@@ -25,8 +25,13 @@ namespace Tile_Engine
         List<Gnome> gnomeList { get; set; }     //List of Gnome Sprite Objects    
         List<Player> playerList;
         Cursor cursor;                          //Cursor Sprite Object
-        Texture2D gnomeTex;                     //Gnome texture
-        Texture2D evilGnomeTex;                 //Evil gnome texture
+
+        //11-3-11: changed this to be texture arrays, splitting up the different directional animations for use in the updated GameSprite.cs
+        Texture2D[] gnomeTex;                     //Gnome textures
+        Texture2D[] evilGnomeTex;                 //Evil Gnome Textures
+        int frameCount = 8;
+
+
         Texture2D player1_sb;                    //Player1's score board
         int evilGnomeSpawnTime;                 //Time between evil-gnome spawns
         int evilGnomeSpawnTimeRemaining; 
@@ -37,9 +42,9 @@ namespace Tile_Engine
 
         //Intervals for random time selection: To Be Adjusted
         int evilGnomeSpawnMin = 5000;
-        int evilGnomeSpawnMax = 10000;
+        int evilGnomeSpawnMax = 8000;
         int gnomeSpawnMin = 500;
-        int gnomeSpawnMax = 2000;
+        int gnomeSpawnMax = 1000;
 
         enum GameState { MainMenu, InGame };
         GameState currentGameState = GameState.MainMenu;
@@ -98,6 +103,8 @@ namespace Tile_Engine
             gnomeSpawnTimeRemaining = gnomeSpawnTime;
 
             mainMenuItems = new MenuSelection[4];
+            gnomeTex = new Texture2D[4];
+            evilGnomeTex = new Texture2D[4];
 
             base.Initialize();
         }
@@ -145,8 +152,14 @@ namespace Tile_Engine
             Tile.spawn = Content.Load<Texture2D>("spawn");
             wallTexHorizontal = Content.Load<Texture2D>("wall_horizontal");
             wallTexVerticle = Content.Load<Texture2D>("wall_verticle");
-            gnomeTex = Content.Load<Texture2D>("gnomes");
-            evilGnomeTex = Content.Load<Texture2D>("gnomes-evil");
+            gnomeTex[0] = Content.Load<Texture2D>("gnomesBack");
+            gnomeTex[1] = Content.Load<Texture2D>("gnomesFront");
+            gnomeTex[2] = Content.Load<Texture2D>("gnomesLeft");
+            gnomeTex[3] = Content.Load<Texture2D>("gnomesRight");
+            evilGnomeTex[0] = Content.Load<Texture2D>("gnomes-evilBack");
+            evilGnomeTex[1] = Content.Load<Texture2D>("gnomes-evilFront");
+            evilGnomeTex[2] = Content.Load<Texture2D>("gnomes-evilLeft");
+            evilGnomeTex[3] = Content.Load<Texture2D>("gnomes-evilRight");
             cursor = new Cursor(Content.Load<Texture2D>("cursor"), 1); //game cursor
             player1_sb = Content.Load<Texture2D>("Player1");
 
@@ -207,7 +220,7 @@ namespace Tile_Engine
                     // For each gnome on the gameboard, update its position
                     foreach(Gnome gnome in gnomeList)
                     {
-                     gnome.updatePosition(gameboard);
+                     gnome.updatePosition(gameboard, gameTime);
                     }
     
                     base.Update(gameTime);
@@ -436,10 +449,10 @@ namespace Tile_Engine
 
                     foreach (Gnome gnome in gnomeList)
                     {
-                        gnome.draw(spriteBatch);
+                        gnome.DrawFrame(spriteBatch, gnome.direction);
                     }
 
-                    cursor.draw(spriteBatch);
+                    cursor.DrawFrame(spriteBatch, Variables.Direction.None);
                     player1.draw(spriteBatch, scoreFont);
                     break;
             }
@@ -473,7 +486,7 @@ namespace Tile_Engine
 
                     //Gnome spawn from a random spawn point, intead of all four at once.
                     int spawnPoint = random.Next(4);
-                    gnomeList.Add(new Gnome(evilGnomeTex, 1, (int)spawnPoints[spawnPoint].Y, (int)spawnPoints[spawnPoint].X));
+                    gnomeList.Add(new Gnome(evilGnomeTex, frameCount, (int)spawnPoints[spawnPoint].Y, (int)spawnPoints[spawnPoint].X));
 
                     evilGnomeSpawnTimeRemaining = random.Next(evilGnomeSpawnMin, evilGnomeSpawnMax);
                 }
@@ -487,7 +500,7 @@ namespace Tile_Engine
 
                     //Gnome spawn from a random spawn point, intead of all four at once.
                     int spawnPoint = random.Next(4);
-                    gnomeList.Add(new Gnome(gnomeTex, 1, (int)spawnPoints[spawnPoint].Y, (int)spawnPoints[spawnPoint].X));
+                    gnomeList.Add(new Gnome(gnomeTex, frameCount, (int)spawnPoints[spawnPoint].Y, (int)spawnPoints[spawnPoint].X));
 
                     gnomeSpawnTimeRemaining = random.Next(gnomeSpawnMin, gnomeSpawnMax);
                 }
