@@ -15,7 +15,6 @@ Content\gnomes-evil.xnb
 Content\wall_horizontal.xnb
 Content\wall_verticle.xnb
 Content\Player1.xnb
-Content\pointFont.xnb
 Content\button-dim-left.xnb
 Content\button-dim-middle.xnb
 Content\button-dim-right.xnb
@@ -30,3 +29,4 @@ Content\gnomes-evilLeft.xnb
 Content\gnomes-evilFront.xnb
 Content\gnomes-evilBack.xnb
 Content\gnomes-evilRight.xnb
+Content\pointFont.xnb

@@ -518,7 +518,14 @@ namespace Tile_Engine
                     if (gnome.getCurrentRow(gameboard) == homebase.Y && gnome.getCurrentColumn(gameboard) == homebase.X)
                     {
                         int player = bases.IndexOf(homebase);
-                        playerList[player].addPoints(100);
+                        if (gnome.spritesheets == evilGnomeTex)
+                        {
+                            playerList[player].addPoints(-50);
+                        }
+                        else if (gnome.spritesheets == gnomeTex)
+                        {
+                            playerList[player].addPoints(10);
+                        }
 
                         gnomeList.Remove(gnome);
                         --numOfGnomes;
