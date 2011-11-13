@@ -18,6 +18,9 @@ namespace Tile_Engine
     {
 
         Player player1;                         //Player one
+        Player player2;
+        Player player3;
+        Player player4;
         MouseState mPreviousMouseState;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -29,6 +32,7 @@ namespace Tile_Engine
         //11-3-11: changed this to be texture arrays, splitting up the different directional animations for use in the updated GameSprite.cs
         Texture2D[] gnomeTex;                     //Gnome textures
         Texture2D[] evilGnomeTex;                 //Evil Gnome Textures
+        Texture2D cursorTex;
         int frameCount = 8;
 
 
@@ -160,7 +164,7 @@ namespace Tile_Engine
             evilGnomeTex[1] = Content.Load<Texture2D>("gnomes-evilFront");
             evilGnomeTex[2] = Content.Load<Texture2D>("gnomes-evilLeft");
             evilGnomeTex[3] = Content.Load<Texture2D>("gnomes-evilRight");
-            cursor = new Cursor(Content.Load<Texture2D>("cursor"), 1); //game cursor
+            cursorTex = Content.Load<Texture2D>("cursor"); //gmae cursor
             player1_sb = Content.Load<Texture2D>("Player1");
 
 
@@ -170,8 +174,30 @@ namespace Tile_Engine
             player1 = new Player(player1_sb, 
                 Tile.home,
                 new Vector2(0, this.graphics.PreferredBackBufferHeight),
-                new Vector2(Tile.cellBorder.Width, Tile.cellBorder.Height));
+                new Vector2(Tile.cellBorder.Width, Tile.cellBorder.Height),
+                new Cursor(cursorTex, 1), PlayerIndex.One);
             playerList.Add(player1);
+
+            player2 = new Player(player1_sb,
+                Tile.home,
+                new Vector2(player1_sb.Width, this.graphics.PreferredBackBufferHeight),
+                new Vector2(Tile.cellBorder.Width * 10, Tile.cellBorder.Height),
+                new Cursor(cursorTex, 1), PlayerIndex.Two);
+            playerList.Add(player2);
+
+            player3 = new Player(player1_sb,
+                Tile.home,
+                new Vector2(player1_sb.Width * 2, this.graphics.PreferredBackBufferHeight),
+                new Vector2(Tile.cellBorder.Width, Tile.cellBorder.Height * 7),
+                new Cursor(cursorTex, 1), PlayerIndex.Three);
+            playerList.Add(player3);
+
+            player4 = new Player(player1_sb,
+                Tile.home,
+                new Vector2(player1_sb.Width * 3, this.graphics.PreferredBackBufferHeight),
+                new Vector2(Tile.cellBorder.Width * 10, Tile.cellBorder.Height * 7),
+                new Cursor(cursorTex, 1), PlayerIndex.Four);
+            playerList.Add(player4);
             
             //increase screen size to fit scoreBoard
 
@@ -231,72 +257,76 @@ namespace Tile_Engine
 
         void UpdateInput()
         {
-            GamePadState currentState = GamePad.GetState(PlayerIndex.One);
 
-            if (currentState.IsConnected)
+            foreach (Player player in playerList)
             {
-                //If Player presses UP on left thumbstick
-                if (currentState.ThumbSticks.Left.Y > 0.0f)
-                {
-                    cursor.updatePosition(Variables.Direction.Up);
-                }
+                GamePadState currentState = GamePad.GetState(player.index);
 
-                //If Player presses DOWN on left thumbstick
-                if (currentState.ThumbSticks.Left.Y < 0.0f)
+                if (currentState.IsConnected)
                 {
-                    cursor.updatePosition(Variables.Direction.Down);
-                }
+                    //If Player presses UP on left thumbstick
+                    if (currentState.ThumbSticks.Left.Y > 0.0f)
+                    {
+                        player.cursor.updatePosition(Variables.Direction.Up);
+                    }
 
-                //If Player presses RIGHT on left thumbstick
-                if (currentState.ThumbSticks.Left.X > 0.0f)
-                {
-                    cursor.updatePosition(Variables.Direction.Right);
-                }
+                    //If Player presses DOWN on left thumbstick
+                    if (currentState.ThumbSticks.Left.Y < 0.0f)
+                    {
+                        player.cursor.updatePosition(Variables.Direction.Down);
+                    }
 
-                //If Player presses LEFT on left thumbstick
-                if (currentState.ThumbSticks.Left.X < 0.0f)
-                {
-                    cursor.updatePosition(Variables.Direction.Left);
-                }
+                    //If Player presses RIGHT on left thumbstick
+                    if (currentState.ThumbSticks.Left.X > 0.0f)
+                    {
+                        player.cursor.updatePosition(Variables.Direction.Right);
+                    }
 
-                // Process input only if connected and button A is pressed.
-                if (currentState.Buttons.A == ButtonState.Pressed)
-                {
-                    int column = cursor.getCurrentColumn();
-                    int row = cursor.getCurrentRow();
-                    gameboard.updateTile(column, row, Variables.Direction.Down);
-                }
-                
-                // Process input only if connected and button X is pressed.
-                else if (currentState.Buttons.X == ButtonState.Pressed)
-                {
-                    int column = cursor.getCurrentColumn();
-                    int row = cursor.getCurrentRow();
-                    gameboard.updateTile(column, row, Variables.Direction.Left);
-                }
+                    //If Player presses LEFT on left thumbstick
+                    if (currentState.ThumbSticks.Left.X < 0.0f)
+                    {
+                        player.cursor.updatePosition(Variables.Direction.Left);
+                    }
 
-                // Process input only if connected and button Y is pressed.
-                else if (currentState.Buttons.Y == ButtonState.Pressed)
-                {
-                    int column = cursor.getCurrentColumn();
-                    int row = cursor.getCurrentRow();
-                    gameboard.updateTile(column, row, Variables.Direction.Up);
-                }
+                    // Process input only if connected and button A is pressed.
+                    if (currentState.Buttons.A == ButtonState.Pressed)
+                    {
+                        int column = player.cursor.getCurrentColumn();
+                        int row = player.cursor.getCurrentRow();
+                        gameboard.updateTile(column, row, Variables.Direction.Down);
+                    }
 
-                // Process input only if connected and button B is pressed.
-                else if (currentState.Buttons.B == ButtonState.Pressed)
-                {
-                    int column = cursor.getCurrentColumn();
-                    int row = cursor.getCurrentRow();
-                    gameboard.updateTile(column, row, Variables.Direction.Right);
-                }
+                    // Process input only if connected and button X is pressed.
+                    else if (currentState.Buttons.X == ButtonState.Pressed)
+                    {
+                        int column = player.cursor.getCurrentColumn();
+                        int row = player.cursor.getCurrentRow();
+                        gameboard.updateTile(column, row, Variables.Direction.Left);
+                    }
 
-                // Process input only if connected and Right Trigger is pulled.
-                else if (currentState.Triggers.Right > 0.5f)
-                {
-                    int column = cursor.getCurrentColumn();
-                    int row = cursor.getCurrentRow();
-                    gameboard.updateTile(column, row, Variables.Direction.None);
+                    // Process input only if connected and button Y is pressed.
+                    else if (currentState.Buttons.Y == ButtonState.Pressed)
+                    {
+                        int column = player.cursor.getCurrentColumn();
+                        int row = player.cursor.getCurrentRow();
+                        gameboard.updateTile(column, row, Variables.Direction.Up);
+                    }
+
+                    // Process input only if connected and button B is pressed.
+                    else if (currentState.Buttons.B == ButtonState.Pressed)
+                    {
+                        int column = player.cursor.getCurrentColumn();
+                        int row = player.cursor.getCurrentRow();
+                        gameboard.updateTile(column, row, Variables.Direction.Right);
+                    }
+
+                    // Process input only if connected and Right Trigger is pulled.
+                    else if (currentState.Triggers.Right > 0.5f)
+                    {
+                        int column = player.cursor.getCurrentColumn();
+                        int row = player.cursor.getCurrentRow();
+                        gameboard.updateTile(column, row, Variables.Direction.None);
+                    }
                 }
             }
 
@@ -452,8 +482,12 @@ namespace Tile_Engine
                         gnome.DrawFrame(spriteBatch, gnome.direction);
                     }
 
-                    cursor.DrawFrame(spriteBatch, Variables.Direction.None);
-                    player1.draw(spriteBatch, scoreFont);
+                    foreach (Player player in playerList)
+                    {
+                        player.cursor.DrawFrame(spriteBatch, Variables.Direction.None);
+                        player.draw(spriteBatch, scoreFont);
+                    }
+                    
                     break;
             }
 

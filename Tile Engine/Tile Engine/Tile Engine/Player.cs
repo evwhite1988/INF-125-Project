@@ -13,11 +13,18 @@ namespace Tile_Engine
         public GameSprite scoreBoard;         //player's personal scoreBoard
         public GameSprite playerBase;
         private static Vector2 OFFSET = new Vector2(80, 70);    //offset used when alligning the point string to the scoreBoard
-
+        public Cursor cursor;                          //Cursor Sprite Object
+        public PlayerIndex index;
 
         //CONSTRUCTOR
-        public Player(Texture2D s_Board, Texture2D p_Base, Vector2 s_coord, Vector2 p_coord)
+        public Player(Texture2D s_Board, Texture2D p_Base, Vector2 s_coord, Vector2 p_coord, Cursor cursor, PlayerIndex index)
         {
+            //Set player index
+            this.index = index;
+
+            //set player cursor
+            this.cursor = cursor;
+            
             //intialize points to zero
             points = 0;
 
