@@ -50,7 +50,7 @@ namespace Tile_Engine
         int gnomeSpawnMin = 500;
         int gnomeSpawnMax = 1000;
 
-        enum GameState { MainMenu, InGame };
+        enum GameState { MainMenu, InGame, Credits, Instructions };
         GameState currentGameState = GameState.MainMenu;
 
         Texture2D wallTexVerticle;
@@ -58,6 +58,7 @@ namespace Tile_Engine
         Random random;
 
         public SpriteFont scoreFont;
+        
 
         //Main menu art files, courtesy of Sage's Scrolls
         MenuSelection[] mainMenuItems;  //MenuSelection class defined below. Tweaked and Reused from past games. 
@@ -67,6 +68,8 @@ namespace Tile_Engine
         Texture2D mainMenuIconLitL;
         Texture2D mainMenuIconLitR;
         Texture2D mainMenuIconLitC;
+
+        Texture2D creditText; //For the credits menu;
 
 
         public Game1()
@@ -166,6 +169,7 @@ namespace Tile_Engine
             evilGnomeTex[3] = Content.Load<Texture2D>("gnomes-evilRight");
             cursorTex = Content.Load<Texture2D>("cursor"); //gmae cursor
             player1_sb = Content.Load<Texture2D>("Player1");
+            creditText = Content.Load<Texture2D>("credits");
 
 
             //Initialize first player now that the texture is loaded. The position is manually set to the Tile with Tile ID -1, Although
@@ -221,6 +225,8 @@ namespace Tile_Engine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            KeyboardState keyboardStateCurrent = Keyboard.GetState(); //Will remove later, for debugging menu
+            GamePadState currentState = GamePad.GetState(PlayerIndex.One);
             switch (currentGameState)
             {
                 case GameState.MainMenu:
@@ -229,13 +235,37 @@ namespace Tile_Engine
                     //currently only the mouse works correctly in navigating the main menu screen. The following allows us to skip to
                     //the actual game by just pressing 'A' on the controller.
 
-                    GamePadState currentState = GamePad.GetState(PlayerIndex.One);
+                    
                     if (currentState.IsConnected)
                     {
                         if (currentState.IsButtonDown(Buttons.A))
                             currentGameState = GameState.InGame;
                     }
                     break;
+
+                case GameState.Credits:
+                    //GamePadState currentState = GamePad.GetState(PlayerIndex.One);
+                    if (currentState.IsConnected)
+                    {
+                        if (currentState.IsButtonDown(Buttons.A))
+                            currentGameState = GameState.MainMenu;
+
+                    }
+                    if (keyboardStateCurrent.IsKeyDown(Keys.Escape))
+                    {
+
+                        currentGameState = GameState.MainMenu;
+                    }
+                    break;
+
+                case GameState.Instructions:
+                    if (keyboardStateCurrent.IsKeyDown(Keys.Escape))
+                    {
+
+                        currentGameState = GameState.MainMenu;
+                    }
+                    break;
+
                     
                 case GameState.InGame:
 
@@ -383,6 +413,11 @@ namespace Tile_Engine
                             mainMenuItems[i].Draw(gameTime, spriteBatch, false);
                     }
                     break;
+                
+                case GameState.Instructions:
+                    spriteBatch.DrawString(scoreFont, "Placeholder", Vector2.One, Color.White); 
+ 
+                    break;
 
                 case GameState.InGame:
                     //Draws the tiles on the gameboard
@@ -452,6 +487,7 @@ namespace Tile_Engine
                             }
                         }
                     }
+                        
 
                     List<Vector4> wallList = gameboard.wallList;
                     foreach (Vector4 wall in wallList)
@@ -487,6 +523,14 @@ namespace Tile_Engine
                         player.cursor.DrawFrame(spriteBatch, Variables.Direction.None);
                         player.draw(spriteBatch, scoreFont);
                     }
+                    
+                    break;
+
+
+                case GameState.Credits:
+                    Vector2 creditPos = new Vector2(graphics.GraphicsDevice.Viewport.Width / 3.5f,
+                     graphics.GraphicsDevice.Viewport.Height / 3.5f);
+                    spriteBatch.Draw(creditText, creditPos,Color.White);
                     
                     break;
             }
@@ -598,7 +642,7 @@ namespace Tile_Engine
                 }
                 else if (selection == "Instructions")
                 {
-                    //currentState = GameState.Instructions;
+                    currentGameState = GameState.Instructions;
                 }
                 else if (selection == "Exit")
                 {
@@ -606,7 +650,7 @@ namespace Tile_Engine
                 }
                 else
                 {
-                    //currentState = GameState.Credits;
+                    currentGameState = GameState.Credits;
                 }
             }
             mPreviousMouseState = mouse;

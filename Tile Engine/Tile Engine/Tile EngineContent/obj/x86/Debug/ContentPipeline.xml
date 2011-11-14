@@ -7,8 +7,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\part1_tileset.xnb</Output>
-      <Time>2011-10-08T18:17:24.7042034-07:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\part1_tileset.xnb</Output>
+      <Time>2011-10-25T23:50:38.1709445-07:00</Time>
     </Item>
     <Item>
       <Source>tile.png</Source>
@@ -16,8 +16,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\tile.xnb</Output>
-      <Time>2011-10-08T18:17:24.7012032-07:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\tile.xnb</Output>
+      <Time>2011-10-25T23:50:38.0189358-07:00</Time>
     </Item>
     <Item>
       <Source>gnomes.png</Source>
@@ -25,8 +25,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes.xnb</Output>
-      <Time>2011-11-07T23:22:55.2645-08:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes.xnb</Output>
+      <Time>2011-11-05T19:38:21.0166327-07:00</Time>
     </Item>
     <Item>
       <Source>arrow_down.jpg</Source>
@@ -34,8 +34,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_down.xnb</Output>
-      <Time>2011-10-21T20:56:23.2100801-07:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_down.xnb</Output>
+      <Time>2011-10-25T23:50:38.1599439-07:00</Time>
     </Item>
     <Item>
       <Source>arrow_left.jpg</Source>
@@ -43,8 +43,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_left.xnb</Output>
-      <Time>2011-10-21T20:56:23.2130803-07:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_left.xnb</Output>
+      <Time>2011-10-25T23:50:38.0949402-07:00</Time>
     </Item>
     <Item>
       <Source>arrow_up.jpg</Source>
@@ -52,8 +52,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_up.xnb</Output>
-      <Time>2011-10-21T20:56:23.20708-07:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_up.xnb</Output>
+      <Time>2011-10-25T23:50:38.2099468-07:00</Time>
     </Item>
     <Item>
       <Source>arrow_right.png</Source>
@@ -61,8 +61,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_right.xnb</Output>
-      <Time>2011-10-21T21:08:38.3381271-07:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_right.xnb</Output>
+      <Time>2011-10-25T23:50:38.196946-07:00</Time>
     </Item>
     <Item>
       <Source>dog-house.png</Source>
@@ -70,8 +70,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\dog-house.xnb</Output>
-      <Time>2011-11-07T23:22:55.3085025-08:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\dog-house.xnb</Output>
+      <Time>2011-11-01T17:56:01.4709019-07:00</Time>
     </Item>
     <Item>
       <Source>cursor.png</Source>
@@ -79,8 +79,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\cursor.xnb</Output>
-      <Time>2011-10-31T23:04:50.3968928-07:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\cursor.xnb</Output>
+      <Time>2011-11-01T17:56:01.1748849-07:00</Time>
     </Item>
     <Item>
       <Source>grass.png</Source>
@@ -88,8 +88,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\grass.xnb</Output>
-      <Time>2011-10-25T23:21:18.492855-07:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\grass.xnb</Output>
+      <Time>2011-10-25T23:50:38.1649442-07:00</Time>
     </Item>
     <Item>
       <Source>spawn.png</Source>
@@ -97,8 +97,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\spawn.xnb</Output>
-      <Time>2011-10-31T23:04:50.4028932-07:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\spawn.xnb</Output>
+      <Time>2011-11-01T17:56:01.4118985-07:00</Time>
     </Item>
     <Item>
       <Source>wall.png</Source>
@@ -106,8 +106,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\wall.xnb</Output>
-      <Time>2011-10-25T23:21:18.4848545-07:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\wall.xnb</Output>
+      <Time>2011-10-25T23:50:38.0529378-07:00</Time>
     </Item>
     <Item>
       <Source>hole.png</Source>
@@ -115,8 +115,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\hole.xnb</Output>
-      <Time>2011-10-25T23:21:18.4948551-07:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\hole.xnb</Output>
+      <Time>2011-10-25T23:50:38.1889456-07:00</Time>
     </Item>
     <Item>
       <Source>gnomes-evil.png</Source>
@@ -124,8 +124,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-evil.xnb</Output>
-      <Time>2011-11-07T23:22:55.2514993-08:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-evil.xnb</Output>
+      <Time>2011-11-05T19:38:21.003632-07:00</Time>
     </Item>
     <Item>
       <Source>wall_horizontal.jpg</Source>
@@ -133,8 +133,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\wall_horizontal.xnb</Output>
-      <Time>2011-11-07T23:22:55.2434988-08:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\wall_horizontal.xnb</Output>
+      <Time>2011-11-01T17:56:01.1458833-07:00</Time>
     </Item>
     <Item>
       <Source>wall_verticle.jpg</Source>
@@ -142,8 +142,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\wall_verticle.xnb</Output>
-      <Time>2011-11-07T23:22:55.2594997-08:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\wall_verticle.xnb</Output>
+      <Time>2011-11-01T17:56:01.4178988-07:00</Time>
     </Item>
     <Item>
       <Source>Player1.png</Source>
@@ -151,8 +151,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\Player1.xnb</Output>
-      <Time>2011-11-07T23:22:55.3005021-08:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\Player1.xnb</Output>
+      <Time>2011-11-01T17:56:01.1668845-07:00</Time>
     </Item>
     <Item>
       <Source>button-dim-left.png</Source>
@@ -160,8 +160,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-dim-left.xnb</Output>
-      <Time>2011-11-07T23:22:55.247499-08:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-dim-left.xnb</Output>
+      <Time>2011-11-01T17:56:01.1518836-07:00</Time>
     </Item>
     <Item>
       <Source>button-dim-middle.png</Source>
@@ -169,8 +169,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-dim-middle.xnb</Output>
-      <Time>2011-11-07T23:22:55.3025022-08:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-dim-middle.xnb</Output>
+      <Time>2011-11-01T17:56:01.2128871-07:00</Time>
     </Item>
     <Item>
       <Source>button-dim-right.png</Source>
@@ -178,8 +178,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-dim-right.xnb</Output>
-      <Time>2011-11-07T23:22:55.2705003-08:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-dim-right.xnb</Output>
+      <Time>2011-11-01T17:56:01.0898801-07:00</Time>
     </Item>
     <Item>
       <Source>button-lit-left.png</Source>
@@ -187,8 +187,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-lit-left.xnb</Output>
-      <Time>2011-11-07T23:22:55.3065024-08:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-lit-left.xnb</Output>
+      <Time>2011-11-01T17:56:01.4248992-07:00</Time>
     </Item>
     <Item>
       <Source>button-lit-middle.png</Source>
@@ -196,8 +196,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-lit-middle.xnb</Output>
-      <Time>2011-11-07T23:22:55.2735005-08:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-lit-middle.xnb</Output>
+      <Time>2011-11-01T17:56:01.0828797-07:00</Time>
     </Item>
     <Item>
       <Source>button-lit-right.png</Source>
@@ -205,8 +205,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-lit-right.xnb</Output>
-      <Time>2011-11-07T23:22:55.2975019-08:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-lit-right.xnb</Output>
+      <Time>2011-11-01T17:56:01.158884-07:00</Time>
     </Item>
     <Item>
       <Source>gnomesBack.png</Source>
@@ -214,8 +214,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomesBack.xnb</Output>
-      <Time>2011-11-07T23:22:55.2955018-08:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomesBack.xnb</Output>
+      <Time>2011-11-05T19:38:21.0656355-07:00</Time>
     </Item>
     <Item>
       <Source>gnomesLeft.png</Source>
@@ -223,8 +223,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomesLeft.xnb</Output>
-      <Time>2011-11-07T23:22:55.2895014-08:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomesLeft.xnb</Output>
+      <Time>2011-11-05T19:38:21.0476345-07:00</Time>
     </Item>
     <Item>
       <Source>gnomesRight.png</Source>
@@ -232,8 +232,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomesRight.xnb</Output>
-      <Time>2011-11-07T23:22:55.2564995-08:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomesRight.xnb</Output>
+      <Time>2011-11-05T19:38:21.0096323-07:00</Time>
     </Item>
     <Item>
       <Source>gnomesFront.png</Source>
@@ -241,8 +241,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomesFront.xnb</Output>
-      <Time>2011-11-07T23:22:55.2304981-08:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomesFront.xnb</Output>
+      <Time>2011-11-05T19:38:20.9976316-07:00</Time>
     </Item>
     <Item>
       <Source>gnomes-evilLeft.png</Source>
@@ -250,8 +250,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-evilLeft.xnb</Output>
-      <Time>2011-11-07T23:22:55.2845011-08:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-evilLeft.xnb</Output>
+      <Time>2011-11-05T19:38:21.038634-07:00</Time>
     </Item>
     <Item>
       <Source>gnomes-evilFront.png</Source>
@@ -259,8 +259,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-evilFront.xnb</Output>
-      <Time>2011-11-07T23:22:55.2775007-08:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-evilFront.xnb</Output>
+      <Time>2011-11-05T19:38:21.021633-07:00</Time>
     </Item>
     <Item>
       <Source>gnomes-evilBack.png</Source>
@@ -268,8 +268,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-evilBack.xnb</Output>
-      <Time>2011-11-07T23:22:55.2935017-08:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-evilBack.xnb</Output>
+      <Time>2011-11-05T19:38:21.056635-07:00</Time>
     </Item>
     <Item>
       <Source>gnomes-evilRight.png</Source>
@@ -277,8 +277,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-evilRight.xnb</Output>
-      <Time>2011-11-07T23:22:55.3045023-08:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-evilRight.xnb</Output>
+      <Time>2011-11-05T19:38:21.0716359-07:00</Time>
     </Item>
     <Item>
       <Source>pointFont.spritefont</Source>
@@ -286,8 +286,17 @@
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\pointFont.xnb</Output>
-      <Time>2011-11-07T23:22:55.2675002-08:00</Time>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\pointFont.xnb</Output>
+      <Time>2011-11-01T17:56:01.4308996-07:00</Time>
+    </Item>
+    <Item>
+      <Source>credits.png</Source>
+      <Name>credits</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\credits.xnb</Output>
+      <Time>2011-11-12T19:55:10.9366028-08:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
@@ -295,10 +304,10 @@
       <TargetProfile>Reach</TargetProfile>
       <BuildConfiguration>Debug</BuildConfiguration>
       <CompressContent>false</CompressContent>
-      <RootDirectory>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile EngineContent\</RootDirectory>
-      <LoggerRootDirectory>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\</LoggerRootDirectory>
-      <IntermediateDirectory>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile EngineContent\obj\x86\Debug\</IntermediateDirectory>
-      <OutputDirectory>C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\</OutputDirectory>
+      <RootDirectory>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile EngineContent\</RootDirectory>
+      <LoggerRootDirectory>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile EngineContent\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>
@@ -327,7 +336,7 @@
       </Assembly>
       <Assembly>
         <Key>C:\Windows\Microsoft.Net\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
-        <Value>2011-10-01T11:39:49.2684459-07:00</Value>
+        <Value>2010-10-12T21:31:45.1633313-07:00</Value>
       </Assembly>
     </Assemblies>
   </Asset>

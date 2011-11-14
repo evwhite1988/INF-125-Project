@@ -26,7 +26,7 @@ namespace Tile_Engine
 
         static public Rectangle getHomeTexture()
         {
-            return new Rectangle(0, 0, 200, 200);
+            return new Rectangle(0, 0, 64, 64);
         }
 
     }
