@@ -13,6 +13,7 @@ namespace Tile_Engine
 
         static private int cellHeight = 64;
         static private int cellWidth = 64;
+        private Texture2D cellTexture;
         public bool isSpawn;
         public bool isBase;
 
@@ -25,27 +26,16 @@ namespace Tile_Engine
 
         private Vector2 position { get; set; }// (row, column)
 
-       
-        public Cell(int tileID)
-        {
-            setTileID(tileID);
-        }
 
-        public Cell()
+        public Cell(int row, int col, int tileID)
         {
-            size = new Vector2(cellHeight, cellWidth);
-            isBase = false;
-            isSpawn = false;
-        }
-
-        public Cell(int row, int col)
-        {
+            setTileID(tileID, Tile.cellBorder);
             size = new Vector2(cellHeight, cellWidth);
             position = new Vector2(row, col);
             coordinates = positionToCoord(row, col);
         }
 
-        static public Rectangle getTexture()
+        static public Rectangle getRecTexture()
         {
             return new Rectangle(32, 0, 32, 32);
         }
@@ -97,7 +87,7 @@ namespace Tile_Engine
             return TileID;
         }
 
-        public void setTileID(int id)
+        public void setTileID(int id, Texture2D texture)
         {
             TileID = id;
             if (id == -2)
@@ -110,6 +100,13 @@ namespace Tile_Engine
                 isSpawn = false;
                 isBase = true;
             }
+
+            cellTexture = texture;
+        }
+
+        public Texture2D getTexture()
+        {
+            return cellTexture;
         }
     }
 }

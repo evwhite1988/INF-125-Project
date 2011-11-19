@@ -11,10 +11,6 @@ namespace Tile_Engine
     {
         static public Texture2D textureSet;
         static public Texture2D cellBorder;
-        static public Texture2D arrowUp;
-        static public Texture2D arrowDown;
-        static public Texture2D arrowLeft;
-        static public Texture2D arrowRight;
         static public Texture2D home;
         static public Texture2D hole;
         static public Texture2D spawn;

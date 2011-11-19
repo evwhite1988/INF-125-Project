@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Tile_Engine
 {
@@ -42,14 +43,14 @@ namespace Tile_Engine
                         (y == 5 && x == 4) ||
                         (y == 5 && x == 7))
                     {
-                        thisRow.Columns.Add(new Cell(-2));
+                        thisRow.Columns.Add(new Cell(y, x, -2));
                     }
                     else if ((y == 1 && (x == 1 || x == 10)) || (y == 7 && (x == 1 || x == 10)))
                     {
-                        thisRow.Columns.Add(new Cell(-1));
+                        thisRow.Columns.Add(new Cell(y, x, -1));
                         baseList.Add(new Vector2(x, y));
                     }
-                    else thisRow.Columns.Add(new Cell(0));
+                    else thisRow.Columns.Add(new Cell(y, x, 0));
                 }
                 Rows.Add(thisRow);
             }
@@ -70,7 +71,7 @@ namespace Tile_Engine
         }
 
 
-        public void updateTile(int column, int row, Variables.Direction direction)
+        public void updateTile(int column, int row, Variables.Direction direction, Texture2D texture)
         {
             //int column = (int) position.X / Variables.cellWidth;
             //int row = (int) position.Y / Variables.cellHeigth;
@@ -84,30 +85,28 @@ namespace Tile_Engine
                 switch (direction)
                 {
                     case Variables.Direction.None:
-                        Rows[row].Columns[column].setTileID(0);
+                        Rows[row].Columns[column].setTileID(0, texture);
                         break;
                     case Variables.Direction.Up:
-                        Rows[row].Columns[column].setTileID(1);
+                        Rows[row].Columns[column].setTileID(1, texture);
                         break;
                     case Variables.Direction.Right:
-                        Rows[row].Columns[column].setTileID(2);
+                        Rows[row].Columns[column].setTileID(2, texture);
                         break;
                     case Variables.Direction.Down:
-                        Rows[row].Columns[column].setTileID(3);
+                        Rows[row].Columns[column].setTileID(3, texture);
                         break;
                     case Variables.Direction.Left:
-                        Rows[row].Columns[column].setTileID(4);
+                        Rows[row].Columns[column].setTileID(4, texture);
                         break;
                         }
             }
         }
 
-        public void updateTile(Vector2 position, Variables.Direction direction)
+        public void updateTile(Vector2 position, Variables.Direction direction, Texture2D texture)
         {
             int column = (int) position.X / Variables.cellWidth;
             int row = (int) position.Y / Variables.cellHeigth;
-
-            Console.WriteLine("Position == " + position.X + ", " + position.Y);
 
             Cell cell = Rows[row].Columns[column];
 
@@ -116,37 +115,22 @@ namespace Tile_Engine
                 switch (direction)
                 {
                     case Variables.Direction.None:
-                        Rows[row].Columns[column].setTileID(0);
+                        Rows[row].Columns[column].setTileID(0, texture);
                         break;
                     case Variables.Direction.Up:
-                        Rows[row].Columns[column].setTileID(1);
+                        Rows[row].Columns[column].setTileID(1, texture);
                         break;
                     case Variables.Direction.Right:
-                        Rows[row].Columns[column].setTileID(2);
+                        Rows[row].Columns[column].setTileID(2, texture);
                         break;
                     case Variables.Direction.Down:
-                        Rows[row].Columns[column].setTileID(3);
+                        Rows[row].Columns[column].setTileID(3, texture);
                         break;
                     case Variables.Direction.Left:
-                        Rows[row].Columns[column].setTileID(4);
+                        Rows[row].Columns[column].setTileID(4, texture);
                         break;
                 }
             }
-        }
-
-        public void updateTile(Vector2 position)
-        {
-            int column = (int) position.X / Variables.cellWidth;
-            int row = (int) position.Y / Variables.cellHeigth;
-
-            Cell cell = Rows[row].Columns[column];
-
-            int tileID = cell.getTileID();
-            if (tileID == 4)
-            {
-                Rows[row].Columns[column].setTileID(1);
-            }
-            else Rows[row].Columns[column].setTileID(tileID + 1);
         }
 
         public Cell getCell(int row, int column)

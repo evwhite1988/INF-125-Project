@@ -24,19 +24,19 @@ namespace Tile_Engine
         MouseState mPreviousMouseState;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Gameboard gameboard = new Gameboard();  //Gameboard object
+        Gameboard gameboard;                    //Gameboard object
         List<Gnome> gnomeList { get; set; }     //List of Gnome Sprite Objects    
         List<Player> playerList;
-        Cursor cursor;                          //Cursor Sprite Object
 
         //11-3-11: changed this to be texture arrays, splitting up the different directional animations for use in the updated GameSprite.cs
         Texture2D[] gnomeTex;                     //Gnome textures
         Texture2D[] evilGnomeTex;                 //Evil Gnome Textures
+        Texture2D[] scoreboards;                  //Player scoreBoard textures
         Texture2D cursorTex;
+        Texture2D background;
         int frameCount = 8;
 
 
-        Texture2D player1_sb;                    //Player1's score board
         int evilGnomeSpawnTime;                 //Time between evil-gnome spawns
         int evilGnomeSpawnTimeRemaining; 
         int gnomeSpawnTime;                     //Time between gnome spawns
@@ -90,11 +90,6 @@ namespace Tile_Engine
             this.IsMouseVisible = true;
             mPreviousMouseState = Mouse.GetState();
 
-            //Window fits to the gameboard.
-            this.graphics.PreferredBackBufferWidth = gameboard.numberOfColumns * Variables.cellWidth;
-            this.graphics.PreferredBackBufferHeight = (gameboard.numberOfRows * Variables.cellHeigth);
-
-
             random = new Random();
             gnomeList = new List<Gnome>();
             playerList = new List<Player>();
@@ -112,6 +107,7 @@ namespace Tile_Engine
             mainMenuItems = new MenuSelection[4];
             gnomeTex = new Texture2D[4];
             evilGnomeTex = new Texture2D[4];
+            scoreboards = new Texture2D[4];
 
             base.Initialize();
         }
@@ -148,15 +144,19 @@ namespace Tile_Engine
 
             #endregion
 
+            background = Content.Load<Texture2D>("background");
+
             Tile.textureSet = Content.Load<Texture2D>("part1_tileset");
             Tile.cellBorder = Content.Load<Texture2D>("grass");
-            Tile.arrowUp = Content.Load<Texture2D>("arrow_up");
-            Tile.arrowDown = Content.Load<Texture2D>("arrow_down");
-            Tile.arrowLeft = Content.Load<Texture2D>("arrow_left");
-            Tile.arrowRight = Content.Load<Texture2D>("arrow_right");
             Tile.home = Content.Load<Texture2D>("dog-house");
             Tile.hole = Content.Load<Texture2D>("hole");
             Tile.spawn = Content.Load<Texture2D>("spawn");
+
+            //Window fits to the gameboard.
+            gameboard = new Gameboard();
+            this.graphics.PreferredBackBufferWidth = gameboard.numberOfColumns * Variables.cellWidth;
+            this.graphics.PreferredBackBufferHeight = (gameboard.numberOfRows * Variables.cellHeigth);
+
             wallTexHorizontal = Content.Load<Texture2D>("wall_horizontal");
             wallTexVerticle = Content.Load<Texture2D>("wall_verticle");
             gnomeTex[0] = Content.Load<Texture2D>("gnomesBack");
@@ -168,44 +168,44 @@ namespace Tile_Engine
             evilGnomeTex[2] = Content.Load<Texture2D>("gnomes-evilLeft");
             evilGnomeTex[3] = Content.Load<Texture2D>("gnomes-evilRight");
             cursorTex = Content.Load<Texture2D>("cursor"); //gmae cursor
-            player1_sb = Content.Load<Texture2D>("Player1");
+
+            for (int i = 0; i < 4; i++)
+            {
+                scoreboards[i] = Content.Load<Texture2D>("Player" + (i + 1));
+            }
+
             creditText = Content.Load<Texture2D>("credits");
 
 
             //Initialize first player now that the texture is loaded. The position is manually set to the Tile with Tile ID -1, Although
             //this needs to be revised to place it at a specified home base. 
 
-            player1 = new Player(player1_sb, 
-                Tile.home,
-                new Vector2(0, this.graphics.PreferredBackBufferHeight),
+            player1 = new Player(Tile.home,
                 new Vector2(Tile.cellBorder.Width, Tile.cellBorder.Height),
                 new Cursor(cursorTex, 1), PlayerIndex.One);
             playerList.Add(player1);
 
-            player2 = new Player(player1_sb,
-                Tile.home,
-                new Vector2(player1_sb.Width, this.graphics.PreferredBackBufferHeight),
+            player2 = new Player(Tile.home,
                 new Vector2(Tile.cellBorder.Width * 10, Tile.cellBorder.Height),
                 new Cursor(cursorTex, 1), PlayerIndex.Two);
             playerList.Add(player2);
 
-            player3 = new Player(player1_sb,
-                Tile.home,
-                new Vector2(player1_sb.Width * 2, this.graphics.PreferredBackBufferHeight),
+            player3 = new Player(Tile.home,
                 new Vector2(Tile.cellBorder.Width, Tile.cellBorder.Height * 7),
                 new Cursor(cursorTex, 1), PlayerIndex.Three);
             playerList.Add(player3);
 
-            player4 = new Player(player1_sb,
-                Tile.home,
-                new Vector2(player1_sb.Width * 3, this.graphics.PreferredBackBufferHeight),
+            player4 = new Player(Tile.home,
                 new Vector2(Tile.cellBorder.Width * 10, Tile.cellBorder.Height * 7),
                 new Cursor(cursorTex, 1), PlayerIndex.Four);
             playerList.Add(player4);
-            
-            //increase screen size to fit scoreBoard
 
-            this.graphics.PreferredBackBufferHeight = this.graphics.PreferredBackBufferHeight + player1_sb.Height;
+            foreach (Player p in playerList)
+                p.LoadContent(this.Content, this.graphics);
+
+
+            //increase screen size to fit scoreBoard
+            this.graphics.PreferredBackBufferHeight = this.graphics.PreferredBackBufferHeight + scoreboards[0].Height;
 
         }
 
@@ -287,109 +287,9 @@ namespace Tile_Engine
 
         void UpdateInput()
         {
-
             foreach (Player player in playerList)
             {
-                GamePadState currentState = GamePad.GetState(player.index);
-
-                if (currentState.IsConnected)
-                {
-                    //If Player presses UP on left thumbstick
-                    if (currentState.ThumbSticks.Left.Y > 0.0f)
-                    {
-                        player.cursor.updatePosition(Variables.Direction.Up);
-                    }
-
-                    //If Player presses DOWN on left thumbstick
-                    if (currentState.ThumbSticks.Left.Y < 0.0f)
-                    {
-                        player.cursor.updatePosition(Variables.Direction.Down);
-                    }
-
-                    //If Player presses RIGHT on left thumbstick
-                    if (currentState.ThumbSticks.Left.X > 0.0f)
-                    {
-                        player.cursor.updatePosition(Variables.Direction.Right);
-                    }
-
-                    //If Player presses LEFT on left thumbstick
-                    if (currentState.ThumbSticks.Left.X < 0.0f)
-                    {
-                        player.cursor.updatePosition(Variables.Direction.Left);
-                    }
-
-                    // Process input only if connected and button A is pressed.
-                    if (currentState.Buttons.A == ButtonState.Pressed)
-                    {
-                        int column = player.cursor.getCurrentColumn();
-                        int row = player.cursor.getCurrentRow();
-                        gameboard.updateTile(column, row, Variables.Direction.Down);
-                    }
-
-                    // Process input only if connected and button X is pressed.
-                    else if (currentState.Buttons.X == ButtonState.Pressed)
-                    {
-                        int column = player.cursor.getCurrentColumn();
-                        int row = player.cursor.getCurrentRow();
-                        gameboard.updateTile(column, row, Variables.Direction.Left);
-                    }
-
-                    // Process input only if connected and button Y is pressed.
-                    else if (currentState.Buttons.Y == ButtonState.Pressed)
-                    {
-                        int column = player.cursor.getCurrentColumn();
-                        int row = player.cursor.getCurrentRow();
-                        gameboard.updateTile(column, row, Variables.Direction.Up);
-                    }
-
-                    // Process input only if connected and button B is pressed.
-                    else if (currentState.Buttons.B == ButtonState.Pressed)
-                    {
-                        int column = player.cursor.getCurrentColumn();
-                        int row = player.cursor.getCurrentRow();
-                        gameboard.updateTile(column, row, Variables.Direction.Right);
-                    }
-
-                    // Process input only if connected and Right Trigger is pulled.
-                    else if (currentState.Triggers.Right > 0.5f)
-                    {
-                        int column = player.cursor.getCurrentColumn();
-                        int row = player.cursor.getCurrentRow();
-                        gameboard.updateTile(column, row, Variables.Direction.None);
-                    }
-                }
-            }
-
-
-            KeyboardState keyboardStateCurrent = Keyboard.GetState(); //current state of the keyboard
-            MouseState mouseStateCurrent = Mouse.GetState();  //current state of the mouse
-
-            //If player presses LEFT key
-            if (keyboardStateCurrent.IsKeyDown(Keys.Left))
-            {
-                Vector2 mousePosition = new Vector2(mouseStateCurrent.X, mouseStateCurrent.Y);
-                gameboard.updateTile(mousePosition, Variables.Direction.Left);
-            }
-
-            //If player Presses UP key
-            else if (keyboardStateCurrent.IsKeyDown(Keys.Up))
-            {
-                Vector2 mousePosition = new Vector2(mouseStateCurrent.X, mouseStateCurrent.Y);
-                gameboard.updateTile(mousePosition, Variables.Direction.Up);
-            }
-
-            //If player Presses RIGHT key
-            else if (keyboardStateCurrent.IsKeyDown(Keys.Right))
-            {
-                Vector2 mousePosition = new Vector2(mouseStateCurrent.X, mouseStateCurrent.Y);
-                gameboard.updateTile(mousePosition, Variables.Direction.Right);
-            }
-
-            //If player presses DOWN key
-            else if (keyboardStateCurrent.IsKeyDown(Keys.Down))
-            {
-                Vector2 mousePosition = new Vector2(mouseStateCurrent.X, mouseStateCurrent.Y);
-                gameboard.updateTile(mousePosition, Variables.Direction.Down);
+                player.UpdateInput(gameboard);
             }
         }
 
@@ -401,6 +301,7 @@ namespace Tile_Engine
         {
             this.GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin();
+            spriteBatch.Draw(background, new Rectangle(0, 0, this.graphics.PreferredBackBufferWidth, this.graphics.PreferredBackBufferHeight), Color.White);
 
             switch (currentGameState)
             {
@@ -441,49 +342,13 @@ namespace Tile_Engine
                                 Tile.getTexture(),
                                 Color.White);
                             }
-
-                            //Commented Out to work on implemented the player home base in the Player class
-                            /*If tileID = -1, use home tile
-                            else if (tileID == -1)
+                            else
                             {
                                 spriteBatch.Draw(
-                                Tile.home,
-                                new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
-                                Tile.getHomeTexture(),
-                                Color.White);
-                            }*/
-
-                            else if (tileID == 1)
-                            {
-                                spriteBatch.Draw(
-                                Tile.arrowUp,
-                                new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
-                                Tile.getTexture(),
-                                Color.White);
-                            }
-                            else if (tileID == 2)
-                            {
-                                spriteBatch.Draw(
-                                Tile.arrowRight,
-                                new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
-                                Tile.getTexture(),
-                                Color.White);
-                            }
-                            else if (tileID == 3)
-                            {
-                                spriteBatch.Draw(
-                                Tile.arrowDown,
-                                new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
-                                Tile.getTexture(),
-                                Color.White);
-                            }
-                            else if (tileID == 4)
-                            {
-                                spriteBatch.Draw(
-                                Tile.arrowLeft,
-                                new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
-                                Tile.getTexture(),
-                                Color.White);
+                                    cell.getTexture(),
+                                    new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
+                                    Tile.getTexture(),
+                                    Color.White);
                             }
                         }
                     }
@@ -541,8 +406,6 @@ namespace Tile_Engine
 
             // TODO: Add your drawing code here
 
-
-
             base.Draw(gameTime);
         }
 
@@ -556,13 +419,6 @@ namespace Tile_Engine
 
                 if (evilGnomeSpawnTimeRemaining < 0)
                 {
-                    //foreach (Vector2 spawnPoint in spawnPoints)
-                    //{
-                    //    gnomeList.Add(new Gnome(evilGnomeTex, 1, (int)spawnPoint.Y, (int)spawnPoint.X));
-                    //    numOfGnomes++;
-                    //}
-
-                    //Gnome spawn from a random spawn point, intead of all four at once.
                     int spawnPoint = random.Next(4);
                     gnomeList.Add(new Gnome(evilGnomeTex, frameCount, (int)spawnPoints[spawnPoint].Y, (int)spawnPoints[spawnPoint].X));
 
@@ -570,13 +426,6 @@ namespace Tile_Engine
                 }
                 else if (gnomeSpawnTimeRemaining < 0)
                 {
-                    //foreach (Vector2 spawnPoint in spawnPoints)
-                    //{
-                    //    gnomeList.Add(new Gnome(gnomeTex, 1, (int)spawnPoint.Y, (int)spawnPoint.X));
-                    //    numOfGnomes++;
-                    //}
-
-                    //Gnome spawn from a random spawn point, intead of all four at once.
                     int spawnPoint = random.Next(4);
                     gnomeList.Add(new Gnome(gnomeTex, frameCount, (int)spawnPoints[spawnPoint].Y, (int)spawnPoints[spawnPoint].X));
 
