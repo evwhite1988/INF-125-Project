@@ -27,8 +27,8 @@ namespace Tile_Engine
         {
             this.coord = new Vector2(0, 0);
             direction = Variables.Direction.Right;
-            this.spriteWidth = 36;
-            this.spriteHeight = 64;
+            this.spriteWidth = 35;
+            this.spriteHeight = 65;
         }
 
         //CONSTRUCTOR
@@ -37,8 +37,8 @@ namespace Tile_Engine
         {
             this.coord = new Vector2(column * Variables.cellWidth, row * Variables.cellHeigth);
             direction = Variables.Direction.Right;
-            this.spriteWidth = 36;
-            this.spriteHeight = 64;
+            this.spriteWidth = 35;
+            this.spriteHeight = 65;
         }
 
         //Updates the position of the Sprite on the gameboard
