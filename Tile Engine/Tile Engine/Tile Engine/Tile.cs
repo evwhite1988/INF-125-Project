@@ -11,7 +11,10 @@ namespace Tile_Engine
     {
         static public Texture2D textureSet;
         static public Texture2D cellBorder;
-        static public Texture2D home;
+        static public Texture2D player1Home;
+        static public Texture2D player2Home;
+        static public Texture2D player3Home;
+        static public Texture2D player4Home;
         static public Texture2D hole;
         static public Texture2D spawn;
 

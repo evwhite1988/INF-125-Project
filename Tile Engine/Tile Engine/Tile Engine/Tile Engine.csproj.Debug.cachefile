@@ -28,7 +28,6 @@ Content\gnomes-evilFront.xnb
 Content\gnomes-evilBack.xnb
 Content\gnomes-evilRight.xnb
 Content\credits.xnb
-Content\pointFont.xnb
 Content\Player2.xnb
 Content\Player3.xnb
 Content\Player4.xnb
@@ -51,3 +50,7 @@ Content\arrow_down_1.xnb
 Content\wall_verticle.xnb
 Content\wall_horizontal.xnb
 Content\background.xnb
+Content\pointFont.xnb
+Content\dog-house-p2.xnb
+Content\dog-house-p3.xnb
+Content\dog-house-p4.xnb

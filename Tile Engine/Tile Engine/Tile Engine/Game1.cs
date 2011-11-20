@@ -148,7 +148,10 @@ namespace Tile_Engine
 
             Tile.textureSet = Content.Load<Texture2D>("part1_tileset");
             Tile.cellBorder = Content.Load<Texture2D>("grass");
-            Tile.home = Content.Load<Texture2D>("dog-house");
+            Tile.player1Home = Content.Load<Texture2D>("dog-house");
+            Tile.player2Home = Content.Load<Texture2D>("dog-house-p2");
+            Tile.player3Home = Content.Load<Texture2D>("dog-house-p3");
+            Tile.player4Home = Content.Load<Texture2D>("dog-house-p4");
             Tile.hole = Content.Load<Texture2D>("hole");
             Tile.spawn = Content.Load<Texture2D>("spawn");
 
@@ -180,22 +183,22 @@ namespace Tile_Engine
             //Initialize first player now that the texture is loaded. The position is manually set to the Tile with Tile ID -1, Although
             //this needs to be revised to place it at a specified home base. 
 
-            player1 = new Player(Tile.home,
+            player1 = new Player(Tile.player1Home,
                 new Vector2(Tile.cellBorder.Width, Tile.cellBorder.Height),
                 new Cursor(cursorTex, 1), PlayerIndex.One);
             playerList.Add(player1);
 
-            player2 = new Player(Tile.home,
+            player2 = new Player(Tile.player2Home,
                 new Vector2(Tile.cellBorder.Width * 10, Tile.cellBorder.Height),
                 new Cursor(cursorTex, 1), PlayerIndex.Two);
             playerList.Add(player2);
 
-            player3 = new Player(Tile.home,
+            player3 = new Player(Tile.player3Home,
                 new Vector2(Tile.cellBorder.Width, Tile.cellBorder.Height * 7),
                 new Cursor(cursorTex, 1), PlayerIndex.Three);
             playerList.Add(player3);
 
-            player4 = new Player(Tile.home,
+            player4 = new Player(Tile.player4Home,
                 new Vector2(Tile.cellBorder.Width * 10, Tile.cellBorder.Height * 7),
                 new Cursor(cursorTex, 1), PlayerIndex.Four);
             playerList.Add(player4);
