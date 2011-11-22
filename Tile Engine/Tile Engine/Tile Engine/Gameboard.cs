@@ -45,7 +45,8 @@ namespace Tile_Engine
                     {
                         thisRow.Columns.Add(new Cell(y, x, -2));
                     }
-                    else if ((y == 1 && (x == 1 || x == 10)) || (y == 7 && (x == 1 || x == 10)))
+                    else if ((y == 1 && (x == 1 || x == 10)) || 
+                            (y == 7 && (x == 1 || x == 10)))
                     {
                         thisRow.Columns.Add(new Cell(y, x, -1));
                         baseList.Add(new Vector2(x, y));
@@ -173,6 +174,30 @@ namespace Tile_Engine
             }
 
             return baseList;
+        }
+
+        public void changeSpawns()
+        {
+            Random random = new Random();
+
+            for (int y = 0; y < numberOfRows; y++)
+            {
+                for (int x = 0; x < numberOfColumns; x++)
+                {
+                    Cell cell = Rows[y].Columns[x];
+                    if (cell.getTileID() == -2)
+                        cell.setTileID(0, Tile.cellBorder);       
+                }
+            }
+
+            for (int i = 0; i < 4; i++)
+            {
+                Cell c = Rows[random.Next(Variables.rows)].Columns[random.Next(Variables.columns)];
+                if (c.getTileID() != -1)
+                    c.setTileID(-2, Tile.spawn);
+                else
+                    --i;
+            }
         }
 
         public Vector2 getBase(int player)

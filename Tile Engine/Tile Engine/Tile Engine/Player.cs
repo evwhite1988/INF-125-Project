@@ -141,7 +141,7 @@ namespace Tile_Engine
             }
 
             #region NoXboxController
-            /*FOLLOWING SECTION IS TO BE REMOVED, IT IS THE PLAYER 1 MOUSE DEBUG TOOL FOR DEVELOPER WITHOUT XBOX CONTROLLER
+            //FOLLOWING SECTION IS TO BE REMOVED, IT IS THE PLAYER 1 MOUSE DEBUG TOOL FOR DEVELOPER WITHOUT XBOX CONTROLLER
             //*************************************************************************************************************
 
             KeyboardState keyboardStateCurrent = Keyboard.GetState(); //current state of the keyboard
@@ -209,7 +209,7 @@ namespace Tile_Engine
             }
         }
 
-        /*FOLLOWING SECTION IS TO BE REMOVED, IT IS THE PLAYER 1 MOUSE DEBUG TOOL FOR DEVELOPER WITHOUT XBOX CONTROLLER
+        //FOLLOWING SECTION IS TO BE REMOVED, IT IS THE PLAYER 1 MOUSE DEBUG TOOL FOR DEVELOPER WITHOUT XBOX CONTROLLER
         //*************************************************************************************************************
         private void addArrow(Vector2 position, Variables.Direction dir, Gameboard gb, int dirtex)
         {

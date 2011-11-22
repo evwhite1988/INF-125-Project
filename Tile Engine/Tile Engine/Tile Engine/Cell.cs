@@ -100,6 +100,11 @@ namespace Tile_Engine
                 isSpawn = false;
                 isBase = true;
             }
+            else
+            {
+                isSpawn = false;
+                isBase = false;
+            }
 
             cellTexture = texture;
         }

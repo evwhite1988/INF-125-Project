@@ -13,5 +13,12 @@ namespace Tile_Engine
         public static int cellWidth = 64;
         public static int cellHeigth = 64;
         public enum Direction { Up = 0, Down = 1, Left = 2, Right = 3, None = -1 }; //Directions for movement
+
+        public static Direction randomDirection()
+        {
+            Random random = new Random();
+            Direction d = (Direction)random.Next(4);
+            return d;
+        }
     }
 }

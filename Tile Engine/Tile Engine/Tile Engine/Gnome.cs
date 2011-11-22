@@ -18,7 +18,8 @@ namespace Tile_Engine
         public bool changeState = false;
         public int lastColumn = 0;
         public int lastRow = 0;
-        private static int FRAMES_PER_SEC = 15;
+        public int speed;
+        private static int FRAMES_PER_SEC = 10;
 
         
 
@@ -32,13 +33,14 @@ namespace Tile_Engine
         }
 
         //CONSTRUCTOR
-        public Gnome(Texture2D[] spritesheets, int framecount, int row, int column)
+        public Gnome(Texture2D[] spritesheets, int framecount, int row, int column, int speed)
             : base(spritesheets, framecount, FRAMES_PER_SEC)
         {
             this.coord = new Vector2(column * Variables.cellWidth, row * Variables.cellHeigth);
-            direction = Variables.Direction.Right;
+            direction = Variables.randomDirection();
             this.spriteWidth = 35;
             this.spriteHeight = 65;
+            this.speed = speed;
         }
 
         //Updates the position of the Sprite on the gameboard
@@ -49,22 +51,22 @@ namespace Tile_Engine
             
             if (this.direction == Variables.Direction.Right)
             {
-                this.coord = new Vector2(this.coord.X + Variables.speed, this.coord.Y);
+                this.coord = new Vector2(this.coord.X + speed, this.coord.Y);
             }
 
             if (this.direction == Variables.Direction.Left)
             {
-                this.coord = new Vector2(this.coord.X - Variables.speed, this.coord.Y);
+                this.coord = new Vector2(this.coord.X - speed, this.coord.Y);
             }
 
             if (this.direction == Variables.Direction.Down)
             {
-                this.coord = new Vector2(this.coord.X, this.coord.Y + Variables.speed);
+                this.coord = new Vector2(this.coord.X, this.coord.Y + speed);
             }
 
             if (this.direction == Variables.Direction.Up)
             {
-                this.coord = new Vector2(this.coord.X, this.coord.Y - Variables.speed);
+                this.coord = new Vector2(this.coord.X, this.coord.Y - speed);
             }
 
             UpdateFrame((float)gameTime.ElapsedGameTime.TotalSeconds);
