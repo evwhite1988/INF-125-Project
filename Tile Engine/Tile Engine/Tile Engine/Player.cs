@@ -138,6 +138,15 @@ namespace Tile_Engine
                             gameboard.updateTile(column, row, Variables.Direction.None, Tile.cellBorder);
                     }
                 }
+
+                // Process input only if connected and Left Trigger is pulled.
+                else if (currentState.Triggers.Left > 0.5f)
+                {
+                    foreach (Cell temp in p_arrows)
+                    {
+                        gameboard.updateTile(column, row, Variables.Direction.None, Tile.cellBorder);
+                    }
+                }
             }
 
             #region NoXboxController
