@@ -74,6 +74,7 @@ namespace Tile_Engine
 
         public void updateTile(int column, int row, Variables.Direction direction, Texture2D texture)
         {
+            if (column >= Variables.columns || row >= Variables.rows) return;
             //int column = (int) position.X / Variables.cellWidth;
             //int row = (int) position.Y / Variables.cellHeigth;
 

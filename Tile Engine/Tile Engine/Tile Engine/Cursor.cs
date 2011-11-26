@@ -58,7 +58,7 @@ namespace Tile_Engine
                 };
             }
 
-            return 0;
+            return -1;
 
         }
 
@@ -72,7 +72,7 @@ namespace Tile_Engine
                 }
             }
 
-            return 0;
+            return -1;
         }
     }
 }

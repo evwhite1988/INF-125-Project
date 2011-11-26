@@ -16,11 +16,12 @@ namespace Tile_Engine
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-
-        Player player1;                         //Player one
+        //PLAYERS
+        Player player1;                       
         Player player2;
         Player player3;
         Player player4;
+
         MouseState mPreviousMouseState;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -35,31 +36,24 @@ namespace Tile_Engine
         Texture2D[] scoreboards;                  //Player scoreBoard textures
         Texture2D cursorTex;
         Texture2D background;
+        Texture2D wallTexVerticle;
+        Texture2D wallTexHorizontal;
+        SpriteFont gameChange;
         int frameCount = 8;
 
+        int timer = 180000;
 
-        int evilGnomeSpawnTime;                 //Time between evil-gnome spawns
-        int evilGnomeSpawnTimeRemaining; 
-        int gnomeSpawnTime;                     //Time between gnome spawns
+        int evilGnomeSpawnTimeRemaining;
         int gnomeSpawnTimeRemaining;
-        int rGnomeSpawnTime;
-        int rGnomeSpawnTimeRemaining;
+        int randomGnomeSpawnTimeRemaining;
+        
         int numOfGnomes;                        //Number of gnomes on the field;
-        int currentMainMenuIndex;               
-
-        //Intervals for random time selection: To Be Adjusted
-        int evilGnomeSpawnMin = 5000;
-        int evilGnomeSpawnMax = 8000;
-        int gnomeSpawnMin = 500;
-        int gnomeSpawnMax = 1000;
-        int rGnomeSpawnMin = 15000;
-        int rGnomeSpawnMax = 60000;
+        int currentMainMenuIndex;        
 
         enum GameState { MainMenu, InGame, Credits, Instructions };
         GameState currentGameState = GameState.MainMenu;
 
-        Texture2D wallTexVerticle;
-        Texture2D wallTexHorizontal;
+        
         Random random;
 
         public SpriteFont scoreFont;
@@ -101,15 +95,15 @@ namespace Tile_Engine
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // Gnomes will spawn at random intervals based on the given inputs.
-            evilGnomeSpawnTime = random.Next(evilGnomeSpawnMin, evilGnomeSpawnMax);
-            gnomeSpawnTime = random.Next(gnomeSpawnMin, gnomeSpawnMax);
-            rGnomeSpawnTime = random.Next(rGnomeSpawnMin, rGnomeSpawnMax);
+            Variables.evilGnomeSpawnTime = random.Next(Variables.evilGnomeSpawnMin, Variables.evilGnomeSpawnMax);
+            Variables.gnomeSpawnTime = random.Next(Variables.gnomeSpawnMin, Variables.gnomeSpawnMax);
+            Variables.randomGnomeSpawnTime = random.Next(Variables.randomGnomeSpawnMin, Variables.randomGnomeSpawnMax);
             numOfGnomes = 0;
 
 
-            evilGnomeSpawnTimeRemaining = evilGnomeSpawnTime;
-            gnomeSpawnTimeRemaining = gnomeSpawnTime;
-            rGnomeSpawnTimeRemaining = rGnomeSpawnTime;
+            evilGnomeSpawnTimeRemaining = Variables.evilGnomeSpawnTime;
+            gnomeSpawnTimeRemaining = Variables.gnomeSpawnTime;
+            randomGnomeSpawnTimeRemaining = Variables.randomGnomeSpawnTime;
 
             mainMenuItems = new MenuSelection[4];
             gnomeTex = new Texture2D[4];
@@ -126,8 +120,7 @@ namespace Tile_Engine
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            scoreFont = Content.Load<SpriteFont>("pointFont");
+            loadTextures();
 
             #region MenuContentLoad
 
@@ -152,46 +145,20 @@ namespace Tile_Engine
 
             #endregion
 
-            background = Content.Load<Texture2D>("background");
-
-            Tile.textureSet = Content.Load<Texture2D>("part1_tileset");
-            Tile.cellBorder = Content.Load<Texture2D>("grass");
-            Tile.player1Home = Content.Load<Texture2D>("dog-house");
-            Tile.player2Home = Content.Load<Texture2D>("dog-house-p2");
-            Tile.player3Home = Content.Load<Texture2D>("dog-house-p3");
-            Tile.player4Home = Content.Load<Texture2D>("dog-house-p4");
-            Tile.hole = Content.Load<Texture2D>("hole");
-            Tile.spawn = Content.Load<Texture2D>("spawn");
-
             //Window fits to the gameboard.
             gameboard = new Gameboard();
             this.graphics.PreferredBackBufferWidth = gameboard.numberOfColumns * Variables.cellWidth;
             this.graphics.PreferredBackBufferHeight = (gameboard.numberOfRows * Variables.cellHeigth);
 
-            wallTexHorizontal = Content.Load<Texture2D>("wall_horizontal");
-            wallTexVerticle = Content.Load<Texture2D>("wall_verticle");
-            gnomeTex[0] = Content.Load<Texture2D>("gnomesBack");
-            gnomeTex[1] = Content.Load<Texture2D>("gnomesFront");
-            gnomeTex[2] = Content.Load<Texture2D>("gnomesLeft");
-            gnomeTex[3] = Content.Load<Texture2D>("gnomesRight");
-            evilGnomeTex[0] = Content.Load<Texture2D>("gnomes-evilBack");
-            evilGnomeTex[1] = Content.Load<Texture2D>("gnomes-evilFront");
-            evilGnomeTex[2] = Content.Load<Texture2D>("gnomes-evilLeft");
-            evilGnomeTex[3] = Content.Load<Texture2D>("gnomes-evilRight");
-            randomGnomeTex[0] = Content.Load<Texture2D>("gnomes-randomBack");
-            randomGnomeTex[1] = Content.Load<Texture2D>("gnomes-randomFront");
-            randomGnomeTex[2] = Content.Load<Texture2D>("gnomes-randomLeft");
-            randomGnomeTex[3] = Content.Load<Texture2D>("gnomes-randomRight");
-            cursorTex = Content.Load<Texture2D>("cursor"); //gmae cursor
+            initializePlayers();
 
-            for (int i = 0; i < 4; i++)
-            {
-                scoreboards[i] = Content.Load<Texture2D>("Player" + (i + 1));
-            }
+            //increase screen size to fit scoreBoard
+            this.graphics.PreferredBackBufferHeight = this.graphics.PreferredBackBufferHeight + scoreboards[0].Height;
 
-            creditText = Content.Load<Texture2D>("credits");
+        }
 
-
+        private void initializePlayers()
+        {
             //Initialize first player now that the texture is loaded. The position is manually set to the Tile with Tile ID -1, Although
             //this needs to be revised to place it at a specified home base. 
 
@@ -217,11 +184,46 @@ namespace Tile_Engine
 
             foreach (Player p in playerList)
                 p.LoadContent(this.Content, this.graphics);
+        }
 
+        private void loadTextures()
+        {
+            // Create a new SpriteBatch, which can be used to draw textures.
+            scoreFont = Content.Load<SpriteFont>("pointFont");
 
-            //increase screen size to fit scoreBoard
-            this.graphics.PreferredBackBufferHeight = this.graphics.PreferredBackBufferHeight + scoreboards[0].Height;
+            background = Content.Load<Texture2D>("background");
 
+            Tile.textureSet = Content.Load<Texture2D>("part1_tileset");
+            Tile.cellBorder = Content.Load<Texture2D>("grass");
+            Tile.player1Home = Content.Load<Texture2D>("dog-house");
+            Tile.player2Home = Content.Load<Texture2D>("dog-house-p2");
+            Tile.player3Home = Content.Load<Texture2D>("dog-house-p3");
+            Tile.player4Home = Content.Load<Texture2D>("dog-house-p4");
+            Tile.hole = Content.Load<Texture2D>("hole");
+            Tile.spawn = Content.Load<Texture2D>("spawn");
+            wallTexHorizontal = Content.Load<Texture2D>("wall_horizontal");
+            wallTexVerticle = Content.Load<Texture2D>("wall_verticle");
+            gnomeTex[0] = Content.Load<Texture2D>("gnomesBack");
+            gnomeTex[1] = Content.Load<Texture2D>("gnomesFront");
+            gnomeTex[2] = Content.Load<Texture2D>("gnomesLeft");
+            gnomeTex[3] = Content.Load<Texture2D>("gnomesRight");
+            evilGnomeTex[0] = Content.Load<Texture2D>("gnomes-evilBack");
+            evilGnomeTex[1] = Content.Load<Texture2D>("gnomes-evilFront");
+            evilGnomeTex[2] = Content.Load<Texture2D>("gnomes-evilLeft");
+            evilGnomeTex[3] = Content.Load<Texture2D>("gnomes-evilRight");
+            randomGnomeTex[0] = Content.Load<Texture2D>("gnomes-randomBack");
+            randomGnomeTex[1] = Content.Load<Texture2D>("gnomes-randomFront");
+            randomGnomeTex[2] = Content.Load<Texture2D>("gnomes-randomLeft");
+            randomGnomeTex[3] = Content.Load<Texture2D>("gnomes-randomRight");
+            cursorTex = Content.Load<Texture2D>("cursor"); //gmae cursor
+            gameChange = Content.Load<SpriteFont>("pointFont");
+
+            for (int i = 0; i < 4; i++)
+            {
+                scoreboards[i] = Content.Load<Texture2D>("Player" + (i + 1));
+            }
+
+            creditText = Content.Load<Texture2D>("credits");
         }
 
         /// <summary>
@@ -232,6 +234,157 @@ namespace Tile_Engine
         {
             // TODO: Unload any non ContentManager content here
         }
+
+        ////////////////////////////////// DRAW METHODS /////////////////////////////////////////////////////////
+        
+        /// <summary>
+        /// This is called when the game should draw itself.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        protected override void Draw(GameTime gameTime)
+        {
+            this.GraphicsDevice.Clear(Color.Black);
+            spriteBatch.Begin();
+            spriteBatch.Draw(background, new Rectangle(0, 0, this.graphics.PreferredBackBufferWidth, this.graphics.PreferredBackBufferHeight), Color.White);
+
+            switch (currentGameState)
+            {
+                case GameState.MainMenu:
+                    drawMainMenu(gameTime);
+                    break;
+
+                case GameState.Instructions:
+                    drawInstructions(gameTime);
+                    break;
+
+                case GameState.InGame:
+                    drawGame(gameTime);
+                    //Draws the tiles on the gameboard
+
+                    break;
+
+
+                case GameState.Credits:
+                    Vector2 creditPos = new Vector2(graphics.GraphicsDevice.Viewport.Width / 3.5f,
+                     graphics.GraphicsDevice.Viewport.Height / 3.5f);
+                    spriteBatch.Draw(creditText, creditPos, Color.White);
+
+                    break;
+            }
+
+
+            spriteBatch.End();
+            graphics.ApplyChanges();
+
+            // TODO: Add your drawing code here
+
+            base.Draw(gameTime);
+        }
+
+        private void drawMainMenu(GameTime gameTime)
+        {
+            for (int i = 0; i < mainMenuItems.Length; i++)
+            {
+                if (i == currentMainMenuIndex)
+                    mainMenuItems[i].Draw(gameTime, spriteBatch, true);
+                else
+                    mainMenuItems[i].Draw(gameTime, spriteBatch, false);
+            }
+        }
+
+        private void drawInstructions(GameTime gameTime)
+        {
+            spriteBatch.DrawString(scoreFont, "Placeholder", Vector2.One, Color.White);
+        }
+
+        private void drawGame(GameTime gameTime)
+        {
+            drawGameBoard(gameTime);
+            drawGnomes(gameTime);
+            drawPlayers(gameTime);
+        }
+
+        private void drawGameBoard(GameTime gameTime)
+        {
+            for (int y = 0; y < Variables.rows; y++)
+            {
+                for (int x = 0; x < Variables.columns; x++)
+                {
+                    Cell cell = gameboard.getCell(y, x);
+                    int tileID = cell.getTileID();
+
+                    spriteBatch.Draw(Tile.cellBorder,
+                        new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
+                        Tile.getTexture(), Color.White);
+
+                    //If tileID = -2, use hole tile
+                    if (tileID == -2)
+                    {
+                        spriteBatch.Draw(
+                        Tile.spawn,
+                        new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
+                        Tile.getTexture(),
+                        Color.White);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(
+                            cell.getTexture(),
+                            new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
+                            Tile.getTexture(),
+                            Color.White);
+                    }
+                }
+            }
+
+
+            List<Vector4> wallList = gameboard.wallList;
+            foreach (Vector4 wall in wallList)
+            {
+                //If column is the same, draw horizontal wall
+                if (wall.X == wall.Z)
+                {
+                    spriteBatch.Draw(
+                    wallTexHorizontal,
+                    new Rectangle(((int)wall.Z * Variables.cellWidth), ((int)wall.W * Variables.cellHeigth), wallTexHorizontal.Width, wallTexHorizontal.Height),
+                    new Rectangle(0, 0, wallTexHorizontal.Width, wallTexHorizontal.Height),
+                    Color.White);
+
+                }
+                //If row is the same, draw verticle wall
+                else if (wall.Y == wall.W)
+                {
+                    spriteBatch.Draw(
+                    wallTexVerticle,
+                    new Rectangle(((int)wall.Z * Variables.cellWidth - wallTexVerticle.Width / 2), ((int)wall.W * Variables.cellHeigth), wallTexVerticle.Width, wallTexVerticle.Height),
+                    new Rectangle(0, 0, wallTexVerticle.Width, wallTexVerticle.Height),
+                    Color.White);
+                }
+            }
+
+            timer -= gameTime.ElapsedGameTime.Milliseconds;
+            spriteBatch.DrawString(gameChange, "TIME: " + (timer / 1000), new
+            Vector2(350, 10), Color.Red);
+        }
+
+        private void drawGnomes(GameTime gameTime)
+        {
+            foreach (Gnome gnome in gnomeList)
+            {
+                gnome.DrawFrame(spriteBatch, gnome.direction);
+            }
+        }
+
+        private void drawPlayers(GameTime gameTime)
+        {
+
+            foreach (Player player in playerList)
+            {
+                player.cursor.DrawFrame(spriteBatch, Variables.Direction.None);
+                player.draw(spriteBatch, scoreFont);
+            }
+        }
+
 
         /// <summary>
         /// Allows the game to run logic such as updating the world,
@@ -250,7 +403,7 @@ namespace Tile_Engine
                     //currently only the mouse works correctly in navigating the main menu screen. The following allows us to skip to
                     //the actual game by just pressing 'A' on the controller.
 
-                    
+
                     if (currentState.IsConnected)
                     {
                         if (currentState.IsButtonDown(Buttons.A))
@@ -281,23 +434,35 @@ namespace Tile_Engine
                     }
                     break;
 
-                    
+
                 case GameState.InGame:
 
+                    if (checkGameEnd()) endGame();
                     removeGnomes();             //Removes gnomes
                     spawnGnomes(gameTime);      //Spawns new gnomes
                     UpdateInput();              //handles new user inputs
 
                     // For each gnome on the gameboard, update its position
-                    foreach(Gnome gnome in gnomeList)
+                    foreach (Gnome gnome in gnomeList)
                     {
-                     gnome.updatePosition(gameboard, gameTime);
+                        gnome.updatePosition(gameboard, gameTime);
                     }
-    
+
                     base.Update(gameTime);
                     break;
-                  
+
             }
+        }
+
+        private void endGame()
+        {
+            currentGameState = GameState.Credits;
+        }
+
+        private bool checkGameEnd()
+        {
+            if (timer <= 0) return true;
+            else return false;
         }
 
         void UpdateInput()
@@ -308,129 +473,13 @@ namespace Tile_Engine
             }
         }
 
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Draw(GameTime gameTime)
-        {
-            this.GraphicsDevice.Clear(Color.Black);
-            spriteBatch.Begin();
-            spriteBatch.Draw(background, new Rectangle(0, 0, this.graphics.PreferredBackBufferWidth, this.graphics.PreferredBackBufferHeight), Color.White);
-
-            switch (currentGameState)
-            {
-                case GameState.MainMenu:
-                    for (int i = 0; i < mainMenuItems.Length; i++)
-                    {
-                        if (i == currentMainMenuIndex)
-                            mainMenuItems[i].Draw(gameTime, spriteBatch, true);
-                        else
-                            mainMenuItems[i].Draw(gameTime, spriteBatch, false);
-                    }
-                    break;
-                
-                case GameState.Instructions:
-                    spriteBatch.DrawString(scoreFont, "Placeholder", Vector2.One, Color.White); 
- 
-                    break;
-
-                case GameState.InGame:
-                    //Draws the tiles on the gameboard
-                    for (int y = 0; y < Variables.rows; y++)
-                    {
-                        for (int x = 0; x < Variables.columns; x++)
-                        {
-                            Cell cell = gameboard.getCell(y, x);
-                            int tileID = cell.getTileID();
-
-                            spriteBatch.Draw(Tile.cellBorder,
-                                new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
-                                Tile.getTexture(), Color.White);
-
-                            //If tileID = -2, use hole tile
-                            if (tileID == -2)
-                            {
-                                spriteBatch.Draw(
-                                Tile.spawn,
-                                new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
-                                Tile.getTexture(),
-                                Color.White);
-                            }
-                            else
-                            {
-                                spriteBatch.Draw(
-                                    cell.getTexture(),
-                                    new Rectangle((x * Variables.cellWidth), (y * Variables.cellHeigth), Tile.cellBorder.Width, Tile.cellBorder.Height),
-                                    Tile.getTexture(),
-                                    Color.White);
-                            }
-                        }
-                    }
-                        
-
-                    List<Vector4> wallList = gameboard.wallList;
-                    foreach (Vector4 wall in wallList)
-                    {
-                        //If column is the same, draw horizontal wall
-                        if (wall.X == wall.Z)
-                        {
-                            spriteBatch.Draw(
-                            wallTexHorizontal,
-                            new Rectangle(((int)wall.Z * Variables.cellWidth), ((int)wall.W * Variables.cellHeigth), wallTexHorizontal.Width, wallTexHorizontal.Height),
-                            new Rectangle(0, 0, wallTexHorizontal.Width, wallTexHorizontal.Height),
-                            Color.White);
-
-                        }
-                        //If row is the same, draw verticle wall
-                        else if (wall.Y == wall.W)
-                        {
-                            spriteBatch.Draw(
-                            wallTexVerticle,
-                            new Rectangle(((int)wall.Z * Variables.cellWidth - wallTexVerticle.Width / 2), ((int)wall.W * Variables.cellHeigth), wallTexVerticle.Width, wallTexVerticle.Height),
-                            new Rectangle(0, 0, wallTexVerticle.Width, wallTexVerticle.Height),
-                            Color.White);
-                        }
-                    }
-
-                    foreach (Gnome gnome in gnomeList)
-                    {
-                        gnome.DrawFrame(spriteBatch, gnome.direction);
-                    }
-
-                    foreach (Player player in playerList)
-                    {
-                        player.cursor.DrawFrame(spriteBatch, Variables.Direction.None);
-                        player.draw(spriteBatch, scoreFont);
-                    }
-                    
-                    break;
-
-
-                case GameState.Credits:
-                    Vector2 creditPos = new Vector2(graphics.GraphicsDevice.Viewport.Width / 3.5f,
-                     graphics.GraphicsDevice.Viewport.Height / 3.5f);
-                    spriteBatch.Draw(creditText, creditPos,Color.White);
-                    
-                    break;
-            }
-
-
-            spriteBatch.End();
-            graphics.ApplyChanges();
-
-            // TODO: Add your drawing code here
-
-            base.Draw(gameTime);
-        }
-
         private void spawnGnomes(GameTime gameTime)
         {
             if (numOfGnomes < 50)
             {
                 gnomeSpawnTimeRemaining -= gameTime.ElapsedGameTime.Milliseconds;
                 evilGnomeSpawnTimeRemaining -= gameTime.ElapsedGameTime.Milliseconds;
-                rGnomeSpawnTimeRemaining -= gameTime.ElapsedGameTime.Milliseconds;
+                randomGnomeSpawnTimeRemaining -= gameTime.ElapsedGameTime.Milliseconds;
                 List<Vector2> spawnPoints = gameboard.getSpawnPoints();
 
                 if (evilGnomeSpawnTimeRemaining < 0)
@@ -439,7 +488,7 @@ namespace Tile_Engine
                     gnomeList.Add(new Gnome(evilGnomeTex, frameCount, (int)spawnPoints[spawnPoint].Y, 
                         (int)spawnPoints[spawnPoint].X, Variables.speed / 2));
 
-                    evilGnomeSpawnTimeRemaining = random.Next(evilGnomeSpawnMin, evilGnomeSpawnMax);
+                    evilGnomeSpawnTimeRemaining = random.Next(Variables.evilGnomeSpawnMin, Variables.evilGnomeSpawnMax);
                 }
                 else if (gnomeSpawnTimeRemaining < 0)
                 {
@@ -447,15 +496,15 @@ namespace Tile_Engine
                     gnomeList.Add(new Gnome(gnomeTex, frameCount, (int)spawnPoints[spawnPoint].Y, 
                         (int)spawnPoints[spawnPoint].X, Variables.speed));
 
-                    gnomeSpawnTimeRemaining = random.Next(gnomeSpawnMin, gnomeSpawnMax);
+                    gnomeSpawnTimeRemaining = random.Next(Variables.gnomeSpawnMin, Variables.gnomeSpawnMax);
                 }
-                else if (rGnomeSpawnTimeRemaining < 0)
+                else if (randomGnomeSpawnTimeRemaining < 0)
                 {
                     int spawnPoint = random.Next(4);
                     gnomeList.Add(new Gnome(randomGnomeTex, frameCount, (int)spawnPoints[spawnPoint].Y,
                         (int)spawnPoints[spawnPoint].X, (int)(Variables.speed * 1.5)));
 
-                    rGnomeSpawnTimeRemaining = random.Next(rGnomeSpawnMin, rGnomeSpawnMax);
+                    randomGnomeSpawnTimeRemaining = random.Next(Variables.randomGnomeSpawnMin, Variables.randomGnomeSpawnMax);
                 }
             }
 

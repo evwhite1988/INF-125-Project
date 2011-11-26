@@ -80,25 +80,29 @@ namespace Tile_Engine
                 //If Player presses UP on left thumbstick
                 if (currentState.ThumbSticks.Left.Y > 0.0f)
                 {
-                    cursor.updatePosition(Variables.Direction.Up);
+                    if (cursor.getSpriteCenter().Y >= Variables.cellHeigth / 2) 
+                       cursor.updatePosition(Variables.Direction.Up);
                 }
 
                 //If Player presses DOWN on left thumbstick
                 if (currentState.ThumbSticks.Left.Y < 0.0f)
                 {
-                    cursor.updatePosition(Variables.Direction.Down);
+                    if(cursor.getSpriteCenter().Y <= (gameboard.numberOfRows - 1) * Variables.cellHeigth + Variables.cellHeigth/2)
+                        cursor.updatePosition(Variables.Direction.Down);
                 }
 
                 //If Player presses RIGHT on left thumbstick
                 if (currentState.ThumbSticks.Left.X > 0.0f)
                 {
-                    cursor.updatePosition(Variables.Direction.Right);
+                    if(cursor.getSpriteCenter().X <= (gameboard.numberOfColumns - 1) * Variables.cellWidth + Variables.cellWidth/2)
+                        cursor.updatePosition(Variables.Direction.Right);
                 }
 
                 //If Player presses LEFT on left thumbstick
                 if (currentState.ThumbSticks.Left.X < 0.0f)
                 {
-                    cursor.updatePosition(Variables.Direction.Left);
+                    if(cursor.getSpriteCenter().X >= Variables.cellWidth / 2)
+                        cursor.updatePosition(Variables.Direction.Left);
                 }
 
                 int column = cursor.getCurrentColumn();
@@ -201,6 +205,7 @@ namespace Tile_Engine
 
         private void removeArrow(int column, int row, Gameboard gameboard)
         {
+            if (column >= Variables.columns || row >= Variables.rows) return;
             gameboard.updateTile(column, row, Variables.Direction.None, Tile.cellBorder);
             Cell cell = gameboard.getCell(row, column);
             p_arrows.Remove(cell);      
@@ -208,13 +213,13 @@ namespace Tile_Engine
 
         private void removeArrow(Cell cell, Gameboard gameboard)
         {
-            gameboard.updateTile(cell.getPositionX(), cell.getPositionY(), Variables.Direction.None, Tile.cellBorder);
+            gameboard.updateTile(cell.getPositionY(), cell.getPositionX(), Variables.Direction.None, Tile.cellBorder);
             p_arrows.Remove(cell);    
         }
 
         private void addArrow(int column, int row, Variables.Direction dir, Gameboard gameboard, int dirtex)
         {
-
+            if (column >= Variables.columns || row >= Variables.rows) return;
             Cell cell = gameboard.getCell(row, column);
 
             if (!hasArrow(cell) && rdy)
@@ -222,8 +227,6 @@ namespace Tile_Engine
                 if (p_arrows.Count >= MAX_ARROWS)
                 {
                     Cell c = p_arrows[p_arrows.Count - 1];
-                    int c_column = c.getPositionY();
-                    int c_row = c.getPositionX();
                     removeArrow(c, gameboard);
                 }
 
