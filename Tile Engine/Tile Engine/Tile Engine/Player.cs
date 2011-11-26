@@ -132,11 +132,16 @@ namespace Tile_Engine
                 else if (currentState.Triggers.Right > 0.5f)
                 {
                     Cell c = gameboard.getCell(row, column);
+                    bool match = false;
                     foreach (Cell temp in p_arrows)
                     {
                         if (c.Equals(temp))
+                        {
                             gameboard.updateTile(column, row, Variables.Direction.None, Tile.cellBorder);
+                            match = true;
+                        }
                     }
+                    if (match) p_arrows.Remove(c);
                 }
 
                 // Process input only if connected and Left Trigger is pulled.
@@ -194,39 +199,54 @@ namespace Tile_Engine
             spriteBatch.DrawString(font, points.ToString(), scoreBoard.coord + OFFSET, Color.Black);
         }
 
-        private void addArrow(int column, int row, Variables.Direction dir, Gameboard gb, int dirtex)
+        private void removeArrow(int column, int row, Gameboard gameboard)
+        {
+            gameboard.updateTile(column, row, Variables.Direction.None, Tile.cellBorder);
+            Cell cell = gameboard.getCell(row, column);
+            p_arrows.Remove(cell);      
+        }
+
+        private void removeArrow(Cell cell, Gameboard gameboard)
+        {
+            gameboard.updateTile(cell.getPositionX(), cell.getPositionY(), Variables.Direction.None, Tile.cellBorder);
+            p_arrows.Remove(cell);    
+        }
+
+        private void addArrow(int column, int row, Variables.Direction dir, Gameboard gameboard, int dirtex)
         {
 
-            Cell temp_c = gb.getCell(row, column);
+            Cell cell = gameboard.getCell(row, column);
 
-            if (!existsOnBoard(temp_c) && rdy)
+            if (!hasArrow(cell) && rdy)
             {
-
                 if (p_arrows.Count >= MAX_ARROWS)
                 {
                     Cell c = p_arrows[p_arrows.Count - 1];
                     int c_column = c.getPositionY();
                     int c_row = c.getPositionX();
-
-                    gb.updateTile(c_column, c_row, Variables.Direction.None, Tile.cellBorder);
-
-                    p_arrows.Remove(c);
+                    removeArrow(c, gameboard);
                 }
 
-                p_arrows.Insert(0, temp_c);
-                gb.updateTile(column, row, dir, arrows[dirtex - 1]);
+                p_arrows.Insert(0, cell);
+                gameboard.updateTile(column, row, dir, arrows[dirtex - 1]);
+            }
+            else
+            {
+                removeArrow(cell, gameboard);
+                p_arrows.Insert(0, cell);
+                gameboard.updateTile(column, row, dir, arrows[dirtex - 1]);
             }
         }
 
         //FOLLOWING SECTION IS TO BE REMOVED, IT IS THE PLAYER 1 MOUSE DEBUG TOOL FOR DEVELOPER WITHOUT XBOX CONTROLLER
         //*************************************************************************************************************
-        private void addArrow(Vector2 position, Variables.Direction dir, Gameboard gb, int dirtex)
+        private void addArrow(Vector2 position, Variables.Direction dir, Gameboard gameboard, int dirtex)
         {
             int tempCol = (int)position.X / Variables.cellWidth;
             int tempRow = (int)position.Y / Variables.cellHeigth;
-            Cell temp_c = gb.getCell(tempRow, tempCol);
+            Cell temp_c = gameboard.getCell(tempRow, tempCol);
 
-            if (!existsOnBoard(temp_c) && rdy)
+            if (!hasArrow(temp_c) && rdy)
             {
 
                 if (p_arrows.Count >= 4)
@@ -235,23 +255,23 @@ namespace Tile_Engine
                     int c_column = c.getPositionY();
                     int c_row = c.getPositionX();
 
-                    gb.updateTile(c_column, c_row, Variables.Direction.None, Tile.cellBorder);
+                    gameboard.updateTile(c_column, c_row, Variables.Direction.None, Tile.cellBorder);
 
                     p_arrows.Remove(c);
                 }
 
                 p_arrows.Insert(0, temp_c);
-                gb.updateTile(position, dir, arrows[dirtex - 1]);
+                gameboard.updateTile(position, dir, arrows[dirtex - 1]);
             }
         }
         //**************************************************************************************************************/
 
-        private bool existsOnBoard(Cell temp_c)
+        private bool hasArrow(Cell cell)
         {
 
             foreach (Cell c in p_arrows)
             {
-                if (c.Equals(temp_c))
+                if (c.Equals(cell))
                 {
                     return true;
                 }
