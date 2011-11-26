@@ -239,3 +239,7 @@ C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile E
 C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-randomFront.xnb
 C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-randomRight.xnb
 C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-randomLeft.xnb
+C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-randomBack.xnb
+C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-randomFront.xnb
+C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-randomLeft.xnb
+C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-randomRight.xnb

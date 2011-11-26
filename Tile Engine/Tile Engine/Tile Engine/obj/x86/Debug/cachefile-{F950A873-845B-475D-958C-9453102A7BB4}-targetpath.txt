@@ -53,8 +53,8 @@ Content\background.xnb
 Content\dog-house-p2.xnb
 Content\dog-house-p3.xnb
 Content\dog-house-p4.xnb
-Content\pointFont.xnb
 Content\gnomes-randomBack.xnb
 Content\gnomes-randomFront.xnb
-Content\gnomes-randomRight.xnb
 Content\gnomes-randomLeft.xnb
+Content\gnomes-randomRight.xnb
+Content\pointFont.xnb
