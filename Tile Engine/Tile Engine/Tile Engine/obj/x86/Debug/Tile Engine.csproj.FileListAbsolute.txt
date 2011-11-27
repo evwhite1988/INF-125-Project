@@ -271,3 +271,5 @@ C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86
 C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-randomFront.xnb
 C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-randomLeft.xnb
 C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-randomRight.xnb
+C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\pickup2.xnb
+C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\bgm.xnb

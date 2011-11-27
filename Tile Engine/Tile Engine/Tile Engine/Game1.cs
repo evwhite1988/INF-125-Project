@@ -63,6 +63,11 @@ namespace Tile_Engine
         SpriteFont gameChange;
         SpriteFont scoreFont;
 
+
+        /////////////////////////////////SOUND//////////////////////////////////////////////////////////////////
+        SoundEffect enterSound;
+        SoundEffect bgm;
+
         //Main menu art files, courtesy of Sage's Scrolls
         MenuSelection[] mainMenuItems;  //MenuSelection class defined below. Tweaked and Reused from past games. 
         Texture2D mainMenuIconDimL;
@@ -123,7 +128,8 @@ namespace Tile_Engine
         protected override void LoadContent()
         {
             loadTextures();
-
+            enterSound = Content.Load<SoundEffect>("pickup2");
+            bgm = Content.Load<SoundEffect>("bgm");
             #region MenuContentLoad
 
             mainMenuIconDimL = Content.Load<Texture2D>("button-dim-left");
@@ -156,6 +162,10 @@ namespace Tile_Engine
 
             //increase screen size to fit scoreBoard
             this.graphics.PreferredBackBufferHeight = this.graphics.PreferredBackBufferHeight + scoreboards[0].Height;
+
+            SoundEffectInstance bgmInstance = bgm.CreateInstance();
+            bgmInstance.IsLooped = true;
+            bgmInstance.Play();
 
         }
 
@@ -746,6 +756,7 @@ namespace Tile_Engine
                 {
                     if (gnome.getCurrentRow(gameboard) == homebase.Y && gnome.getCurrentColumn(gameboard) == homebase.X)
                     {
+                        enterSound.Play();
                         int player = bases.IndexOf(homebase);
                         if (gnome.spritesheets == evilGnomeTex)
                         {
