@@ -16,18 +16,39 @@ namespace Tile_Engine
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        ///////////////////////////////////// SYSTEM VARIABLES ///////////////////////////////////////////
+
+        MouseState mPreviousMouseState;
+        GraphicsDeviceManager graphics;
+        SpriteBatch spriteBatch;
+        Random random;
+
+        ///////////////////////////////////// MENUS ///////////////////////////////////////////////////////
+
+        enum GameState { MainMenu, InGame, Credits, Instructions };
+        GameState currentGameState = GameState.MainMenu;
+        int currentMainMenuIndex;
+
+        ///////////////////////////////////// GAME VARIABLES //////////////////////////////////////////////
+
+        Gameboard gameboard;                    //Gameboard object
+
         //PLAYERS
+        List<Player> playerList;
         Player player1;                       
         Player player2;
         Player player3;
         Player player4;
 
-        MouseState mPreviousMouseState;
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        Gameboard gameboard;                    //Gameboard object
+        //GNOMES
         List<Gnome> gnomeList { get; set; }     //List of Gnome Sprite Objects    
-        List<Player> playerList;
+        int evilGnomeSpawnTimeRemaining;
+        int gnomeSpawnTimeRemaining;
+        int randomGnomeSpawnTimeRemaining;
+
+        int timer = 180000;
+
+        ///////////////////////////////////// TEXTURES ////////////////////////////////////////////////////////
 
         //11-3-11: changed this to be texture arrays, splitting up the different directional animations for use in the updated GameSprite.cs
         Texture2D[] gnomeTex;                     //Gnome textures
@@ -38,26 +59,9 @@ namespace Tile_Engine
         Texture2D background;
         Texture2D wallTexVerticle;
         Texture2D wallTexHorizontal;
+        Texture2D creditText;                     //For the credits menu;
         SpriteFont gameChange;
-        int frameCount = 8;
-
-        int timer = 180000;
-
-        int evilGnomeSpawnTimeRemaining;
-        int gnomeSpawnTimeRemaining;
-        int randomGnomeSpawnTimeRemaining;
-        
-        int numOfGnomes;                        //Number of gnomes on the field;
-        int currentMainMenuIndex;        
-
-        enum GameState { MainMenu, InGame, Credits, Instructions };
-        GameState currentGameState = GameState.MainMenu;
-
-        
-        Random random;
-
-        public SpriteFont scoreFont;
-        
+        SpriteFont scoreFont;
 
         //Main menu art files, courtesy of Sage's Scrolls
         MenuSelection[] mainMenuItems;  //MenuSelection class defined below. Tweaked and Reused from past games. 
@@ -68,9 +72,9 @@ namespace Tile_Engine
         Texture2D mainMenuIconLitR;
         Texture2D mainMenuIconLitC;
 
-        Texture2D creditText; //For the credits menu;
-
-
+        /// <summary>
+        /// CONSTRUCTOR
+        /// </summary>
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -98,8 +102,6 @@ namespace Tile_Engine
             Variables.evilGnomeSpawnTime = random.Next(Variables.evilGnomeSpawnMin, Variables.evilGnomeSpawnMax);
             Variables.gnomeSpawnTime = random.Next(Variables.gnomeSpawnMin, Variables.gnomeSpawnMax);
             Variables.randomGnomeSpawnTime = random.Next(Variables.randomGnomeSpawnMin, Variables.randomGnomeSpawnMax);
-            numOfGnomes = 0;
-
 
             evilGnomeSpawnTimeRemaining = Variables.evilGnomeSpawnTime;
             gnomeSpawnTimeRemaining = Variables.gnomeSpawnTime;
@@ -157,6 +159,9 @@ namespace Tile_Engine
 
         }
 
+        /// <summary>
+        /// Initializes all players
+        /// </summary>
         private void initializePlayers()
         {
             //Initialize first player now that the texture is loaded. The position is manually set to the Tile with Tile ID -1, Although
@@ -186,6 +191,9 @@ namespace Tile_Engine
                 p.LoadContent(this.Content, this.graphics);
         }
 
+        /// <summary>
+        /// Loads All Textures
+        /// </summary>
         private void loadTextures()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
@@ -274,6 +282,10 @@ namespace Tile_Engine
             base.Draw(gameTime);
         }
 
+        /// <summary>
+        /// Draws the Main Menu
+        /// </summary>
+        /// <param name="gameTime"></param>
         private void drawMainMenu(GameTime gameTime)
         {
             for (int i = 0; i < mainMenuItems.Length; i++)
@@ -285,11 +297,18 @@ namespace Tile_Engine
             }
         }
 
+        /// <summary>
+        /// Draws the Instructions Menu
+        /// </summary>
+        /// <param name="gameTime"></param>
         private void drawInstructions(GameTime gameTime)
         {
             spriteBatch.DrawString(scoreFont, "Placeholder", Vector2.One, Color.White);
         }
 
+        /// <summary>
+        /// Draws the Credits Menu
+        /// </summary>
         private void drawCredits()
         {
             Vector2 creditPos = new Vector2(graphics.GraphicsDevice.Viewport.Width / 3.5f,
@@ -297,6 +316,10 @@ namespace Tile_Engine
             spriteBatch.Draw(creditText, creditPos, Color.White);
         }
 
+        /// <summary>
+        /// Calls methods to draw game content and gameplay updates
+        /// </summary>
+        /// <param name="gameTime"></param>
         private void drawGame(GameTime gameTime)
         {
             drawGameBoard(gameTime);
@@ -304,6 +327,10 @@ namespace Tile_Engine
             drawPlayers(gameTime);
         }
 
+        /// <summary>
+        /// Draws the gameboard, cells, walls, and timer
+        /// </summary>
+        /// <param name="gameTime"></param>
         private void drawGameBoard(GameTime gameTime)
         {
             for (int y = 0; y < Variables.rows; y++)
@@ -367,6 +394,10 @@ namespace Tile_Engine
             Vector2(350, 10), Color.Red);
         }
 
+        /// <summary>
+        /// Calls draw() on each gnome on the gameboard
+        /// </summary>
+        /// <param name="gameTime"></param>
         private void drawGnomes(GameTime gameTime)
         {
             foreach (Gnome gnome in gnomeList)
@@ -375,6 +406,10 @@ namespace Tile_Engine
             }
         }
 
+        /// <summary>
+        /// Calls draw() for each active player
+        /// </summary>
+        /// <param name="gameTime"></param>
         private void drawPlayers(GameTime gameTime)
         {
 
@@ -385,6 +420,7 @@ namespace Tile_Engine
             }
         }
 
+        ///////////////////////////////// UPDATE METHODS ////////////////////////////////////////////////////////
 
         /// <summary>
         /// Allows the game to run logic such as updating the world,
@@ -454,17 +490,10 @@ namespace Tile_Engine
             }
         }
 
-        private void endGame()
-        {
-            currentGameState = GameState.Credits;
-        }
-
-        private bool checkGameEnd()
-        {
-            if (timer <= 0) return true;
-            else return false;
-        }
-
+        ///////////////////////////////// INPUT METHODS ////////////////////////////////////////////////////////
+        /// <summary>
+        /// Player Input Handler
+        /// </summary>
         private void UpdateInput()
         {
             foreach (Player player in playerList)
@@ -612,81 +641,9 @@ namespace Tile_Engine
             }
         }
 
-        private void spawnGnomes(GameTime gameTime)
-        {
-            if (numOfGnomes < 50)
-            {
-                gnomeSpawnTimeRemaining -= gameTime.ElapsedGameTime.Milliseconds;
-                evilGnomeSpawnTimeRemaining -= gameTime.ElapsedGameTime.Milliseconds;
-                randomGnomeSpawnTimeRemaining -= gameTime.ElapsedGameTime.Milliseconds;
-                List<Vector2> spawnPoints = gameboard.getSpawnPoints();
-
-                if (evilGnomeSpawnTimeRemaining < 0)
-                {
-                    int spawnPoint = random.Next(4);
-                    gnomeList.Add(new Gnome(evilGnomeTex, frameCount, (int)spawnPoints[spawnPoint].Y, 
-                        (int)spawnPoints[spawnPoint].X, Variables.speed / 2));
-
-                    evilGnomeSpawnTimeRemaining = random.Next(Variables.evilGnomeSpawnMin, Variables.evilGnomeSpawnMax);
-                }
-                else if (gnomeSpawnTimeRemaining < 0)
-                {
-                    int spawnPoint = random.Next(4);
-                    gnomeList.Add(new Gnome(gnomeTex, frameCount, (int)spawnPoints[spawnPoint].Y, 
-                        (int)spawnPoints[spawnPoint].X, Variables.speed));
-
-                    gnomeSpawnTimeRemaining = random.Next(Variables.gnomeSpawnMin, Variables.gnomeSpawnMax);
-                }
-                else if (randomGnomeSpawnTimeRemaining < 0)
-                {
-                    int spawnPoint = random.Next(4);
-                    gnomeList.Add(new Gnome(randomGnomeTex, frameCount, (int)spawnPoints[spawnPoint].Y,
-                        (int)spawnPoints[spawnPoint].X, (int)(Variables.speed * 1.5)));
-
-                    randomGnomeSpawnTimeRemaining = random.Next(Variables.randomGnomeSpawnMin, Variables.randomGnomeSpawnMax);
-                }
-            }
-
-        }
-
-        private void removeGnomes()
-        {
-            List<Vector2> bases = gameboard.getBases();
-            foreach (Vector2 homebase in bases)
-            {
-                foreach (Gnome gnome in gnomeList)
-                {
-                    if (gnome.getCurrentRow(gameboard) == homebase.Y && gnome.getCurrentColumn(gameboard) == homebase.X)
-                    {
-                        int player = bases.IndexOf(homebase);
-                        if (gnome.spritesheets == evilGnomeTex)
-                        {
-                            playerList[player].addPoints(-50);
-                        }
-                        else if (gnome.spritesheets == gnomeTex)
-                        {
-                            playerList[player].addPoints(10);
-                        }
-                        else if (gnome.spritesheets == randomGnomeTex)
-                        {
-                            playerList[player].addPoints(100);
-                            randomEvent();
-                        }
-
-                        gnomeList.Remove(gnome);
-                        --numOfGnomes;
-                        break;
-                    }
-                }
-            }
-        }
-
-        private void randomEvent()
-        {
-            gameboard.changeSpawns();
-        }
-
-
+        /// <summary>
+        /// Manages the Inputs while on Main Menu
+        /// </summary>
         private void manageMenu()
         {
             //Find out where the mouse currently is at, change selection accordingly
@@ -728,6 +685,92 @@ namespace Tile_Engine
                 }
             }
             mPreviousMouseState = mouse;
+        }
+
+        ////////////////////////////// HELPER METHODS ////////////////////////////////////////////////////////////
+       
+        private void endGame()
+        {
+            currentGameState = GameState.Credits;
+        }
+
+        private bool checkGameEnd()
+        {
+            if (timer <= 0) return true;
+            else return false;
+        }
+
+        private void spawnGnomes(GameTime gameTime)
+        {
+            if (gnomeList.Count < 50)
+            {
+                gnomeSpawnTimeRemaining -= gameTime.ElapsedGameTime.Milliseconds;
+                evilGnomeSpawnTimeRemaining -= gameTime.ElapsedGameTime.Milliseconds;
+                randomGnomeSpawnTimeRemaining -= gameTime.ElapsedGameTime.Milliseconds;
+                List<Vector2> spawnPoints = gameboard.getSpawnPoints();
+
+                if (evilGnomeSpawnTimeRemaining < 0)
+                {
+                    int spawnPoint = random.Next(4);
+                    gnomeList.Add(new Gnome(evilGnomeTex, Variables.frameCount, (int)spawnPoints[spawnPoint].Y,
+                        (int)spawnPoints[spawnPoint].X, Variables.speed / 2));
+
+                    evilGnomeSpawnTimeRemaining = random.Next(Variables.evilGnomeSpawnMin, Variables.evilGnomeSpawnMax);
+                }
+                else if (gnomeSpawnTimeRemaining < 0)
+                {
+                    int spawnPoint = random.Next(4);
+                    gnomeList.Add(new Gnome(gnomeTex, Variables.frameCount, (int)spawnPoints[spawnPoint].Y,
+                        (int)spawnPoints[spawnPoint].X, Variables.speed));
+
+                    gnomeSpawnTimeRemaining = random.Next(Variables.gnomeSpawnMin, Variables.gnomeSpawnMax);
+                }
+                else if (randomGnomeSpawnTimeRemaining < 0)
+                {
+                    int spawnPoint = random.Next(4);
+                    gnomeList.Add(new Gnome(randomGnomeTex, Variables.frameCount, (int)spawnPoints[spawnPoint].Y,
+                        (int)spawnPoints[spawnPoint].X, (int)(Variables.speed * 1.5)));
+
+                    randomGnomeSpawnTimeRemaining = random.Next(Variables.randomGnomeSpawnMin, Variables.randomGnomeSpawnMax);
+                }
+            }
+
+        }
+
+        private void removeGnomes()
+        {
+            List<Vector2> bases = gameboard.getBases();
+            foreach (Vector2 homebase in bases)
+            {
+                foreach (Gnome gnome in gnomeList)
+                {
+                    if (gnome.getCurrentRow(gameboard) == homebase.Y && gnome.getCurrentColumn(gameboard) == homebase.X)
+                    {
+                        int player = bases.IndexOf(homebase);
+                        if (gnome.spritesheets == evilGnomeTex)
+                        {
+                            playerList[player].addPoints(-50);
+                        }
+                        else if (gnome.spritesheets == gnomeTex)
+                        {
+                            playerList[player].addPoints(10);
+                        }
+                        else if (gnome.spritesheets == randomGnomeTex)
+                        {
+                            playerList[player].addPoints(100);
+                            randomEvent();
+                        }
+
+                        gnomeList.Remove(gnome);
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void randomEvent()
+        {
+            gameboard.changeSpawns();
         }
     }
 

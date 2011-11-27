@@ -7,6 +7,7 @@ namespace Tile_Engine
 {
     static class Variables
     {
+        public static int frameCount = 8;
         public static int rows = 9;
         public static int columns = 12;
         public static int speed = 4;
