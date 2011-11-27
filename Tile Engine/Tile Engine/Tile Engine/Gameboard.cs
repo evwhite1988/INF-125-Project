@@ -56,6 +56,11 @@ namespace Tile_Engine
                 Rows.Add(thisRow);
             }
 
+            getCell(1, 1).setOwnedBy(PlayerIndex.One);
+            getCell(1, 10).setOwnedBy(PlayerIndex.Two);
+            getCell(7, 1).setOwnedBy(PlayerIndex.Three);
+            getCell(7, 10).setOwnedBy(PlayerIndex.Four);
+
             // x,y,z,w column1, row1, column2, row2
             wallList.Add(new Vector4(0, 4, 0, 5));
             wallList.Add(new Vector4(1, 4, 1, 5));

@@ -259,19 +259,12 @@ namespace Tile_Engine
 
                 case GameState.InGame:
                     drawGame(gameTime);
-                    //Draws the tiles on the gameboard
-
                     break;
-
 
                 case GameState.Credits:
-                    Vector2 creditPos = new Vector2(graphics.GraphicsDevice.Viewport.Width / 3.5f,
-                     graphics.GraphicsDevice.Viewport.Height / 3.5f);
-                    spriteBatch.Draw(creditText, creditPos, Color.White);
-
+                    drawCredits();
                     break;
             }
-
 
             spriteBatch.End();
             graphics.ApplyChanges();
@@ -295,6 +288,13 @@ namespace Tile_Engine
         private void drawInstructions(GameTime gameTime)
         {
             spriteBatch.DrawString(scoreFont, "Placeholder", Vector2.One, Color.White);
+        }
+
+        private void drawCredits()
+        {
+            Vector2 creditPos = new Vector2(graphics.GraphicsDevice.Viewport.Width / 3.5f,
+                     graphics.GraphicsDevice.Viewport.Height / 3.5f);
+            spriteBatch.Draw(creditText, creditPos, Color.White);
         }
 
         private void drawGame(GameTime gameTime)
@@ -465,11 +465,150 @@ namespace Tile_Engine
             else return false;
         }
 
-        void UpdateInput()
+        private void UpdateInput()
         {
             foreach (Player player in playerList)
             {
-                player.UpdateInput(gameboard);
+                GamePadState currentState = GamePad.GetState(player.index);
+
+                if (currentState.IsConnected)
+                {
+                    //If Player presses UP on left thumbstick
+                    if (currentState.ThumbSticks.Left.Y > 0.0f)
+                    {
+                        if (player.cursor.getSpriteCenter().Y >= Variables.cellHeigth / 2)
+                            player.cursor.updatePosition(Variables.Direction.Up);
+                    }
+
+                    //If Player presses DOWN on left thumbstick
+                    if (currentState.ThumbSticks.Left.Y < 0.0f)
+                    {
+                        if (player.cursor.getSpriteCenter().Y <= (gameboard.numberOfRows - 1) * Variables.cellHeigth + Variables.cellHeigth / 2)
+                            player.cursor.updatePosition(Variables.Direction.Down);
+                    }
+
+                    //If Player presses RIGHT on left thumbstick
+                    if (currentState.ThumbSticks.Left.X > 0.0f)
+                    {
+                        if (player.cursor.getSpriteCenter().X <= (gameboard.numberOfColumns - 1) * Variables.cellWidth + Variables.cellWidth / 2)
+                            player.cursor.updatePosition(Variables.Direction.Right);
+                    }
+
+                    //If Player presses LEFT on left thumbstick
+                    if (currentState.ThumbSticks.Left.X < 0.0f)
+                    {
+                        if (player.cursor.getSpriteCenter().X >= Variables.cellWidth / 2)
+                            player.cursor.updatePosition(Variables.Direction.Left);
+                    }
+
+                    int column = player.cursor.getCurrentColumn();
+                    int row = player.cursor.getCurrentRow();
+
+                    Cell cell = gameboard.getCell(row, column);
+
+                    if (currentState.Buttons.A == ButtonState.Pressed ||
+                        currentState.Buttons.X == ButtonState.Pressed ||
+                        currentState.Buttons.Y == ButtonState.Pressed ||
+                        currentState.Buttons.B == ButtonState.Pressed ||
+                        currentState.Triggers.Right > 0.5f ||
+                        currentState.Triggers.Left > 0.5f)
+                    {
+                        switch (cell.getOwnedBy())
+                        {
+                            case 0:
+                                break;
+
+                            case 1:
+                                player1.removeArrow(cell, gameboard);
+                                break;
+
+                            case 2:
+                                player2.removeArrow(cell, gameboard);
+                                break;
+
+                            case 3:
+                                player3.removeArrow(cell, gameboard);
+                                break;
+
+                            case 4:
+                                player4.removeArrow(cell, gameboard);
+                                break;
+                        }
+
+                        // Process input only if connected and button A is pressed.
+                        if (currentState.Buttons.A == ButtonState.Pressed)
+                        {
+                            player.addArrow(column, row, Variables.Direction.Down, gameboard, 1);
+                        }
+
+                        // Process input only if connected and button X is pressed.
+                        else if (currentState.Buttons.X == ButtonState.Pressed)
+                        {
+                            player.addArrow(column, row, Variables.Direction.Left, gameboard, 2);
+                        }
+
+                        // Process input only if connected and button Y is pressed.
+                        else if (currentState.Buttons.Y == ButtonState.Pressed)
+                        {
+                            player.addArrow(column, row, Variables.Direction.Up, gameboard, 4);
+                        }
+
+                        // Process input only if connected and button B is pressed.
+                        else if (currentState.Buttons.B == ButtonState.Pressed)
+                        {
+                            player.addArrow(column, row, Variables.Direction.Right, gameboard, 3);
+                        }
+
+                        // Process input only if connected and Right Trigger is pulled.
+                        else if (currentState.Triggers.Right > 0.5f)
+                        {
+
+                        }
+
+                        // Process input only if connected and Left Trigger is pulled.
+                        else if (currentState.Triggers.Left > 0.5f)
+                        {
+                            List<Cell> cells = new List<Cell>();
+                            cells.AddRange(player.p_arrows);
+                            foreach (Cell c in cells)
+                            {
+                                player.removeArrow(c, gameboard);
+                            }
+                        }
+                    }
+                }
+
+                #region NoXboxController
+                //FOLLOWING SECTION IS TO BE REMOVED, IT IS THE PLAYER 1 MOUSE DEBUG TOOL FOR DEVELOPER WITHOUT XBOX CONTROLLER
+
+                KeyboardState keyboardStateCurrent = Keyboard.GetState(); //current state of the keyboard
+                MouseState mouseStateCurrent = Mouse.GetState();  //current state of the mouse
+                Vector2 position = new Vector2(mouseStateCurrent.X, mouseStateCurrent.Y);
+
+                //If player presses LEFT key
+                if (keyboardStateCurrent.IsKeyDown(Keys.Left))
+                {
+                    player.addArrow(position, Variables.Direction.Left, gameboard, 2);
+                }
+
+                //If player Presses UP key
+                else if (keyboardStateCurrent.IsKeyDown(Keys.Up))
+                {
+                    player.addArrow(position, Variables.Direction.Up, gameboard, 4);
+                }
+
+                //If player Presses RIGHT key
+                else if (keyboardStateCurrent.IsKeyDown(Keys.Right))
+                {
+                    player.addArrow(position, Variables.Direction.Right, gameboard, 3);
+                }
+
+                //If player presses DOWN key
+                else if (keyboardStateCurrent.IsKeyDown(Keys.Down))
+                {
+                    player.addArrow(position, Variables.Direction.Down, gameboard, 1);
+                }
+                #endregion
             }
         }
 

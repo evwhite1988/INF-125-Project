@@ -71,6 +71,7 @@ namespace Tile_Engine
             points += p;
         }
 
+        /*
         public void UpdateInput(Gameboard gameboard)
         {
             GamePadState currentState = GamePad.GetState(index);
@@ -160,7 +161,6 @@ namespace Tile_Engine
 
             #region NoXboxController
             //FOLLOWING SECTION IS TO BE REMOVED, IT IS THE PLAYER 1 MOUSE DEBUG TOOL FOR DEVELOPER WITHOUT XBOX CONTROLLER
-            //*************************************************************************************************************
 
             KeyboardState keyboardStateCurrent = Keyboard.GetState(); //current state of the keyboard
             MouseState mouseStateCurrent = Mouse.GetState();  //current state of the mouse
@@ -190,10 +190,9 @@ namespace Tile_Engine
                 addArrow(position, Variables.Direction.Down, gameboard, 1);
             }
 
-            //*************************************************************************************************************/
             #endregion
         }
-
+        */
 
         // Draws the player's score board.
         public void draw(SpriteBatch spriteBatch, SpriteFont font)
@@ -203,47 +202,58 @@ namespace Tile_Engine
             spriteBatch.DrawString(font, points.ToString(), scoreBoard.coord + OFFSET, Color.Black);
         }
 
-        private void removeArrow(int column, int row, Gameboard gameboard)
+        public void removeArrow(int column, int row, Gameboard gameboard)
         {
-            if (column >= Variables.columns || row >= Variables.rows) return;
-            gameboard.updateTile(column, row, Variables.Direction.None, Tile.cellBorder);
-            Cell cell = gameboard.getCell(row, column);
-            p_arrows.Remove(cell);      
-        }
-
-        private void removeArrow(Cell cell, Gameboard gameboard)
-        {
-            gameboard.updateTile(cell.getPositionY(), cell.getPositionX(), Variables.Direction.None, Tile.cellBorder);
-            p_arrows.Remove(cell);    
-        }
-
-        private void addArrow(int column, int row, Variables.Direction dir, Gameboard gameboard, int dirtex)
-        {
-            if (column >= Variables.columns || row >= Variables.rows) return;
-            Cell cell = gameboard.getCell(row, column);
-
-            if (!hasArrow(cell) && rdy)
+            if (column < Variables.columns || row < Variables.rows)
             {
-                if (p_arrows.Count >= MAX_ARROWS)
-                {
-                    Cell c = p_arrows[p_arrows.Count - 1];
-                    removeArrow(c, gameboard);
-                }
-
-                p_arrows.Insert(0, cell);
-                gameboard.updateTile(column, row, dir, arrows[dirtex - 1]);
-            }
-            else
-            {
+                Cell cell = gameboard.getCell(row, column);
                 removeArrow(cell, gameboard);
-                p_arrows.Insert(0, cell);
-                gameboard.updateTile(column, row, dir, arrows[dirtex - 1]);
+            }
+        }
+
+        public void removeArrow(Cell cell, Gameboard gameboard)
+        {
+            if(p_arrows.Contains(cell))
+            {
+                gameboard.updateTile(cell.getPositionY(), cell.getPositionX(), Variables.Direction.None, Tile.cellBorder);
+                p_arrows.Remove(cell);
+                cell.setOwnedBy(0);
+            }
+        }
+
+        public void addArrow(int column, int row, Variables.Direction dir, Gameboard gameboard, int dirtex)
+        {
+            if (column < Variables.columns || row < Variables.rows)
+            {
+                Cell cell = gameboard.getCell(row, column);
+                if (!cell.isBase && !cell.isSpawn)
+                {
+                    if (!hasArrow(cell) && rdy)
+                    {
+                        if (p_arrows.Count >= MAX_ARROWS)
+                        {
+                            Cell c = p_arrows[p_arrows.Count - 1];
+                            removeArrow(c, gameboard);
+                        }
+
+                        p_arrows.Insert(0, cell);
+                        cell.setOwnedBy(index);
+                        gameboard.updateTile(column, row, dir, arrows[dirtex - 1]);
+                    }
+                    else
+                    {
+                        removeArrow(cell, gameboard);
+                        p_arrows.Insert(0, cell);
+                        cell.setOwnedBy(index);
+                        gameboard.updateTile(column, row, dir, arrows[dirtex - 1]);
+                    }
+                }
             }
         }
 
         //FOLLOWING SECTION IS TO BE REMOVED, IT IS THE PLAYER 1 MOUSE DEBUG TOOL FOR DEVELOPER WITHOUT XBOX CONTROLLER
         //*************************************************************************************************************
-        private void addArrow(Vector2 position, Variables.Direction dir, Gameboard gameboard, int dirtex)
+        public void addArrow(Vector2 position, Variables.Direction dir, Gameboard gameboard, int dirtex)
         {
             int tempCol = (int)position.X / Variables.cellWidth;
             int tempRow = (int)position.Y / Variables.cellHeigth;

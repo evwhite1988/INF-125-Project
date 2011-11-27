@@ -16,6 +16,7 @@ namespace Tile_Engine
         private Texture2D cellTexture;
         public bool isSpawn;
         public bool isBase;
+        private int ownedBy;
 
 
         private int TileID; // -2 = hole; -1 = home; 0 = null; 1 = up; 2 = right; 3 = down; 4 = left
@@ -33,6 +34,7 @@ namespace Tile_Engine
             size = new Vector2(cellHeight, cellWidth);
             position = new Vector2(row, col);
             coordinates = positionToCoord(row, col);
+            ownedBy = 0;
         }
 
         static public Rectangle getRecTexture()
@@ -49,6 +51,10 @@ namespace Tile_Engine
             return coord;
         }
 
+        public int getOwnedBy()
+        {
+            return ownedBy;
+        }
 
         public int getHeight()
         {
@@ -85,6 +91,33 @@ namespace Tile_Engine
         public int getTileID()
         {
             return TileID;
+        }
+
+        public void setOwnedBy(int i)
+        {
+            ownedBy = i;
+        }
+
+        public void setOwnedBy(PlayerIndex i)
+        {
+            switch(i)
+            {
+                case(PlayerIndex.One):
+                    ownedBy = 1;
+                    break;
+
+                case (PlayerIndex.Two):
+                    ownedBy = 2;
+                    break;
+
+                case (PlayerIndex.Three):
+                    ownedBy = 3;
+                    break;
+
+                case (PlayerIndex.Four):
+                    ownedBy = 4;
+                    break;
+            }
         }
 
         public void setTileID(int id, Texture2D texture)
