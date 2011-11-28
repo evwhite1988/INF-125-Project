@@ -152,22 +152,38 @@ namespace Tile_Engine
 
             if (this.direction == Variables.Direction.Right && getSpriteCenter().X > (gameboard.numberOfColumns - 1) * Variables.cellWidth + Variables.cellWidth/2)
             {
-                direction = Variables.Direction.Down;
+                if (getSpriteCenter().Y > (gameboard.numberOfRows - 1) * Variables.cellHeigth + Variables.cellHeigth / 2)
+                {
+                    direction = Variables.Direction.Up;
+                }
+                else direction = Variables.Direction.Down;
             }
 
             if (this.direction == Variables.Direction.Left && getSpriteCenter().X < Variables.cellWidth / 2)
             {
-                direction = Variables.Direction.Up;
+                if (getSpriteCenter().Y < Variables.cellHeigth / 2)
+                {
+                    direction = Variables.Direction.Down;
+                }
+                else direction = Variables.Direction.Up;
             }
 
             if (this.direction == Variables.Direction.Up && getSpriteCenter().Y < Variables.cellHeigth / 2)
             {
-                direction = Variables.Direction.Right;
+                if (getSpriteCenter().X > (gameboard.numberOfColumns - 1) * Variables.cellWidth + Variables.cellWidth / 2)
+                {
+                    direction = Variables.Direction.Left;
+                }
+                else direction = Variables.Direction.Right;
             }
 
             if (this.direction == Variables.Direction.Down && getSpriteCenter().Y > (gameboard.numberOfRows - 1) * Variables.cellHeigth + Variables.cellHeigth/2)
             {
-                direction = Variables.Direction.Left;
+                if (getSpriteCenter().X < Variables.cellWidth / 2)
+                {
+                    direction = Variables.Direction.Right;
+                }
+                else direction = Variables.Direction.Left;
             }
                
         }

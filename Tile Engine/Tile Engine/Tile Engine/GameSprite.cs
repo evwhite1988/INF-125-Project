@@ -16,7 +16,9 @@ namespace Tile_Engine
     class GameSprite
     {
         public Texture2D[] spritesheets;  //Sprite sheet containing all of the timelines related to this sprite
-        public Vector2 coord{get; set;}  //Current position of sprite (top-left corner)
+        public Vector2 coord;
+        
+        //Current position of sprite (top-left corner)
         public int spriteWidth;
         public int spriteHeight;
         
@@ -112,6 +114,16 @@ namespace Tile_Engine
         public Vector2 getSpriteCenter()
         {
            return new Vector2(coord.X + spriteWidth / 2, coord.Y + spriteHeight / 2);
+        }
+
+        public Vector2 getCoord()
+        { 
+            return coord; 
+        }
+        
+        public void setCoord(Vector2 value) 
+        { 
+            coord = value; 
         }
     }
 }

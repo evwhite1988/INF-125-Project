@@ -35,10 +35,10 @@ namespace Tile_Engine
 
         //PLAYERS
         List<Player> playerList;
-        Player player1;                       
-        Player player2;
-        Player player3;
-        Player player4;
+        private Player player1;                       
+        private Player player2;
+        private Player player3;
+        private Player player4;
 
         //GNOMES
         List<Gnome> gnomeList { get; set; }     //List of Gnome Sprite Objects    
@@ -46,7 +46,7 @@ namespace Tile_Engine
         int gnomeSpawnTimeRemaining;
         int randomGnomeSpawnTimeRemaining;
 
-        int timer = 180000;
+        int timer = 120000;
 
         ///////////////////////////////////// TEXTURES ////////////////////////////////////////////////////////
 
@@ -55,7 +55,10 @@ namespace Tile_Engine
         Texture2D[] evilGnomeTex;                 //Evil Gnome Textures
         Texture2D[] randomGnomeTex;               //Random Gnome Textures
         Texture2D[] scoreboards;                  //Player scoreBoard textures
-        Texture2D cursorTex;
+        Texture2D cursorTexp1;
+        Texture2D cursorTexp2;
+        Texture2D cursorTexp3;
+        Texture2D cursorTexp4;
         Texture2D background;
         Texture2D wallTexVerticle;
         Texture2D wallTexHorizontal;
@@ -179,22 +182,22 @@ namespace Tile_Engine
 
             player1 = new Player(Tile.player1Home,
                 new Vector2(Tile.cellBorder.Width, Tile.cellBorder.Height),
-                new Cursor(cursorTex, 1), PlayerIndex.One);
+                new Cursor(cursorTexp1, 1), PlayerIndex.One);
             playerList.Add(player1);
 
             player2 = new Player(Tile.player2Home,
                 new Vector2(Tile.cellBorder.Width * 10, Tile.cellBorder.Height),
-                new Cursor(cursorTex, 1), PlayerIndex.Two);
+                new Cursor(cursorTexp2, 1), PlayerIndex.Two);
             playerList.Add(player2);
 
             player3 = new Player(Tile.player3Home,
                 new Vector2(Tile.cellBorder.Width, Tile.cellBorder.Height * 7),
-                new Cursor(cursorTex, 1), PlayerIndex.Three);
+                new Cursor(cursorTexp3, 1), PlayerIndex.Three);
             playerList.Add(player3);
 
             player4 = new Player(Tile.player4Home,
                 new Vector2(Tile.cellBorder.Width * 10, Tile.cellBorder.Height * 7),
-                new Cursor(cursorTex, 1), PlayerIndex.Four);
+                new Cursor(cursorTexp4, 1), PlayerIndex.Four);
             playerList.Add(player4);
 
             foreach (Player p in playerList)
@@ -233,7 +236,10 @@ namespace Tile_Engine
             randomGnomeTex[1] = Content.Load<Texture2D>("gnomes-randomFront");
             randomGnomeTex[2] = Content.Load<Texture2D>("gnomes-randomLeft");
             randomGnomeTex[3] = Content.Load<Texture2D>("gnomes-randomRight");
-            cursorTex = Content.Load<Texture2D>("cursor"); //gmae cursor
+            cursorTexp1 = Content.Load<Texture2D>("cursor_p1");
+            cursorTexp2 = Content.Load<Texture2D>("cursor_p2");
+            cursorTexp3 = Content.Load<Texture2D>("cursor_p3");
+            cursorTexp4 = Content.Load<Texture2D>("cursor_p4");
             gameChange = Content.Load<SpriteFont>("pointFont");
 
             for (int i = 0; i < 4; i++)
@@ -516,28 +522,50 @@ namespace Tile_Engine
                     if (currentState.ThumbSticks.Left.Y > 0.0f)
                     {
                         if (player.cursor.getSpriteCenter().Y >= Variables.cellHeigth / 2)
+                        {
                             player.cursor.updatePosition(Variables.Direction.Up);
+                            
+                            //player.cursor.coord = new Vector2(player.cursor.getCurrentColumn() * Variables.cellWidth,
+                            //    (player.cursor.getCurrentRow() - 1) * Variables.cellHeigth);
+                        }
                     }
 
                     //If Player presses DOWN on left thumbstick
                     if (currentState.ThumbSticks.Left.Y < 0.0f)
                     {
                         if (player.cursor.getSpriteCenter().Y <= (gameboard.numberOfRows - 1) * Variables.cellHeigth + Variables.cellHeigth / 2)
+                        {
                             player.cursor.updatePosition(Variables.Direction.Down);
+                            //player.cursor.coord = new Vector2(player.cursor.getCurrentColumn() * Variables.cellWidth,
+                            //    (player.cursor.getCurrentRow() + 1) * Variables.cellHeigth);
+
+                        }
                     }
 
                     //If Player presses RIGHT on left thumbstick
                     if (currentState.ThumbSticks.Left.X > 0.0f)
                     {
                         if (player.cursor.getSpriteCenter().X <= (gameboard.numberOfColumns - 1) * Variables.cellWidth + Variables.cellWidth / 2)
+                        {
                             player.cursor.updatePosition(Variables.Direction.Right);
+                            
+                            //player.cursor.coord = new Vector2((player.cursor.getCurrentColumn() + 1) * Variables.cellWidth,
+                            //    player.cursor.getCurrentRow() * Variables.cellHeigth);
+                        }
                     }
 
                     //If Player presses LEFT on left thumbstick
                     if (currentState.ThumbSticks.Left.X < 0.0f)
                     {
                         if (player.cursor.getSpriteCenter().X >= Variables.cellWidth / 2)
+                        {
                             player.cursor.updatePosition(Variables.Direction.Left);
+                            
+                            /*
+                            player.cursor.coord = new Vector2((player.cursor.getCurrentColumn() - 1) * Variables.cellWidth,
+                                player.cursor.getCurrentRow() * Variables.cellHeigth);
+                             */
+                        }
                     }
 
                     int column = player.cursor.getCurrentColumn();
@@ -749,27 +777,28 @@ namespace Tile_Engine
 
         private void removeGnomes()
         {
-            List<Vector2> bases = gameboard.getBases();
-            foreach (Vector2 homebase in bases)
+            List<Cell> bases = gameboard.getBases();
+            foreach (Cell currentBase in bases)
             {
                 foreach (Gnome gnome in gnomeList)
                 {
-                    if (gnome.getCurrentRow(gameboard) == homebase.Y && gnome.getCurrentColumn(gameboard) == homebase.X)
+                    if (gnome.getCurrentRow(gameboard) == currentBase.getPositionX() && gnome.getCurrentColumn(gameboard) == currentBase.getPositionY())
                     {
                         enterSound.Play();
-                        int player = bases.IndexOf(homebase);
+                        int player = currentBase.getOwnedBy();
                         if (gnome.spritesheets == evilGnomeTex)
                         {
-                            playerList[player].addPoints(-50);
+                            playerList[player -1].addPoints(-50);
                         }
                         else if (gnome.spritesheets == gnomeTex)
                         {
-                            playerList[player].addPoints(10);
+                            playerList[player - 1].addPoints(10);
                         }
                         else if (gnome.spritesheets == randomGnomeTex)
                         {
-                            playerList[player].addPoints(100);
-                            randomEvent();
+                            playerList[player - 1].addPoints(100);
+                            //randomEvent();
+                            swapBases();
                         }
 
                         gnomeList.Remove(gnome);
@@ -781,7 +810,52 @@ namespace Tile_Engine
 
         private void randomEvent()
         {
-            gameboard.changeSpawns();
+            gameboard.randomizeSpawnLocations();
+        }
+
+        public void swapBases()
+        {
+            List<Cell> bases = gameboard.getBases();
+            for (int i = 0; i < 4; i++)
+            {
+                Player player1 = getRandomPlayer();
+                Player player2 = getRandomPlayer();
+
+                Vector2 base1_coord = player1.playerBase.coord;
+                player1.playerBase.coord = player2.playerBase.coord;
+                int row1 = ((int)(player1.playerBase.coord.Y) / Variables.cellHeigth);
+                int col1 = ((int)(player1.playerBase.coord.X) / Variables.cellWidth);
+                gameboard.getCell(row1, col1).setOwnedBy(player1.index);
+
+                player2.playerBase.coord = base1_coord;
+                int row2 = ((int)(player2.playerBase.coord.Y) / Variables.cellHeigth);
+                int col2 = ((int)(player2.playerBase.coord.X) / Variables.cellWidth);
+                gameboard.getCell(row2, col2).setOwnedBy(player2.index);
+
+            }
+        }
+
+        private Player getRandomPlayer()
+        {
+            int i = random.Next(playerList.Count());
+
+            switch (i)
+            {
+                case 1:
+                    return player1;
+
+                case 2:
+                    return player2;
+
+                case 3:
+                    return player3;
+
+                case 4:
+                    return player4;
+
+                default:
+                    return player1;
+            }
         }
     }
 

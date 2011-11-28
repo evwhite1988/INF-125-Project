@@ -13,15 +13,12 @@ namespace Tile_Engine
         public int numberOfColumns;
         public int numberOfRows;
         public List<Vector4> wallList;
-        List<Vector2> baseList;
-
 
         public Gameboard()
         {
             numberOfColumns = Variables.columns;
             numberOfRows = Variables.rows;
             wallList = new List<Vector4>();
-            baseList = new List<Vector2>();
             buildBoard();
            
 
@@ -49,7 +46,7 @@ namespace Tile_Engine
                             (y == 7 && (x == 1 || x == 10)))
                     {
                         thisRow.Columns.Add(new Cell(y, x, -1));
-                        baseList.Add(new Vector2(x, y));
+                        //baseList.Add(new Vector2(x, y));
                     }
                     else thisRow.Columns.Add(new Cell(y, x, 0));
                 }
@@ -164,6 +161,7 @@ namespace Tile_Engine
             return spawnList;
         }
 
+        /*
         public List<Vector2> getBases()
         {
             List<Vector2> baseList = new List<Vector2>();
@@ -181,8 +179,9 @@ namespace Tile_Engine
 
             return baseList;
         }
+        */
 
-        public void changeSpawns()
+        public void randomizeSpawnLocations()
         {
             Random random = new Random();
 
@@ -206,9 +205,34 @@ namespace Tile_Engine
             }
         }
 
-        public Vector2 getBase(int player)
+        public Cell getBase(int player)
         {
-            return baseList[player - 1];
+            for (int y = 0; y < numberOfRows; y++)
+            {
+                for (int x = 0; x < numberOfColumns; x++)
+                {
+                    Cell cell = Rows[y].Columns[x];
+                    if (cell.isBase && cell.getOwnedBy() == player)
+                        return cell;
+                }
+            }
+            return null;
+        }
+
+        public List<Cell> getBases()
+        {
+            List<Cell> bases = new List<Cell>();
+
+            for (int y = 0; y < numberOfRows; y++)
+            {
+                for (int x = 0; x < numberOfColumns; x++)
+                {
+                    Cell cell = Rows[y].Columns[x];
+                    if (cell.isBase) bases.Add(cell);
+                }
+            }
+
+            return bases;
         }
 
     }
