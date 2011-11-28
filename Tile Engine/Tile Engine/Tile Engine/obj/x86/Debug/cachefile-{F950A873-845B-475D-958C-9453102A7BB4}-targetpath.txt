@@ -57,10 +57,10 @@ Content\gnomes-randomBack.xnb
 Content\gnomes-randomFront.xnb
 Content\gnomes-randomLeft.xnb
 Content\gnomes-randomRight.xnb
-Content\pointFont.xnb
-Content\pickup2.xnb
-Content\bgm.xnb
 Content\cursor_p1.xnb
 Content\cursor_p2.xnb
 Content\cursor_p3.xnb
 Content\cursor_p4.xnb
+Content\pointFont.xnb
+Content\pickup2.xnb
+Content\bgm.xnb

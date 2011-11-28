@@ -115,7 +115,11 @@ namespace Tile_Engine
                         getSpriteCenter().X >= (wall.Z * Variables.cellWidth) &&
                         getSpriteCenter().X <= ((wall.Z + 1) * Variables.cellWidth))
                     {
-                        direction = Variables.Direction.Right;
+                        if (getSpriteCenter().X > (gameboard.numberOfColumns - 1) * Variables.cellWidth + Variables.cellWidth / 2)
+                        {
+                            direction = Variables.Direction.Left;
+                        }
+                        else direction = Variables.Direction.Right;
                     }
 
                     if (this.direction == Variables.Direction.Down &&
@@ -124,7 +128,11 @@ namespace Tile_Engine
                         getSpriteCenter().X >= (wall.X * Variables.cellWidth) &&
                         getSpriteCenter().X <= ((wall.Z + 1) * Variables.cellWidth))
                     {
-                        direction = Variables.Direction.Left;
+                        if (getSpriteCenter().X < Variables.cellWidth / 2)
+                        {
+                            direction = Variables.Direction.Right;
+                        }
+                        else direction = Variables.Direction.Left;
                     }
                 }
                 //Check Verticle Wall
@@ -136,7 +144,11 @@ namespace Tile_Engine
                         getSpriteCenter().Y >= (wall.Y * Variables.cellHeigth) &&
                         getSpriteCenter().Y <= ((wall.W + 1) * Variables.cellHeigth))
                     {
-                        direction = Variables.Direction.Down;
+                        if (getSpriteCenter().Y > (gameboard.numberOfRows - 1) * Variables.cellHeigth + Variables.cellHeigth / 2)
+                        {
+                            direction = Variables.Direction.Up;
+                        }
+                        else direction = Variables.Direction.Down;
                     }
 
                     if (this.direction == Variables.Direction.Left &&
@@ -145,7 +157,11 @@ namespace Tile_Engine
                         getSpriteCenter().Y >= (wall.Y * Variables.cellHeigth) &&
                         getSpriteCenter().Y <= ((wall.W + 1) * Variables.cellHeigth))
                     {
-                        direction = Variables.Direction.Up;
+                        if (getSpriteCenter().Y < Variables.cellHeigth / 2)
+                        {
+                            direction = Variables.Direction.Down;
+                        }
+                        else direction = Variables.Direction.Up;
                     }
                 }
             }
