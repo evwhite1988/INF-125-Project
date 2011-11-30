@@ -60,6 +60,7 @@ namespace Tile_Engine
         Texture2D cursorTexp3;
         Texture2D cursorTexp4;
         Texture2D background;
+        Texture2D instructions;
         Texture2D wallTexVerticle;
         Texture2D wallTexHorizontal;
         Texture2D creditText;                     //For the credits menu;
@@ -69,7 +70,7 @@ namespace Tile_Engine
 
         /////////////////////////////////SOUND//////////////////////////////////////////////////////////////////
         SoundEffect enterSound;
-        SoundEffect bgm;
+        Song bgm;
 
         //Main menu art files, courtesy of Sage's Scrolls
         MenuSelection[] mainMenuItems;  //MenuSelection class defined below. Tweaked and Reused from past games. 
@@ -79,6 +80,7 @@ namespace Tile_Engine
         Texture2D mainMenuIconLitL;
         Texture2D mainMenuIconLitR;
         Texture2D mainMenuIconLitC;
+        private bool isPlaying;
 
         /// <summary>
         /// CONSTRUCTOR
@@ -132,7 +134,9 @@ namespace Tile_Engine
         {
             loadTextures();
             enterSound = Content.Load<SoundEffect>("pickup2");
-            bgm = Content.Load<SoundEffect>("bgm");
+            bgm = Content.Load<Song>("bgm_music");
+            MediaPlayer.IsRepeating = true;
+
             #region MenuContentLoad
 
             mainMenuIconDimL = Content.Load<Texture2D>("button-dim-left");
@@ -165,11 +169,6 @@ namespace Tile_Engine
 
             //increase screen size to fit scoreBoard
             this.graphics.PreferredBackBufferHeight = this.graphics.PreferredBackBufferHeight + scoreboards[0].Height;
-
-            SoundEffectInstance bgmInstance = bgm.CreateInstance();
-            bgmInstance.IsLooped = true;
-            bgmInstance.Play();
-
         }
 
         /// <summary>
@@ -241,6 +240,7 @@ namespace Tile_Engine
             cursorTexp3 = Content.Load<Texture2D>("cursor_p3");
             cursorTexp4 = Content.Load<Texture2D>("cursor_p4");
             gameChange = Content.Load<SpriteFont>("pointFont");
+            instructions = Content.Load<Texture2D>("instructions");
 
             for (int i = 0; i < 4; i++)
             {
@@ -319,7 +319,7 @@ namespace Tile_Engine
         /// <param name="gameTime"></param>
         private void drawInstructions(GameTime gameTime)
         {
-            spriteBatch.DrawString(scoreFont, "Placeholder", Vector2.One, Color.White);
+            spriteBatch.Draw(instructions, new Rectangle(0, 0, instructions.Width, instructions.Height), Color.White);
         }
 
         /// <summary>
@@ -450,6 +450,7 @@ namespace Tile_Engine
             switch (currentGameState)
             {
                 case GameState.MainMenu:
+                    isPlaying = false;
                     manageMenu();
 
                     //currently only the mouse works correctly in navigating the main menu screen. The following allows us to skip to
@@ -464,6 +465,7 @@ namespace Tile_Engine
                     break;
 
                 case GameState.Credits:
+                    isPlaying = false;
                     //GamePadState currentState = GamePad.GetState(PlayerIndex.One);
                     if (currentState.IsConnected)
                     {
@@ -479,6 +481,7 @@ namespace Tile_Engine
                     break;
 
                 case GameState.Instructions:
+                    isPlaying = false;
                     if (keyboardStateCurrent.IsKeyDown(Keys.Escape))
                     {
 
@@ -488,7 +491,11 @@ namespace Tile_Engine
 
 
                 case GameState.InGame:
-
+                    if (!isPlaying)
+                    {
+                        MediaPlayer.Play(bgm);
+                        isPlaying = true;
+                    }
                     if (checkGameEnd()) endGame();
                     removeGnomes();             //Removes gnomes
                     spawnGnomes(gameTime);      //Spawns new gnomes
@@ -797,8 +804,7 @@ namespace Tile_Engine
                         else if (gnome.spritesheets == randomGnomeTex)
                         {
                             playerList[player - 1].addPoints(100);
-                            //randomEvent();
-                            swapBases();
+                            randomEvent();
                         }
 
                         gnomeList.Remove(gnome);
@@ -810,7 +816,19 @@ namespace Tile_Engine
 
         private void randomEvent()
         {
-            gameboard.randomizeSpawnLocations();
+            //int e = random.Next(2);
+
+            //switch (e)
+            //{
+            //    case 0:
+            //        swapBases();
+            //        break;
+            //    case 1:
+            //        gameboard.randomizeSpawnLocations();
+            //        break;
+            //}
+
+            swapBases();
         }
 
         public void swapBases()

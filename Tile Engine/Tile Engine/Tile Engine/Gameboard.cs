@@ -197,7 +197,7 @@ namespace Tile_Engine
 
             for (int i = 0; i < 4; i++)
             {
-                Cell c = Rows[random.Next(Variables.rows)].Columns[random.Next(Variables.columns)];
+                Cell c = Rows[random.Next(Variables.rows - 1)].Columns[random.Next(Variables.columns - 1)];
                 if (c.getTileID() != -1)
                     c.setTileID(-2, Tile.spawn);
                 else
