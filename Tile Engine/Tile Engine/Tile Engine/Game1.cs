@@ -74,6 +74,7 @@ namespace Tile_Engine
 
         //Main menu art files, courtesy of Sage's Scrolls
         MenuSelection[] mainMenuItems;  //MenuSelection class defined below. Tweaked and Reused from past games. 
+        MenuSelection instructionOptions;
         Texture2D mainMenuIconDimL;
         Texture2D mainMenuIconDimR;
         Texture2D mainMenuIconDimC;
@@ -118,6 +119,7 @@ namespace Tile_Engine
             randomGnomeSpawnTimeRemaining = Variables.randomGnomeSpawnTime;
 
             mainMenuItems = new MenuSelection[4];
+
             gnomeTex = new Texture2D[4];
             evilGnomeTex = new Texture2D[4];
             randomGnomeTex = new Texture2D[4];
@@ -157,6 +159,9 @@ namespace Tile_Engine
                 mainMenuIconLitL, mainMenuIconLitR, mainMenuIconLitC, initialX, initialY + 180, 350, scoreFont);
             mainMenuItems[3] = new MenuSelection("Exit", mainMenuIconDimL, mainMenuIconDimR, mainMenuIconDimC,
                 mainMenuIconLitL, mainMenuIconLitR, mainMenuIconLitC, initialX, initialY + 270, 350, scoreFont);
+
+            instructionOptions = new MenuSelection("Next", mainMenuIconDimL, mainMenuIconDimR, mainMenuIconDimC,
+                mainMenuIconLitL, mainMenuIconLitR, mainMenuIconLitC, Window.ClientBounds.Width - 225 , Window.ClientBounds.Height + 150 , 100, scoreFont);
 
             #endregion
 
@@ -319,7 +324,11 @@ namespace Tile_Engine
         /// <param name="gameTime"></param>
         private void drawInstructions(GameTime gameTime)
         {
-            spriteBatch.Draw(instructions, new Rectangle(0, 0, instructions.Width, instructions.Height), Color.White);
+            spriteBatch.Draw(instructions, new Rectangle(0, -50, instructions.Width, instructions.Height), Color.White);
+            if (currentMainMenuIndex != -1)
+                instructionOptions.Draw(gameTime, spriteBatch, true);
+            else
+                instructionOptions.Draw(gameTime, spriteBatch, false);
         }
 
         /// <summary>
@@ -482,9 +491,9 @@ namespace Tile_Engine
 
                 case GameState.Instructions:
                     isPlaying = false;
+                    manageInstructions();
                     if (keyboardStateCurrent.IsKeyDown(Keys.Escape))
                     {
-
                         currentGameState = GameState.MainMenu;
                     }
                     break;
@@ -732,6 +741,32 @@ namespace Tile_Engine
             mPreviousMouseState = mouse;
         }
 
+        
+        private void manageInstructions()
+        {
+            //Find out where the mouse currently is at, change selection accordingly
+            currentMainMenuIndex = -1;
+
+            MenuSelection z = instructionOptions;
+            MouseState currentMouseState = Mouse.GetState();
+
+            if (currentMouseState.Y < z.GetMouseSelectionArea().Bottom
+                && currentMouseState.Y > z.GetMouseSelectionArea().Top
+                && currentMouseState.X < z.GetMouseSelectionArea().Right
+                && currentMouseState.X > z.GetMouseSelectionArea().Left)
+            {
+                currentMainMenuIndex = 0;
+            }
+
+
+            //When the mouse clicks, pick the selection.
+            MouseState mouse = Mouse.GetState();
+            if ((mouse.LeftButton == ButtonState.Pressed && mPreviousMouseState.LeftButton == ButtonState.Released) && currentMainMenuIndex != -1)
+            {
+                currentGameState = GameState.MainMenu;
+            }
+            mPreviousMouseState = mouse;
+        }
         ////////////////////////////// HELPER METHODS ////////////////////////////////////////////////////////////
        
         private void endGame()
@@ -927,21 +962,21 @@ namespace Tile_Engine
         {
             if (isSelected)
             {
-                spriteBatch.Draw(iconTextureLitL, new Rectangle((int)position.X, (int)position.Y, iconTextureLitL.Width, iconTextureLitL.Height), Color.White);
-                spriteBatch.Draw(iconTextureLitC, new Rectangle((int)position.X + iconTextureLitL.Width, (int)position.Y, centerTextureWidth, iconTextureLitC.Height), Color.White);
-                spriteBatch.Draw(iconTextureLitR, new Rectangle((int)position.X + iconTextureLitL.Width + centerTextureWidth, (int)position.Y, iconTextureLitR.Width, iconTextureLitR.Height), Color.White);
+                spriteBatch.Draw(iconTextureLitL, new Rectangle((int)position.X - 20, (int)position.Y, iconTextureLitL.Width, iconTextureLitL.Height), Color.White);
+                spriteBatch.Draw(iconTextureLitC, new Rectangle((int)position.X - 20 + iconTextureLitL.Width, (int)position.Y, centerTextureWidth, iconTextureLitC.Height), Color.White);
+                spriteBatch.Draw(iconTextureLitR, new Rectangle((int)position.X - 20 + iconTextureLitL.Width + centerTextureWidth, (int)position.Y, iconTextureLitR.Width, iconTextureLitR.Height), Color.White);
                 spriteBatch.DrawString(textFont, title,
-                    new Vector2((int)position.X + +iconTextureLitL.Width + (centerTextureWidth / 2) - textFont.MeasureString(title).X / 2,
+                    new Vector2((int)position.X - 20 + +iconTextureLitL.Width + (centerTextureWidth / 2) - textFont.MeasureString(title).X / 2,
                         (int)position.Y + (iconTextureLitC.Height / 10)),
                         Color.Black);
             }
             else
             {
-                spriteBatch.Draw(iconTextureDimL, new Rectangle((int)position.X, (int)position.Y, iconTextureDimL.Width, iconTextureDimL.Height), Color.White);
-                spriteBatch.Draw(iconTextureDimC, new Rectangle((int)position.X + iconTextureDimL.Width, (int)position.Y, centerTextureWidth, iconTextureDimC.Height), Color.White);
-                spriteBatch.Draw(iconTextureDimR, new Rectangle((int)position.X + iconTextureDimL.Width + centerTextureWidth, (int)position.Y, iconTextureLitR.Width, iconTextureDimR.Height), Color.White);
+                spriteBatch.Draw(iconTextureDimL, new Rectangle((int)position.X - 20, (int)position.Y, iconTextureDimL.Width, iconTextureDimL.Height), Color.White);
+                spriteBatch.Draw(iconTextureDimC, new Rectangle((int)position.X - 20 + iconTextureDimL.Width, (int)position.Y, centerTextureWidth, iconTextureDimC.Height), Color.White);
+                spriteBatch.Draw(iconTextureDimR, new Rectangle((int)position.X - 20 + iconTextureDimL.Width + centerTextureWidth, (int)position.Y, iconTextureLitR.Width, iconTextureDimR.Height), Color.White);
                 spriteBatch.DrawString(textFont, title,
-                    new Vector2((int)position.X + iconTextureDimL.Width + (centerTextureWidth / 2) - textFont.MeasureString(title).X / 2,
+                    new Vector2((int)position.X - 20 + iconTextureDimL.Width + (centerTextureWidth / 2) - textFont.MeasureString(title).X / 2,
                         (int)position.Y + (iconTextureLitC.Height / 10)),
                     Color.Black);
             }
