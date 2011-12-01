@@ -234,7 +234,6 @@ namespace Tile_Engine
 
             return bases;
         }
-
     }
 
 

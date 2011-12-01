@@ -426,3 +426,14 @@ C:\Users\Joshua\Desktop\Project\inf125-team-k\Tile Engine\Tile Engine\Tile Engin
 C:\Users\Joshua\Desktop\Project\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\instructions.xnb
 C:\Users\Joshua\Desktop\Project\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\bgm_music.xnb
 C:\Users\Joshua\Desktop\Project\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\bgm_music.wma
+C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\cursor_p1.xnb
+C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\cursor_p2.xnb
+C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\cursor_p3.xnb
+C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\cursor_p4.xnb
+C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\pickup2.xnb
+C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\bgm.xnb
+C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\bgm_music.xnb
+C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\bgm_music.wma
+C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\instructions_1.xnb
+C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\instructions_2.xnb
+C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\pauseMenuOverlay.xnb

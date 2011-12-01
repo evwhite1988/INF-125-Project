@@ -28,6 +28,7 @@ namespace Tile_Engine
         enum GameState { MainMenu, InGame, Credits, Instructions };
         GameState currentGameState = GameState.MainMenu;
         int currentMainMenuIndex;
+        int currentPauseMenuIndex;
 
         ///////////////////////////////////// GAME VARIABLES //////////////////////////////////////////////
 
@@ -60,7 +61,7 @@ namespace Tile_Engine
         Texture2D cursorTexp3;
         Texture2D cursorTexp4;
         Texture2D background;
-        Texture2D instructions;
+        Texture2D[] instructions;
         Texture2D wallTexVerticle;
         Texture2D wallTexHorizontal;
         Texture2D creditText;                     //For the credits menu;
@@ -74,7 +75,8 @@ namespace Tile_Engine
 
         //Main menu art files, courtesy of Sage's Scrolls
         MenuSelection[] mainMenuItems;  //MenuSelection class defined below. Tweaked and Reused from past games. 
-        MenuSelection instructionOptions;
+        MenuSelection[] instructionOptions;
+        MenuSelection[] pauseMenuItems;
         Texture2D mainMenuIconDimL;
         Texture2D mainMenuIconDimR;
         Texture2D mainMenuIconDimC;
@@ -82,6 +84,9 @@ namespace Tile_Engine
         Texture2D mainMenuIconLitR;
         Texture2D mainMenuIconLitC;
         private bool isPlaying;
+        private int instructionsPage = 0;
+        private bool isPaused;
+        private Texture2D pauseOverlay;
 
         /// <summary>
         /// CONSTRUCTOR
@@ -101,6 +106,7 @@ namespace Tile_Engine
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            isPaused = false;
             this.IsMouseVisible = true;
             mPreviousMouseState = Mouse.GetState();
 
@@ -119,11 +125,15 @@ namespace Tile_Engine
             randomGnomeSpawnTimeRemaining = Variables.randomGnomeSpawnTime;
 
             mainMenuItems = new MenuSelection[4];
+            instructionOptions = new MenuSelection[2];
+            pauseMenuItems = new MenuSelection[3];
+            currentPauseMenuIndex = 0;
 
             gnomeTex = new Texture2D[4];
             evilGnomeTex = new Texture2D[4];
             randomGnomeTex = new Texture2D[4];
             scoreboards = new Texture2D[4];
+            instructions = new Texture2D[2];
 
             base.Initialize();
         }
@@ -160,8 +170,19 @@ namespace Tile_Engine
             mainMenuItems[3] = new MenuSelection("Exit", mainMenuIconDimL, mainMenuIconDimR, mainMenuIconDimC,
                 mainMenuIconLitL, mainMenuIconLitR, mainMenuIconLitC, initialX, initialY + 270, 350, scoreFont);
 
-            instructionOptions = new MenuSelection("Next", mainMenuIconDimL, mainMenuIconDimR, mainMenuIconDimC,
+            instructionOptions[0] = new MenuSelection("Next", mainMenuIconDimL, mainMenuIconDimR, mainMenuIconDimC,
                 mainMenuIconLitL, mainMenuIconLitR, mainMenuIconLitC, Window.ClientBounds.Width - 225 , Window.ClientBounds.Height + 150 , 100, scoreFont);
+            instructionOptions[1] = new MenuSelection("Back", mainMenuIconDimL, mainMenuIconDimR, mainMenuIconDimC,
+                mainMenuIconLitL, mainMenuIconLitR, mainMenuIconLitC, Window.ClientBounds.Width - 225, Window.ClientBounds.Height + 150, 100, scoreFont);
+
+            // Set up Pause Menu.
+            initialY = (Window.ClientBounds.Height / 4) + 25;
+            pauseMenuItems[0] = new MenuSelection("Resume", mainMenuIconDimL, mainMenuIconDimR, mainMenuIconDimC,
+                mainMenuIconLitL, mainMenuIconLitR, mainMenuIconLitC, initialX, initialY, 350, scoreFont);
+            pauseMenuItems[1] = new MenuSelection("Instructions", mainMenuIconDimL, mainMenuIconDimR, mainMenuIconDimC,
+                mainMenuIconLitL, mainMenuIconLitR, mainMenuIconLitC, initialX, initialY + 90, 350, scoreFont);
+            pauseMenuItems[2] = new MenuSelection("Return to Title", mainMenuIconDimL, mainMenuIconDimR, mainMenuIconDimC,
+                mainMenuIconLitL, mainMenuIconLitR, mainMenuIconLitC, initialX, initialY + 180, 350, scoreFont);
 
             #endregion
 
@@ -245,7 +266,9 @@ namespace Tile_Engine
             cursorTexp3 = Content.Load<Texture2D>("cursor_p3");
             cursorTexp4 = Content.Load<Texture2D>("cursor_p4");
             gameChange = Content.Load<SpriteFont>("pointFont");
-            instructions = Content.Load<Texture2D>("instructions");
+            instructions[0] = Content.Load<Texture2D>("instructions_1");
+            instructions[1] = Content.Load<Texture2D>("instructions_2");
+            pauseOverlay = Content.Load<Texture2D>("pauseMenuOverlay");
 
             for (int i = 0; i < 4; i++)
             {
@@ -266,10 +289,8 @@ namespace Tile_Engine
 
         ////////////////////////////////// DRAW METHODS /////////////////////////////////////////////////////////
         
-        /// <summary>
+
         /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
             this.GraphicsDevice.Clear(Color.Black);
@@ -303,10 +324,8 @@ namespace Tile_Engine
             base.Draw(gameTime);
         }
 
-        /// <summary>
+
         /// Draws the Main Menu
-        /// </summary>
-        /// <param name="gameTime"></param>
         private void drawMainMenu(GameTime gameTime)
         {
             for (int i = 0; i < mainMenuItems.Length; i++)
@@ -318,22 +337,20 @@ namespace Tile_Engine
             }
         }
 
-        /// <summary>
+
         /// Draws the Instructions Menu
-        /// </summary>
-        /// <param name="gameTime"></param>
         private void drawInstructions(GameTime gameTime)
         {
-            spriteBatch.Draw(instructions, new Rectangle(0, -50, instructions.Width, instructions.Height), Color.White);
+            spriteBatch.Draw(instructions[instructionsPage], new Rectangle(0, (instructionsPage * 50) - 50, 
+                instructions[instructionsPage].Width, instructions[instructionsPage].Height), Color.White);
             if (currentMainMenuIndex != -1)
-                instructionOptions.Draw(gameTime, spriteBatch, true);
+                instructionOptions[instructionsPage].Draw(gameTime, spriteBatch, true);
             else
-                instructionOptions.Draw(gameTime, spriteBatch, false);
+                instructionOptions[instructionsPage].Draw(gameTime, spriteBatch, false);
         }
 
-        /// <summary>
+
         /// Draws the Credits Menu
-        /// </summary>
         private void drawCredits()
         {
             Vector2 creditPos = new Vector2(graphics.GraphicsDevice.Viewport.Width / 3.5f,
@@ -341,21 +358,28 @@ namespace Tile_Engine
             spriteBatch.Draw(creditText, creditPos, Color.White);
         }
 
-        /// <summary>
+
         /// Calls methods to draw game content and gameplay updates
-        /// </summary>
-        /// <param name="gameTime"></param>
         private void drawGame(GameTime gameTime)
         {
             drawGameBoard(gameTime);
             drawGnomes(gameTime);
             drawPlayers(gameTime);
+            if (isPaused)
+            {
+                spriteBatch.Draw(pauseOverlay, new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), new Color(255, 255, 255, 200));
+                for (int i = 0; i < pauseMenuItems.Length; i++)
+                {
+                    if (i == currentPauseMenuIndex)
+                        pauseMenuItems[i].Draw(gameTime, spriteBatch, true);
+                    else
+                        pauseMenuItems[i].Draw(gameTime, spriteBatch, false);
+                }
+            }
         }
 
-        /// <summary>
+
         /// Draws the gameboard, cells, walls, and timer
-        /// </summary>
-        /// <param name="gameTime"></param>
         private void drawGameBoard(GameTime gameTime)
         {
             for (int y = 0; y < Variables.rows; y++)
@@ -414,15 +438,12 @@ namespace Tile_Engine
                 }
             }
 
-            timer -= gameTime.ElapsedGameTime.Milliseconds;
             spriteBatch.DrawString(gameChange, "TIME: " + (timer / 1000), new
             Vector2(350, 10), Color.Red);
         }
 
-        /// <summary>
+
         /// Calls draw() on each gnome on the gameboard
-        /// </summary>
-        /// <param name="gameTime"></param>
         private void drawGnomes(GameTime gameTime)
         {
             foreach (Gnome gnome in gnomeList)
@@ -431,10 +452,8 @@ namespace Tile_Engine
             }
         }
 
-        /// <summary>
+
         /// Calls draw() for each active player
-        /// </summary>
-        /// <param name="gameTime"></param>
         private void drawPlayers(GameTime gameTime)
         {
 
@@ -447,11 +466,9 @@ namespace Tile_Engine
 
         ///////////////////////////////// UPDATE METHODS ////////////////////////////////////////////////////////
 
-        /// <summary>
+
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
             KeyboardState keyboardStateCurrent = Keyboard.GetState(); //Will remove later, for debugging menu
@@ -465,7 +482,6 @@ namespace Tile_Engine
                     //currently only the mouse works correctly in navigating the main menu screen. The following allows us to skip to
                     //the actual game by just pressing 'A' on the controller.
 
-
                     if (currentState.IsConnected)
                     {
                         if (currentState.IsButtonDown(Buttons.A))
@@ -475,16 +491,19 @@ namespace Tile_Engine
 
                 case GameState.Credits:
                     isPlaying = false;
-                    //GamePadState currentState = GamePad.GetState(PlayerIndex.One);
+
                     if (currentState.IsConnected)
                     {
                         if (currentState.IsButtonDown(Buttons.A))
-                            currentGameState = GameState.MainMenu;
-
+                        {
+                            if (instructionsPage == 0)
+                                instructionsPage++;
+                            else
+                                --instructionsPage;
+                        }
                     }
-                    if (keyboardStateCurrent.IsKeyDown(Keys.Escape))
+                    if (keyboardStateCurrent.IsKeyDown(Keys.Escape) || currentState.IsButtonDown(Buttons.B))
                     {
-
                         currentGameState = GameState.MainMenu;
                     }
                     break;
@@ -492,7 +511,7 @@ namespace Tile_Engine
                 case GameState.Instructions:
                     isPlaying = false;
                     manageInstructions();
-                    if (keyboardStateCurrent.IsKeyDown(Keys.Escape))
+                    if (keyboardStateCurrent.IsKeyDown(Keys.Escape) || currentState.IsButtonDown(Buttons.B))
                     {
                         currentGameState = GameState.MainMenu;
                     }
@@ -505,27 +524,71 @@ namespace Tile_Engine
                         MediaPlayer.Play(bgm);
                         isPlaying = true;
                     }
-                    if (checkGameEnd()) endGame();
-                    removeGnomes();             //Removes gnomes
-                    spawnGnomes(gameTime);      //Spawns new gnomes
-                    UpdateInput();              //handles new user inputs
-
-                    // For each gnome on the gameboard, update its position
-                    foreach (Gnome gnome in gnomeList)
+                    if (keyboardStateCurrent.IsKeyDown(Keys.Escape) || currentState.IsButtonDown(Buttons.Start))
                     {
-                        gnome.updatePosition(gameboard, gameTime);
+                        isPaused = !isPaused;
                     }
 
+                    if (isPaused)
+                    {
+                        //Find out where the mouse currently is at, change selection accordingly
+                        currentPauseMenuIndex = -1;
+                        for (int i = 0; i < pauseMenuItems.Length; i++)
+                        {
+                            MenuSelection z = pauseMenuItems[i];
+                            MouseState currentMouseState = Mouse.GetState();
+
+                            if (currentMouseState.Y < z.GetMouseSelectionArea().Bottom
+                                && currentMouseState.Y > z.GetMouseSelectionArea().Top
+                                && currentMouseState.X < z.GetMouseSelectionArea().Right
+                                && currentMouseState.X > z.GetMouseSelectionArea().Left)
+                            {
+                                currentPauseMenuIndex = i;
+                            }
+                        }
+
+                        MouseState mouse = Mouse.GetState();
+                        if ((mouse.LeftButton == ButtonState.Pressed && mPreviousMouseState.LeftButton == ButtonState.Released) && currentMainMenuIndex != -1)
+                        {
+                            string selection = pauseMenuItems[currentPauseMenuIndex].GetTitle();
+                            if (selection == "Resume")
+                            {
+                                isPaused = false;
+                            }
+                            else if (selection == "Instructions")
+                            {}
+                            else if (selection == "Return to Title")
+                            {
+                                disposeGame();
+                                currentGameState = GameState.MainMenu;
+                                isPaused = false;
+                                MediaPlayer.Stop();
+                            }
+                        }
+                        mPreviousMouseState = mouse;
+                    }
+                    else
+                    {
+                        timer -= gameTime.ElapsedGameTime.Milliseconds;
+                        if (checkGameEnd()) endGame();
+                        removeGnomes();             //Removes gnomes
+                        spawnGnomes(gameTime);      //Spawns new gnomes
+                        UpdateInput();              //handles new user inputs
+
+                        // For each gnome on the gameboard, update its position
+                        foreach (Gnome gnome in gnomeList)
+                        {
+                            gnome.updatePosition(gameboard, gameTime);
+                        }
+                    }
                     base.Update(gameTime);
                     break;
-
             }
         }
 
         ///////////////////////////////// INPUT METHODS ////////////////////////////////////////////////////////
-        /// <summary>
+
         /// Player Input Handler
-        /// </summary>
         private void UpdateInput()
         {
             foreach (Player player in playerList)
@@ -540,9 +603,6 @@ namespace Tile_Engine
                         if (player.cursor.getSpriteCenter().Y >= Variables.cellHeigth / 2)
                         {
                             player.cursor.updatePosition(Variables.Direction.Up);
-                            
-                            //player.cursor.coord = new Vector2(player.cursor.getCurrentColumn() * Variables.cellWidth,
-                            //    (player.cursor.getCurrentRow() - 1) * Variables.cellHeigth);
                         }
                     }
 
@@ -552,9 +612,6 @@ namespace Tile_Engine
                         if (player.cursor.getSpriteCenter().Y <= (gameboard.numberOfRows - 1) * Variables.cellHeigth + Variables.cellHeigth / 2)
                         {
                             player.cursor.updatePosition(Variables.Direction.Down);
-                            //player.cursor.coord = new Vector2(player.cursor.getCurrentColumn() * Variables.cellWidth,
-                            //    (player.cursor.getCurrentRow() + 1) * Variables.cellHeigth);
-
                         }
                     }
 
@@ -564,9 +621,6 @@ namespace Tile_Engine
                         if (player.cursor.getSpriteCenter().X <= (gameboard.numberOfColumns - 1) * Variables.cellWidth + Variables.cellWidth / 2)
                         {
                             player.cursor.updatePosition(Variables.Direction.Right);
-                            
-                            //player.cursor.coord = new Vector2((player.cursor.getCurrentColumn() + 1) * Variables.cellWidth,
-                            //    player.cursor.getCurrentRow() * Variables.cellHeigth);
                         }
                     }
 
@@ -576,11 +630,6 @@ namespace Tile_Engine
                         if (player.cursor.getSpriteCenter().X >= Variables.cellWidth / 2)
                         {
                             player.cursor.updatePosition(Variables.Direction.Left);
-                            
-                            /*
-                            player.cursor.coord = new Vector2((player.cursor.getCurrentColumn() - 1) * Variables.cellWidth,
-                                player.cursor.getCurrentRow() * Variables.cellHeigth);
-                             */
                         }
                     }
 
@@ -695,9 +744,8 @@ namespace Tile_Engine
             }
         }
 
-        /// <summary>
+
         /// Manages the Inputs while on Main Menu
-        /// </summary>
         private void manageMenu()
         {
             //Find out where the mouse currently is at, change selection accordingly
@@ -746,27 +794,33 @@ namespace Tile_Engine
         {
             //Find out where the mouse currently is at, change selection accordingly
             currentMainMenuIndex = -1;
-
-            MenuSelection z = instructionOptions;
-            MouseState currentMouseState = Mouse.GetState();
-
-            if (currentMouseState.Y < z.GetMouseSelectionArea().Bottom
-                && currentMouseState.Y > z.GetMouseSelectionArea().Top
-                && currentMouseState.X < z.GetMouseSelectionArea().Right
-                && currentMouseState.X > z.GetMouseSelectionArea().Left)
+            for (int i = 0; i < instructionOptions.Length; i++)
             {
-                currentMainMenuIndex = 0;
-            }
+                MenuSelection z = instructionOptions[i];
+                MouseState currentMouseState = Mouse.GetState();
 
+                if (currentMouseState.Y < z.GetMouseSelectionArea().Bottom
+                    && currentMouseState.Y > z.GetMouseSelectionArea().Top
+                    && currentMouseState.X < z.GetMouseSelectionArea().Right
+                    && currentMouseState.X > z.GetMouseSelectionArea().Left)
+                {
+                    currentMainMenuIndex = i;
+                }
+            }
 
             //When the mouse clicks, pick the selection.
             MouseState mouse = Mouse.GetState();
             if ((mouse.LeftButton == ButtonState.Pressed && mPreviousMouseState.LeftButton == ButtonState.Released) && currentMainMenuIndex != -1)
             {
-                currentGameState = GameState.MainMenu;
+                if (instructionsPage > 0)
+                    --instructionsPage;
+                else
+                    instructionsPage = 1;
             }
             mPreviousMouseState = mouse;
         }
+
+
         ////////////////////////////// HELPER METHODS ////////////////////////////////////////////////////////////
        
         private void endGame()
@@ -909,6 +963,20 @@ namespace Tile_Engine
                 default:
                     return player1;
             }
+        }
+
+        private void disposeGame()
+        {
+            gnomeList.Clear();
+            foreach (Player p in playerList)
+            {
+                p.dispose();
+            }
+            gameboard = new Gameboard();
+            timer = 120000;
+            gnomeSpawnTimeRemaining = Variables.gnomeSpawnTime;
+            evilGnomeSpawnTimeRemaining = Variables.evilGnomeSpawnTime;
+            randomGnomeSpawnTimeRemaining = Variables.randomGnomeSpawnTime;
         }
     }
 

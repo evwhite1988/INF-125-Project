@@ -292,5 +292,11 @@ namespace Tile_Engine
 
             return false;
         }
+
+        public void dispose()
+        {
+            points = 0;
+            p_arrows.Clear();
+        }
     }
 }
