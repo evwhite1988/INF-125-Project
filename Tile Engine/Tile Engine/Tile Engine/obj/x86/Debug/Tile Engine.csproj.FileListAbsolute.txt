@@ -437,3 +437,80 @@ C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile E
 C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\instructions_1.xnb
 C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\instructions_2.xnb
 C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\pauseMenuOverlay.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\part1_tileset.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\tile.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_down.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_left.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_up.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_right.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\dog-house.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\cursor.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\grass.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\spawn.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\wall.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\hole.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-evil.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\Player1.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-dim-left.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-dim-middle.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-dim-right.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-lit-left.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-lit-middle.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\button-lit-right.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomesBack.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomesLeft.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomesRight.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomesFront.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-evilLeft.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-evilFront.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-evilBack.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-evilRight.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\credits.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\Player2.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\Player3.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\Player4.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_down_2.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_down_3.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_down_4.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_left_1.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_left_2.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_left_3.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_left_4.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_right_1.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_right_2.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_right_3.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_right_4.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_up_1.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_up_2.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_up_3.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_up_4.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\arrow_down_1.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\wall_verticle.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\wall_horizontal.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\background.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\dog-house-p2.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\dog-house-p3.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\dog-house-p4.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-randomBack.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-randomFront.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-randomLeft.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\gnomes-randomRight.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\cursor_p1.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\cursor_p2.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\cursor_p3.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\cursor_p4.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\instructions_1.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\instructions_2.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\pauseMenuOverlay.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\pointFont.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\pickup2.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\bgm.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\bgm_music.xnb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\bgm_music.wma
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Tile Engine.exe
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Tile Engine.pdb
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\obj\x86\Debug\ResolveAssemblyReference.cache
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\obj\x86\Debug\Tile Engine.exe
+S:\125Code\Tile Engine\Tile Engine\Tile Engine\obj\x86\Debug\Tile Engine.pdb

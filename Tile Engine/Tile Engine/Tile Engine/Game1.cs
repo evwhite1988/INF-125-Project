@@ -170,10 +170,11 @@ namespace Tile_Engine
             mainMenuItems[3] = new MenuSelection("Exit", mainMenuIconDimL, mainMenuIconDimR, mainMenuIconDimC,
                 mainMenuIconLitL, mainMenuIconLitR, mainMenuIconLitC, initialX, initialY + 270, 350, scoreFont);
 
-            instructionOptions[0] = new MenuSelection("Next", mainMenuIconDimL, mainMenuIconDimR, mainMenuIconDimC,
-                mainMenuIconLitL, mainMenuIconLitR, mainMenuIconLitC, Window.ClientBounds.Width - 225 , Window.ClientBounds.Height + 150 , 100, scoreFont);
-            instructionOptions[1] = new MenuSelection("Back", mainMenuIconDimL, mainMenuIconDimR, mainMenuIconDimC,
-                mainMenuIconLitL, mainMenuIconLitR, mainMenuIconLitC, Window.ClientBounds.Width - 225, Window.ClientBounds.Height + 150, 100, scoreFont);
+            instructionOptions[0] = new MenuSelection("Controls", mainMenuIconDimL, mainMenuIconDimR, mainMenuIconDimC,
+                mainMenuIconLitL, mainMenuIconLitR, mainMenuIconLitC, Window.ClientBounds.Width - 225 , 20, 100, scoreFont);
+            instructionOptions[1] = new MenuSelection("Instructions", mainMenuIconDimL, mainMenuIconDimR, mainMenuIconDimC,
+                mainMenuIconLitL, mainMenuIconLitR, mainMenuIconLitC, Window.ClientBounds.Width - 225, 20, 100, scoreFont);
+           
 
             // Set up Pause Menu.
             initialY = (Window.ClientBounds.Height / 4) + 25;
@@ -353,8 +354,8 @@ namespace Tile_Engine
         /// Draws the Credits Menu
         private void drawCredits()
         {
-            Vector2 creditPos = new Vector2(graphics.GraphicsDevice.Viewport.Width / 3.5f,
-                     graphics.GraphicsDevice.Viewport.Height / 3.5f);
+            Vector2 creditPos = new Vector2(0,
+                     0);
             spriteBatch.Draw(creditText, creditPos, Color.White);
         }
 
