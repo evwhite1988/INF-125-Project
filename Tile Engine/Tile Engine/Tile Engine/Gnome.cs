@@ -16,10 +16,14 @@ namespace Tile_Engine
     {
         public Variables.Direction direction;  //Current direction the Sprite is moving
         public bool changeState = false;
+        public bool hasEffect = false;
         public int lastColumn = 0;
         public int lastRow = 0;
         public int speed;
         private static int FRAMES_PER_SEC = 10;
+        private ParticleSystem effect;
+        Texture2D effect_Tex;
+
 
         
 
@@ -268,6 +272,23 @@ namespace Tile_Engine
             }
 
             return 0;
+        }
+
+        public void addEffect(GameTime gameTime, Texture2D texture)
+        {
+            effect_Tex = texture;
+            effect = new ParticleSystem();
+            effect.Init(gameTime, texture, this);
+            hasEffect = true;
+        }
+
+        public void drawEffect(GameTime gameTime, SpriteBatch spritebatch)
+        {
+            if (effect.isFinsihed())
+                addEffect(gameTime, effect_Tex);
+
+            effect.Update(gameTime);
+            effect.Draw(spritebatch);
         }
     }
 }

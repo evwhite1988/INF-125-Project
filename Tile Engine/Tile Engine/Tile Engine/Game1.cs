@@ -17,11 +17,10 @@ namespace Tile_Engine
     public class Game1 : Microsoft.Xna.Framework.Game
     {
         ///////////////////////////////////// SYSTEM VARIABLES ///////////////////////////////////////////
-
         MouseState mPreviousMouseState;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Random random;
+        private static Random random;
 
         ///////////////////////////////////// MENUS ///////////////////////////////////////////////////////
 
@@ -66,8 +65,10 @@ namespace Tile_Engine
         Texture2D wallTexVerticle;
         Texture2D wallTexHorizontal;
         Texture2D creditText;                     //For the credits menu;
+        Texture2D gnome_effect;
         SpriteFont gameChange;
         SpriteFont scoreFont;
+        List<ParticleSystem> activeEffects;
 
 
         /////////////////////////////////SOUND//////////////////////////////////////////////////////////////////
@@ -88,6 +89,7 @@ namespace Tile_Engine
         private int instructionsPage = 0;
         private bool isPaused;
         private Texture2D pauseOverlay;
+        private Texture2D base_effect;
 
         /// <summary>
         /// CONSTRUCTOR
@@ -135,6 +137,8 @@ namespace Tile_Engine
             randomGnomeTex = new Texture2D[4];
             scoreboards = new Texture2D[4];
             instructions = new Texture2D[2];
+
+            activeEffects = new List<ParticleSystem>();
 
             base.Initialize();
         }
@@ -271,6 +275,8 @@ namespace Tile_Engine
             instructions[0] = Content.Load<Texture2D>("instructions_1");
             instructions[1] = Content.Load<Texture2D>("instructions_2");
             pauseOverlay = Content.Load<Texture2D>("pauseMenuOverlay");
+            gnome_effect = Content.Load<Texture2D>("random_effect");
+            base_effect = Content.Load<Texture2D>("switch");
 
             for (int i = 0; i < 4; i++)
             {
@@ -319,6 +325,16 @@ namespace Tile_Engine
             }
 
             spriteBatch.End();
+
+            foreach (Gnome g in gnomeList)
+            {
+                if (g.hasEffect)
+                    g.drawEffect(gameTime, spriteBatch);
+            }
+
+            foreach (ParticleSystem p in activeEffects)
+                p.Draw(spriteBatch);
+
             graphics.ApplyChanges();
 
             // TODO: Add your drawing code here
@@ -564,7 +580,7 @@ namespace Tile_Engine
                     {
                         timer -= gameTime.ElapsedGameTime.Milliseconds;
                         if (checkGameEnd()) endGame();
-                        removeGnomes();             //Removes gnomes
+                        removeGnomes(gameTime);             //Removes gnomes
                         spawnGnomes(gameTime);      //Spawns new gnomes
                         UpdateInput();              //handles new user inputs
 
@@ -572,6 +588,13 @@ namespace Tile_Engine
                         foreach (Gnome gnome in gnomeList)
                         {
                             gnome.updatePosition(gameboard, gameTime);
+                        }
+
+                        for (int i = 0; i < activeEffects.Count; i++)
+                        {
+                            activeEffects[i].Update(gameTime);
+                            if (activeEffects[i].isFinsihed())
+                                activeEffects.RemoveAt(i);
                         }
                     }
                     base.Update(gameTime);
@@ -850,6 +873,11 @@ namespace Tile_Engine
             currentGameState = GameState.Credits;
         }
 
+        public static float RandomBetween(float min, float max)
+        {
+            return min + (float)random.NextDouble() * (max - min);
+        }
+
         private bool checkGameEnd()
         {
             if (timer <= 0) return true;
@@ -884,16 +912,17 @@ namespace Tile_Engine
                 else if (randomGnomeSpawnTimeRemaining < 0)
                 {
                     int spawnPoint = random.Next(4);
-                    gnomeList.Add(new Gnome(randomGnomeTex, Variables.frameCount, (int)spawnPoints[spawnPoint].Y,
-                        (int)spawnPoints[spawnPoint].X, (int)(Variables.speed * 1.5)));
-
+                    Gnome gnome = new Gnome(randomGnomeTex, Variables.frameCount, (int)spawnPoints[spawnPoint].Y,
+                        (int)spawnPoints[spawnPoint].X, (int)(Variables.speed * 1.5));
+                    gnome.addEffect(gameTime, gnome_effect);
+                    gnomeList.Add(gnome);
                     randomGnomeSpawnTimeRemaining = random.Next(Variables.randomGnomeSpawnMin, Variables.randomGnomeSpawnMax);
                 }
             }
 
         }
 
-        private void removeGnomes()
+        private void removeGnomes(GameTime gameTime)
         {
             List<Cell> bases = gameboard.getBases();
             foreach (Cell currentBase in bases)
@@ -915,7 +944,7 @@ namespace Tile_Engine
                         else if (gnome.spritesheets == randomGnomeTex)
                         {
                             playerList[player - 1].addPoints(100);
-                            randomEvent();
+                            randomEvent(gameTime);
                         }
 
                         gnomeList.Remove(gnome);
@@ -925,7 +954,7 @@ namespace Tile_Engine
             }
         }
 
-        private void randomEvent()
+        private void randomEvent(GameTime gameTime)
         {
             //int e = random.Next(2);
 
@@ -939,10 +968,10 @@ namespace Tile_Engine
             //        break;
             //}
 
-            swapBases();
+            swapBases(gameTime);
         }
 
-        public void swapBases()
+        public void swapBases(GameTime gameTime)
         {
             List<Cell> bases = gameboard.getBases();
             for (int i = 0; i < 4; i++)
@@ -960,8 +989,11 @@ namespace Tile_Engine
                 int row2 = ((int)(player2.playerBase.coord.Y) / Variables.cellHeigth);
                 int col2 = ((int)(player2.playerBase.coord.X) / Variables.cellWidth);
                 gameboard.getCell(row2, col2).setOwnedBy(player2.index);
-
             }
+
+            ParticleSystem effect = new ParticleSystem();
+            effect.Init(gameTime, base_effect, this.player1.playerBase);
+            activeEffects.Add(effect);
         }
 
         private Player getRandomPlayer()
