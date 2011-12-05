@@ -29,6 +29,7 @@ namespace Tile_Engine
         GameState currentGameState = GameState.MainMenu;
         int currentMainMenuIndex;
         int currentPauseMenuIndex;
+        bool buffer = true;
 
         ///////////////////////////////////// GAME VARIABLES //////////////////////////////////////////////
 
@@ -479,15 +480,6 @@ namespace Tile_Engine
                 case GameState.MainMenu:
                     isPlaying = false;
                     manageMenu();
-
-                    //currently only the mouse works correctly in navigating the main menu screen. The following allows us to skip to
-                    //the actual game by just pressing 'A' on the controller.
-
-                    if (currentState.IsConnected)
-                    {
-                        if (currentState.IsButtonDown(Buttons.A))
-                            currentGameState = GameState.InGame;
-                    }
                     break;
 
                 case GameState.Credits:
@@ -749,8 +741,36 @@ namespace Tile_Engine
         /// Manages the Inputs while on Main Menu
         private void manageMenu()
         {
-            //Find out where the mouse currently is at, change selection accordingly
-            currentMainMenuIndex = -1;
+           //GAMEPAD INPUT
+            GamePadState currentState = GamePad.GetState(PlayerIndex.One);
+            
+            //If Player presses UP on left thumbstick
+            if (currentState.ThumbSticks.Left.Y == 0.0f && buffer == false)
+            {
+                buffer = true;
+            }
+            
+            //If Player presses UP on left thumbstick
+            else if (currentState.ThumbSticks.Left.Y > 0.0f && buffer == true)
+            {
+                if (currentMainMenuIndex > 0)
+                {
+                    currentMainMenuIndex = currentMainMenuIndex - 1;
+                    buffer = false;
+                }
+            }
+
+            //If Player presses DOWN on left thumbstick
+            else if (currentState.ThumbSticks.Left.Y < 0.0f && buffer == true)
+            {
+                if (currentMainMenuIndex < mainMenuItems.Length - 1)
+                {
+                    currentMainMenuIndex = currentMainMenuIndex + 1;
+                    buffer = false;
+                }
+            }
+
+            //MOUSE INPUT
             for (int i = 0; i < mainMenuItems.Length; i++)
             {
                 MenuSelection z = mainMenuItems[i];
@@ -765,9 +785,10 @@ namespace Tile_Engine
                 }
             }
 
-            //When the mouse clicks, pick the selection.
+            //MENU ITEM SELECTION
             MouseState mouse = Mouse.GetState();
-            if ((mouse.LeftButton == ButtonState.Pressed && mPreviousMouseState.LeftButton == ButtonState.Released)  && currentMainMenuIndex != -1)
+            if (((mouse.LeftButton == ButtonState.Pressed && mPreviousMouseState.LeftButton == ButtonState.Released) ||
+                currentState.Buttons.A == ButtonState.Pressed) && currentMainMenuIndex != -1)
             {
                 string selection = mainMenuItems[currentMainMenuIndex].GetTitle();
                 if (selection == "Play")

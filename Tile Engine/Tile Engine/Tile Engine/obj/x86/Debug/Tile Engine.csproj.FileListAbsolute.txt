@@ -514,3 +514,8 @@ S:\125Code\Tile Engine\Tile Engine\Tile Engine\obj\x86\Debug\ResolveAssemblyRefe
 S:\125Code\Tile Engine\Tile Engine\Tile Engine\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
 S:\125Code\Tile Engine\Tile Engine\Tile Engine\obj\x86\Debug\Tile Engine.exe
 S:\125Code\Tile Engine\Tile Engine\Tile Engine\obj\x86\Debug\Tile Engine.pdb
+C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\instructions_1.xnb
+C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\instructions_2.xnb
+C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\pauseMenuOverlay.xnb
+C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\bgm_music.xnb
+C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\bgm_music.wma

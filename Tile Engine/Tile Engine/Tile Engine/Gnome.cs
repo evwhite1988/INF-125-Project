@@ -46,8 +46,9 @@ namespace Tile_Engine
         //Updates the position of the Sprite on the gameboard
         public void updatePosition(Gameboard gameboard, GameTime gameTime)
         {
-            collisionCheck(gameboard); //checks if the Sprite has colided with the gameboard edge or a wall
             directionTileCheck(gameboard);
+            collisionCheck(gameboard); //checks if the Sprite has colided with the gameboard edge or a wall
+            
             
             if (this.direction == Variables.Direction.Right)
             {
@@ -117,9 +118,9 @@ namespace Tile_Engine
                     {
                         if (getSpriteCenter().X > (gameboard.numberOfColumns - 1) * Variables.cellWidth + Variables.cellWidth / 2)
                         {
-                            direction = Variables.Direction.Left;
+                            this.direction = Variables.Direction.Left;
                         }
-                        else direction = Variables.Direction.Right;
+                        else this.direction = Variables.Direction.Right;
                     }
 
                     if (this.direction == Variables.Direction.Down &&
@@ -130,9 +131,9 @@ namespace Tile_Engine
                     {
                         if (getSpriteCenter().X < Variables.cellWidth / 2)
                         {
-                            direction = Variables.Direction.Right;
+                            this.direction = Variables.Direction.Right;
                         }
-                        else direction = Variables.Direction.Left;
+                        else this.direction = Variables.Direction.Left;
                     }
                 }
                 //Check Verticle Wall
@@ -146,9 +147,9 @@ namespace Tile_Engine
                     {
                         if (getSpriteCenter().Y > (gameboard.numberOfRows - 1) * Variables.cellHeigth + Variables.cellHeigth / 2)
                         {
-                            direction = Variables.Direction.Up;
+                            this.direction = Variables.Direction.Up;
                         }
-                        else direction = Variables.Direction.Down;
+                        else this.direction = Variables.Direction.Down;
                     }
 
                     if (this.direction == Variables.Direction.Left &&
@@ -159,9 +160,9 @@ namespace Tile_Engine
                     {
                         if (getSpriteCenter().Y < Variables.cellHeigth / 2)
                         {
-                            direction = Variables.Direction.Down;
+                            this.direction = Variables.Direction.Down;
                         }
-                        else direction = Variables.Direction.Up;
+                        else this.direction = Variables.Direction.Up;
                     }
                 }
             }
@@ -170,40 +171,77 @@ namespace Tile_Engine
             {
                 if (getSpriteCenter().Y > (gameboard.numberOfRows - 1) * Variables.cellHeigth + Variables.cellHeigth / 2)
                 {
-                    direction = Variables.Direction.Up;
+                    this.direction = Variables.Direction.Up;
                 }
-                else direction = Variables.Direction.Down;
+                else this.direction = Variables.Direction.Down;
             }
 
             if (this.direction == Variables.Direction.Left && getSpriteCenter().X < Variables.cellWidth / 2)
             {
                 if (getSpriteCenter().Y < Variables.cellHeigth / 2)
                 {
-                    direction = Variables.Direction.Down;
+                    this.direction = Variables.Direction.Down;
                 }
-                else direction = Variables.Direction.Up;
+                else this.direction = Variables.Direction.Up;
             }
 
             if (this.direction == Variables.Direction.Up && getSpriteCenter().Y < Variables.cellHeigth / 2)
             {
                 if (getSpriteCenter().X > (gameboard.numberOfColumns - 1) * Variables.cellWidth + Variables.cellWidth / 2)
                 {
-                    direction = Variables.Direction.Left;
+                    this.direction = Variables.Direction.Left;
                 }
-                else direction = Variables.Direction.Right;
+                else this.direction = Variables.Direction.Right;
             }
 
             if (this.direction == Variables.Direction.Down && getSpriteCenter().Y > (gameboard.numberOfRows - 1) * Variables.cellHeigth + Variables.cellHeigth/2)
             {
                 if (getSpriteCenter().X < Variables.cellWidth / 2)
                 {
-                    direction = Variables.Direction.Right;
+                    this.direction = Variables.Direction.Right;
                 }
-                else direction = Variables.Direction.Left;
-            }
-               
+                else this.direction = Variables.Direction.Left;
+            } 
         }
 
+        private bool collisionCheckNorth(Gameboard gameboard)
+        {
+            foreach (Vector4 wall in gameboard.wallList)
+            {
+                //Check Horizontal Wall
+                if (wall.X == wall.Z)
+                {
+                    if (getSpriteCenter().Y <= (wall.W * Variables.cellHeigth) + Variables.cellHeigth / 2 &&
+                        getSpriteCenter().Y >= (wall.W * Variables.cellHeigth) &&
+                        getSpriteCenter().X >= (wall.Z * Variables.cellWidth) &&
+                        getSpriteCenter().X <= ((wall.Z + 1) * Variables.cellWidth))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            if (getSpriteCenter().Y < Variables.cellHeigth / 2)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool collisionCheckSouth()
+        {
+            return false;
+        }
+
+        private bool collisionCheckWest()
+        {
+            return false;
+        }
+
+        private bool collisionCheckEast()
+        {
+            return false;
+        }
 
         public int getCurrentColumn(Gameboard gameboard)
         {
