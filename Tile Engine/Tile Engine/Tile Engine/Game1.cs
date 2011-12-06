@@ -540,8 +540,34 @@ namespace Tile_Engine
 
                     if (isPaused)
                     {
-                        //Find out where the mouse currently is at, change selection accordingly
-                        currentPauseMenuIndex = -1;
+                        //GAMEPAD INPUT
+                        //If Player presses UP on left thumbstick
+                        if (currentState.ThumbSticks.Left.Y == 0.0f && buffer == false)
+                        {
+                            buffer = true;
+                        }
+
+                        //If Player presses UP on left thumbstick
+                        else if (currentState.ThumbSticks.Left.Y > 0.0f && buffer == true)
+                        {
+                            if (currentPauseMenuIndex > 0)
+                            {
+                                currentPauseMenuIndex = currentPauseMenuIndex - 1;
+                                buffer = false;
+                            }
+                        }
+
+                        //If Player presses DOWN on left thumbstick
+                        else if (currentState.ThumbSticks.Left.Y < 0.0f && buffer == true)
+                        {
+                            if (currentPauseMenuIndex < pauseMenuItems.Length - 1)
+                            {
+                                currentPauseMenuIndex = currentPauseMenuIndex + 1;
+                                buffer = false;
+                            }
+                        }
+
+                        //MOUSE INPUT
                         for (int i = 0; i < pauseMenuItems.Length; i++)
                         {
                             MenuSelection z = pauseMenuItems[i];
@@ -557,7 +583,10 @@ namespace Tile_Engine
                         }
 
                         MouseState mouse = Mouse.GetState();
-                        if ((mouse.LeftButton == ButtonState.Pressed && mPreviousMouseState.LeftButton == ButtonState.Released) && currentMainMenuIndex != -1)
+                        currentState = GamePad.GetState(PlayerIndex.One);
+
+                        if (((mouse.LeftButton == ButtonState.Pressed && mPreviousMouseState.LeftButton == ButtonState.Released) || 
+                            currentState.Buttons.A == ButtonState.Pressed) && currentPauseMenuIndex != -1)
                         {
                             string selection = pauseMenuItems[currentPauseMenuIndex].GetTitle();
                             if (selection == "Resume")
@@ -565,11 +594,13 @@ namespace Tile_Engine
                                 isPaused = false;
                             }
                             else if (selection == "Instructions")
-                            {}
+                            {
+                                currentGameState = GameState.Instructions;
+                            }
                             else if (selection == "Return to Title")
                             {
-                                disposeGame();
                                 currentGameState = GameState.MainMenu;
+                                disposeGame();
                                 isPaused = false;
                                 MediaPlayer.Stop();
                             }
@@ -870,6 +901,19 @@ namespace Tile_Engine
        
         private void endGame()
         {
+            isPaused = true;
+           
+            while (true)
+            {
+                GamePadState currentState = GamePad.GetState(PlayerIndex.One);
+                MouseState mouse = Mouse.GetState();
+
+                if (currentState.Buttons.A == ButtonState.Pressed || mouse.LeftButton == ButtonState.Pressed)
+                {
+                    break;
+                }
+            }
+            disposeGame();
             currentGameState = GameState.Credits;
         }
 
@@ -998,7 +1042,7 @@ namespace Tile_Engine
 
         private Player getRandomPlayer()
         {
-            int i = random.Next(playerList.Count());
+            int i = random.Next(playerList.Count() + 1);
 
             switch (i)
             {
