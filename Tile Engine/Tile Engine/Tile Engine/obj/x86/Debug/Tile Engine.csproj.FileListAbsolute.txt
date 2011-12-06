@@ -523,3 +523,14 @@ C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile E
 C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\switch.xnb
 C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\random_effect.xnb
 C:\Users\Chris\Desktop\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\switch.xnb
+C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\cursor_p1.xnb
+C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\cursor_p2.xnb
+C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\cursor_p3.xnb
+C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\cursor_p4.xnb
+C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\instructions_1.xnb
+C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\instructions_2.xnb
+C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\pauseMenuOverlay.xnb
+C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\random_effect.xnb
+C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\switch.xnb
+C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\bgm_music.xnb
+C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\bgm_music.wma

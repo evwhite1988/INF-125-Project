@@ -47,6 +47,12 @@ namespace Tile_Engine
         int gnomeSpawnTimeRemaining;
         int randomGnomeSpawnTimeRemaining;
 
+        int gnomeScore = Variables.gnomeScore;
+        int randScore = Variables.randScore;
+        int evilScore = Variables.evilGnomeScore;
+
+        int gnomeSpeed = Variables.speed;
+
         int timer = 120000;
 
         ///////////////////////////////////// TEXTURES ////////////////////////////////////////////////////////
@@ -941,7 +947,7 @@ namespace Tile_Engine
                 {
                     int spawnPoint = random.Next(4);
                     gnomeList.Add(new Gnome(evilGnomeTex, Variables.frameCount, (int)spawnPoints[spawnPoint].Y,
-                        (int)spawnPoints[spawnPoint].X, Variables.speed / 2));
+                        (int)spawnPoints[spawnPoint].X, gnomeSpeed / 2));
 
                     evilGnomeSpawnTimeRemaining = random.Next(Variables.evilGnomeSpawnMin, Variables.evilGnomeSpawnMax);
                 }
@@ -949,7 +955,7 @@ namespace Tile_Engine
                 {
                     int spawnPoint = random.Next(4);
                     gnomeList.Add(new Gnome(gnomeTex, Variables.frameCount, (int)spawnPoints[spawnPoint].Y,
-                        (int)spawnPoints[spawnPoint].X, Variables.speed));
+                        (int)spawnPoints[spawnPoint].X, gnomeSpeed));
 
                     gnomeSpawnTimeRemaining = random.Next(Variables.gnomeSpawnMin, Variables.gnomeSpawnMax);
                 }
@@ -957,7 +963,7 @@ namespace Tile_Engine
                 {
                     int spawnPoint = random.Next(4);
                     Gnome gnome = new Gnome(randomGnomeTex, Variables.frameCount, (int)spawnPoints[spawnPoint].Y,
-                        (int)spawnPoints[spawnPoint].X, (int)(Variables.speed * 1.5));
+                        (int)spawnPoints[spawnPoint].X, (int)(gnomeSpeed * 1.5));
                     gnome.addEffect(gameTime, gnome_effect);
                     gnomeList.Add(gnome);
                     randomGnomeSpawnTimeRemaining = random.Next(Variables.randomGnomeSpawnMin, Variables.randomGnomeSpawnMax);
@@ -979,15 +985,15 @@ namespace Tile_Engine
                         int player = currentBase.getOwnedBy();
                         if (gnome.spritesheets == evilGnomeTex)
                         {
-                            playerList[player -1].addPoints(-50);
+                            playerList[player -1].addPoints(evilScore);
                         }
                         else if (gnome.spritesheets == gnomeTex)
                         {
-                            playerList[player - 1].addPoints(10);
+                            playerList[player - 1].addPoints(gnomeScore);
                         }
                         else if (gnome.spritesheets == randomGnomeTex)
                         {
-                            playerList[player - 1].addPoints(100);
+                            playerList[player - 1].addPoints(randScore);
                             randomEvent(gameTime);
                         }
 
@@ -1000,19 +1006,43 @@ namespace Tile_Engine
 
         private void randomEvent(GameTime gameTime)
         {
-            //int e = random.Next(2);
+            normalizeVariables(gameTime);
 
-            //switch (e)
-            //{
-            //    case 0:
-            //        swapBases();
-            //        break;
-            //    case 1:
-            //        gameboard.randomizeSpawnLocations();
-            //        break;
-            //}
+            int e = random.Next(3);
 
-            swapBases(gameTime);
+            switch (e)
+            {
+                case 0:
+                    swapBases(gameTime);
+                    break;
+                case 1:
+                    doubleScore(gameTime);
+                    break;
+                case 2:
+                    doubleSpeed(gameTime);
+                    break;
+            }
+
+            //swapBases(gameTime);
+        }
+
+        private void normalizeVariables(GameTime gameTime)
+        {
+            gnomeScore = Variables.gnomeScore;
+            evilScore = Variables.evilGnomeScore;
+            gnomeSpeed = Variables.speed;
+        }
+
+        private void doubleSpeed(GameTime gametTime){
+            gnomeSpeed = (int)(gnomeSpeed * 1.5);
+        }
+
+
+        private void doubleScore(GameTime gameTime)
+        {
+            gnomeScore = 50;
+            evilScore = -300;
+
         }
 
         public void swapBases(GameTime gameTime)

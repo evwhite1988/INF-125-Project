@@ -27,6 +27,10 @@ namespace Tile_Engine
         public static int randomGnomeSpawnMin = 10000;
         public static int randomGnomeSpawnMax = 10000;
 
+        public static int evilGnomeScore = -50;
+        public static int gnomeScore = 10;
+        public static int randScore = 100;
+
         public static Direction randomDirection()
         {
             Random random = new Random();
