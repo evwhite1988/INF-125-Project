@@ -423,7 +423,6 @@ C:\Users\Joshua\Desktop\Project\inf125-team-k\Tile Engine\Tile Engine\Tile Engin
 C:\Users\Joshua\Desktop\Project\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
 C:\Users\Joshua\Desktop\Project\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\obj\x86\Debug\Tile Engine.exe
 C:\Users\Joshua\Desktop\Project\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\obj\x86\Debug\Tile Engine.pdb
-C:\Users\Joshua\Desktop\Project\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\instructions.xnb
 C:\Users\Joshua\Desktop\Project\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\bgm_music.xnb
 C:\Users\Joshua\Desktop\Project\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\bgm_music.wma
 C:\Documents and Settings\testrecp\Desktop\Josh\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\cursor_p1.xnb
@@ -534,3 +533,15 @@ C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\
 C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\switch.xnb
 C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\bgm_music.xnb
 C:\Users\Evan\Documents\125 Project\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\bgm_music.wma
+C:\Users\Joshua\Desktop\Project\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\instructions_1.xnb
+C:\Users\Joshua\Desktop\Project\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\instructions_2.xnb
+C:\Users\Joshua\Desktop\Project\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\pauseMenuOverlay.xnb
+C:\Users\Joshua\Desktop\Project\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\random_effect.xnb
+C:\Users\Joshua\Desktop\Project\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\p1_switch.xnb
+C:\Users\Joshua\Desktop\Project\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\p2_switch.xnb
+C:\Users\Joshua\Desktop\Project\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\p3_switch.xnb
+C:\Users\Joshua\Desktop\Project\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\p4_switch.xnb
+C:\Users\Joshua\Desktop\Project\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\Player1_lit.xnb
+C:\Users\Joshua\Desktop\Project\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\Player2_lit.xnb
+C:\Users\Joshua\Desktop\Project\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\Player3_lit.xnb
+C:\Users\Joshua\Desktop\Project\inf125-team-k\Tile Engine\Tile Engine\Tile Engine\bin\x86\Debug\Content\Player4_lit.xnb

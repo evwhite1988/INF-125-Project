@@ -65,7 +65,14 @@ Content\instructions_1.xnb
 Content\instructions_2.xnb
 Content\pauseMenuOverlay.xnb
 Content\random_effect.xnb
-Content\switch.xnb
+Content\p1_switch.xnb
+Content\p2_switch.xnb
+Content\p3_switch.xnb
+Content\p4_switch.xnb
+Content\Player1_lit.xnb
+Content\Player2_lit.xnb
+Content\Player3_lit.xnb
+Content\Player4_lit.xnb
 Content\pointFont.xnb
 Content\pickup2.xnb
 Content\bgm.xnb

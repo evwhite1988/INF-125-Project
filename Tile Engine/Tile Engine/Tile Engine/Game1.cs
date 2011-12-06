@@ -72,6 +72,8 @@ namespace Tile_Engine
         Texture2D wallTexHorizontal;
         Texture2D creditText;                     //For the credits menu;
         Texture2D gnome_effect;
+        private Texture2D[] base_effect;
+        Texture2D[] sb_lit;
         SpriteFont gameChange;
         SpriteFont scoreFont;
         List<ParticleSystem> activeEffects;
@@ -95,7 +97,7 @@ namespace Tile_Engine
         private int instructionsPage = 0;
         private bool isPaused;
         private Texture2D pauseOverlay;
-        private Texture2D base_effect;
+
 
         /// <summary>
         /// CONSTRUCTOR
@@ -143,6 +145,8 @@ namespace Tile_Engine
             randomGnomeTex = new Texture2D[4];
             scoreboards = new Texture2D[4];
             instructions = new Texture2D[2];
+            base_effect = new Texture2D[4];
+            sb_lit = new Texture2D[4];
 
             activeEffects = new List<ParticleSystem>();
 
@@ -282,7 +286,14 @@ namespace Tile_Engine
             instructions[1] = Content.Load<Texture2D>("instructions_2");
             pauseOverlay = Content.Load<Texture2D>("pauseMenuOverlay");
             gnome_effect = Content.Load<Texture2D>("random_effect");
-            base_effect = Content.Load<Texture2D>("switch");
+            base_effect[0] = Content.Load<Texture2D>("p1_switch");
+            base_effect[1] = Content.Load<Texture2D>("p2_switch");
+            base_effect[2] = Content.Load<Texture2D>("p3_switch");
+            base_effect[3] = Content.Load<Texture2D>("p1_switch");
+            sb_lit[0] = Content.Load<Texture2D>("Player1_lit");
+            sb_lit[1] = Content.Load<Texture2D>("Player2_lit");
+            sb_lit[2] = Content.Load<Texture2D>("Player3_lit");
+            sb_lit[3] = Content.Load<Texture2D>("Player4_lit");
 
             for (int i = 0; i < 4; i++)
             {
@@ -985,15 +996,15 @@ namespace Tile_Engine
                         int player = currentBase.getOwnedBy();
                         if (gnome.spritesheets == evilGnomeTex)
                         {
-                            playerList[player -1].addPoints(evilScore);
+                            playerList[player -1].addPoints(evilScore, scoreboards[player -1]);
                         }
                         else if (gnome.spritesheets == gnomeTex)
                         {
-                            playerList[player - 1].addPoints(gnomeScore);
+                            playerList[player - 1].addPoints(gnomeScore, sb_lit[player -1]);
                         }
                         else if (gnome.spritesheets == randomGnomeTex)
                         {
-                            playerList[player - 1].addPoints(randScore);
+                            playerList[player - 1].addPoints(randScore, sb_lit[player -1]);
                             randomEvent(gameTime);
                         }
 
@@ -1033,8 +1044,16 @@ namespace Tile_Engine
             gnomeSpeed = Variables.speed;
         }
 
-        private void doubleSpeed(GameTime gametTime){
+        private void doubleSpeed(GameTime gameTime)
+        {
             gnomeSpeed = (int)(gnomeSpeed * 1.5);
+            foreach (Gnome g in gnomeList)
+            {
+                ParticleSystem effect = new ParticleSystem();
+                effect.Init(gameTime, base_effect[0], g, 1000, 1.0f, 1.0f);
+                activeEffects.Add(effect);
+            }
+
         }
 
 
@@ -1043,31 +1062,43 @@ namespace Tile_Engine
             gnomeScore = 50;
             evilScore = -300;
 
+            for(int i = 0; i < playerList.Count; i++)
+            {
+                ParticleSystem effect = new ParticleSystem();
+                effect.Init(gameTime, base_effect[i], playerList[i].scoreBoard, 2000, 1000.0f, 5.0f);
+                activeEffects.Add(effect);
+            }
+
         }
 
         public void swapBases(GameTime gameTime)
         {
             List<Cell> bases = gameboard.getBases();
-            for (int i = 0; i < 4; i++)
+            foreach (Player p in playerList)
             {
-                Player player1 = getRandomPlayer();
-                Player player2 = getRandomPlayer();
+                Player temp = getRandomPlayer();
+                while (temp.Equals(p))
+                    temp = getRandomPlayer();
 
-                Vector2 base1_coord = player1.playerBase.coord;
-                player1.playerBase.coord = player2.playerBase.coord;
-                int row1 = ((int)(player1.playerBase.coord.Y) / Variables.cellHeigth);
-                int col1 = ((int)(player1.playerBase.coord.X) / Variables.cellWidth);
-                gameboard.getCell(row1, col1).setOwnedBy(player1.index);
+                Vector2 base1_coord = p.playerBase.coord;
+                p.playerBase.coord = temp.playerBase.coord;
+                int row1 = ((int)(p.playerBase.coord.Y) / Variables.cellHeigth);
+                int col1 = ((int)(p.playerBase.coord.X) / Variables.cellWidth);
+                gameboard.getCell(row1, col1).setOwnedBy(p.index);
 
-                player2.playerBase.coord = base1_coord;
-                int row2 = ((int)(player2.playerBase.coord.Y) / Variables.cellHeigth);
-                int col2 = ((int)(player2.playerBase.coord.X) / Variables.cellWidth);
-                gameboard.getCell(row2, col2).setOwnedBy(player2.index);
+                temp.playerBase.coord = base1_coord;
+                int row2 = ((int)(temp.playerBase.coord.Y) / Variables.cellHeigth);
+                int col2 = ((int)(temp.playerBase.coord.X) / Variables.cellWidth);
+                gameboard.getCell(row2, col2).setOwnedBy(temp.index);
+
             }
 
-            ParticleSystem effect = new ParticleSystem();
-            effect.Init(gameTime, base_effect, this.player1.playerBase);
-            activeEffects.Add(effect);
+            for (int i = 0; i < playerList.Count; i++)
+            {
+                ParticleSystem effect = new ParticleSystem();
+                effect.Init(gameTime, base_effect[i], playerList[i].playerBase, 3000, 1.0f, 5.0f);
+                activeEffects.Add(effect);
+            }
         }
 
         private Player getRandomPlayer()

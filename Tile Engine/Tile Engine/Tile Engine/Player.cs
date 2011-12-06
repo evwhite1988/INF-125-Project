@@ -21,7 +21,7 @@ namespace Tile_Engine
         public PlayerIndex index;
         public List<Cell> p_arrows;            //arrows owned by the player
         Texture2D[] arrows;
-        Texture2D s_Board;
+        public Texture2D s_Board;
 
         //CONSTRUCTOR
         public Player(Texture2D p_Base, Vector2 p_coord, Cursor cursor, PlayerIndex index)
@@ -66,9 +66,10 @@ namespace Tile_Engine
 
 
         // Method to add (or subtract) points from the player score.
-        public void addPoints(int p)
+        public void addPoints(int p, Texture2D texture)
         {
             points += p;
+            scoreBoard.spritesheets[0] = texture;
         }
 
         /*
@@ -200,6 +201,7 @@ namespace Tile_Engine
             scoreBoard.DrawFrame(spriteBatch, Variables.Direction.None);
             playerBase.DrawFrame(spriteBatch, Variables.Direction.None);
             spriteBatch.DrawString(font, points.ToString(), scoreBoard.coord + OFFSET, Color.Black);
+            scoreBoard.spritesheets[0] = s_Board;
         }
 
         public void removeArrow(int column, int row, Gameboard gameboard)

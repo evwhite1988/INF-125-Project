@@ -278,7 +278,7 @@ namespace Tile_Engine
         {
             effect_Tex = texture;
             effect = new ParticleSystem();
-            effect.Init(gameTime, texture, this);
+            effect.Init(gameTime, texture, this, 1500f, .01f, 0);
             hasEffect = true;
         }
 

@@ -15,7 +15,7 @@ namespace Tile_Engine
         public bool started = false;
         GameSprite sprite_obj;
 
-        public void Init(GameTime gameTime, Texture2D texture, GameSprite s)
+        public void Init(GameTime gameTime, Texture2D texture, GameSprite s, float lifeTime, float scale, float acc)
         {
             sprite_obj = s;
             this.sprite = texture;
@@ -24,8 +24,8 @@ namespace Tile_Engine
             {
                 Particle particle = new Particle();
                 particle.birthTime = (float)gameTime.TotalGameTime.TotalMilliseconds;
-                particle.timeMax = 1500;
-                particle.scale = .05f;
+                particle.timeMax = lifeTime;
+                particle.scale = scale;
                 particle.ModColor = Color.White;
 
                 float particleDistance = (float)r.NextDouble() * 50;
@@ -34,7 +34,7 @@ namespace Tile_Engine
                 displacement = Vector2.Transform(displacement, Matrix.CreateRotationZ(angle));
 
                 particle.Dir = displacement;
-                particle.acc = 1.0f * particle.Dir;
+                particle.acc = acc * particle.Dir;
                 particle.OriginalPosition = Vector2.Zero;
 
                 particleList.Add(particle);
